@@ -3,16 +3,17 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const request = require('request');
 
+dotenv.config();
 const app = express();
 app.use(cors());
 
-dotenv.config();
 
 const spotify_client_id = process.env.SPOTIFY_CLIENT_ID;
 const spotify_client_secret = process.env.SPOTIFY_CLIENT_SECRET;
 const redirect_uri = process.env.REDIRECT_URI_LOCAL;
 
 let access_token;
+let refresh_token;
 
 const generateRandomString = function (length) {
     var text = '';
@@ -25,9 +26,7 @@ const generateRandomString = function (length) {
 };
 
 app.get('/auth/login', (req, res) => {
-    const scope = "streaming \
-                 user-read-email \
-                 user-read-private"
+    const scope = 'streaming user-read-email user-read-private';
   
     const state = generateRandomString(16);
   
@@ -37,7 +36,7 @@ app.get('/auth/login', (req, res) => {
       scope: scope,
       redirect_uri: redirect_uri,
       state: state
-    })
+    });
   
     res.redirect('https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString());
 });
@@ -49,7 +48,7 @@ app.get('/auth/callback', (req, res) => {
       url: 'https://accounts.spotify.com/api/token',
       form: {
         code: code,
-        redirect_uri: "http://localhost:5173/auth/callback",
+        redirect_uri: redirect_uri,
         grant_type: 'authorization_code'
       },
       headers: {
@@ -62,9 +61,11 @@ app.get('/auth/callback', (req, res) => {
     request.post(authOptions, function(error, response, body) {
       if (!error && response.statusCode === 200) {
         access_token = body.access_token;
-        res.redirect('/')
+        refresh_token = body.refresh_token;
+        res.redirect(`http://localhost:5173?access_token=${access_token}`);
       } else {
-        console.log(error)
+        console.error("Error in auth/callback:", error);
+        res.status(500).send('Authentication failed');
       }
     });
 });
@@ -80,8 +81,6 @@ app.get('/auth/token', (req, res) => {
 });
 
 app.get('/refresh_token', function(req, res) {
-
-  const refresh_token = req.query.refresh_token;
   const authOptions = {
     url: 'https://accounts.spotify.com/api/token',
     headers: {
@@ -97,16 +96,17 @@ app.get('/refresh_token', function(req, res) {
 
   request.post(authOptions, function(error, response, body) {
     if (!error && response.statusCode === 200) {
-      const access_token = body.access_token,
-          refresh_token = body.refresh_token;
+      access_token = body.access_token;
       res.send({
         'access_token': access_token,
-        'refresh_token': refresh_token
       });
+    } else {
+      console.error("Error in refresh_token:", error);
+      res.status(500).send('Failed to refresh token');
     }
   });
 });
 
 app.listen(3000, () => {
-  console.log(`server running on 3000`);
+  console.log(`Server running on http://localhost:3000`);
 });

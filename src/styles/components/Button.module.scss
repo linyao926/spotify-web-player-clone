@@ -1,0 +1,75 @@
+@use '../index.scss';
+
+.btn {
+  display: flex;
+  align-items: center;
+  color: #000;
+  border: none;
+  font-size: index.$font-size-base;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 1;
+
+  /* Size */
+  &.size-small {
+    height: index.$button-height-small;
+    font-size: index.$font-size-small;
+  }
+
+  &.size-medium {
+    height: index.$button-height-medium;
+  }
+
+  &.size-base {
+    height: index.$button-height-base;
+    border-radius: 50px;
+  }
+
+  &.size-base.circle {
+    width: index.$button-height-base;
+  }
+
+  &.size-large {
+    height: index.$button-height-large;
+  }
+
+  /* Variant */
+  &.primary {
+    background-color: var(--essential-bright-accent);
+  }
+
+  &.background-base {
+    background-color: var(--essential-base);
+  }
+
+  &.elevated-base {
+    background-color: var(--background-elevated-base);
+    color: var(--text-subdued);
+  }
+
+  &.transparent {
+    background-color: transparent;
+    color: var(--text-subdued);
+  }
+
+  /* Type */
+  &.circle {
+    border-radius: 50%;
+  }
+
+  /* Border */
+  &.with-border {
+    border: 1px solid var(--essential-subdued);
+  }
+
+  /* Icon position */
+  &.icon-left {
+    flex-direction: row;
+    gap: index.$spacing-base;
+  }
+
+  &.icon-right {
+    flex-direction: row-reverse;
+    gap: index.$spacing-base;
+  }
+}

@@ -1,0 +1,55 @@
+@use '../index.scss';
+
+.header {
+    height: var(--main-app-header-height);
+    width: 100%;
+    background-color: var(--background-press);
+    padding: index.$spacing-base;
+    position: relative;
+}
+
+.header,
+.header-navigation,
+.header-user-actions {
+    @include index.flex-center($justify: space-between);
+}
+
+.header-logo {
+    margin-left: 20px;
+    z-index: 1;
+}
+
+.header-navigation {
+    justify-content: center;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    right: 0;
+
+    div {
+        margin-left: index.$spacing-base;
+    }
+
+    .home {
+        width: 48px;
+        height: 48px;
+        overflow: hidden;
+    }
+
+    .search {
+        width: 412px;
+        height: 48px;
+    }
+}
+
+.header-user-actions {
+    .sign-up {
+        width: 95.2px;
+        height: 48px;
+    }
+
+    .log-in {
+        width: 108.3px;
+        height: 48px;
+    }
+}

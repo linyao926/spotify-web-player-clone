@@ -1,0 +1,47 @@
+@use 'index';
+
+.main-app {
+    background-color: var(--background-press);
+    color: var(--text-base);
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.body-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: index.$spacing-base;
+    width: 100%;
+    flex-grow: 1;
+    padding: 0 index.$spacing-base;
+
+    aside {
+        width: 280px;
+        height: 100%;
+        background-color: lightblue;
+    }
+
+    section {
+        flex-grow: 1;
+        height: 100%;
+        background-color: lightcoral;
+    }
+
+    div {
+        width: 280px;
+        height: 100%;
+        background-color: lightgreen;
+    }
+}
+
+footer {
+    height: var(--main-app-footer-height);
+    width: 100%;
+    background-color: yellow;
+}

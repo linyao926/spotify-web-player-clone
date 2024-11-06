@@ -9,6 +9,11 @@
   font-weight: 700;
   cursor: pointer;
   z-index: 1;
+  transition: index.$transition;
+
+  &:hover {
+    transform: scale(1.05);
+  }
 
   /* Size */
   &.size-small {

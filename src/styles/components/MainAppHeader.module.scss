@@ -1,5 +1,7 @@
 @use '../index.scss';
 
+$logo-size: 72px;
+
 .header {
     height: var(--main-app-header-height);
     width: 100%;
@@ -9,47 +11,24 @@
 }
 
 .header,
+.header-logo,
 .header-navigation,
 .header-user-actions {
     @include index.flex-center($justify: space-between);
 }
 
 .header-logo {
-    margin-left: 20px;
+    justify-content: center;
+    width: $logo-size;
     z-index: 1;
+    cursor: pointer;
 }
 
 .header-navigation {
     justify-content: center;
-    width: 100%;
-    position: absolute;
-    left: 0;
-    right: 0;
+    flex-grow: 1;
 
     div {
         margin-left: index.$spacing-base;
-    }
-
-    .home {
-        width: 48px;
-        height: 48px;
-        overflow: hidden;
-    }
-
-    .search {
-        width: 412px;
-        height: 48px;
-    }
-}
-
-.header-user-actions {
-    .sign-up {
-        width: 95.2px;
-        height: 48px;
-    }
-
-    .log-in {
-        width: 108.3px;
-        height: 48px;
     }
 }

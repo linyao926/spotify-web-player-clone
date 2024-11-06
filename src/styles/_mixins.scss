@@ -1,18 +1,8 @@
-@mixin flex-between-center {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
 @mixin flex-center($direction: row, $justify: center, $align: center) {
     display: flex;
     flex-direction: $direction;
     justify-content: $justify;
     align-items: $align;
-}
-
-@mixin padding() {
-
 }
 
 @mixin breakpoint($size) {
@@ -47,6 +37,6 @@
     background: linear-gradient(to right, $startColor, $endColor);
 }
 
-@mixin border($width: 1px, $style: solid, $color: #333) {
+@mixin border($width: 1px, $style: solid, $color: var(--essential-subdued)) {
     border: $width $style $color;
 }

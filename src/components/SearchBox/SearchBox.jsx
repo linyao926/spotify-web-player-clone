@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { FaSearch, FaTimes, FaArrowRight } from 'react-icons/fa';
+import React, { useState, useRef } from 'react';
+import { SearchIcon, BrowseIcon, DismissIcon } from '~/assets/icons/icons';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/SearchBox.module.scss';
 
@@ -12,6 +12,12 @@ function SearchBox (props) {
     } = props;
 
     const [inputValue, setInputValue] = useState('');
+
+    const inputRef = useRef(null);
+
+    const handleSearchIconClick = () => {
+        inputRef.current.focus();
+    };
 
     const handleChange = (e) => {
         setInputValue(e.target.value);
@@ -30,28 +36,27 @@ function SearchBox (props) {
 
     return (
         <div className={cx('search-box', size)}>
-            <div className="search-icon">
-                <FaSearch />
+            <div className={cx("search-icon")} onClick={handleSearchIconClick}>
+                <SearchIcon />
             </div>
             
             <input
+                ref={inputRef}
                 type="text"
                 value={inputValue}
                 onChange={handleChange}
                 onKeyDown={handleKeyDown}
-                placeholder="Search..."
+                placeholder="What do you want to play?"
             />
             
             {inputValue && (
-                <div className="clear-icon" onClick={handleClear}>
-                    <FaTimes />
+                <div className={cx("clear-icon")} onClick={handleClear}>
+                    <DismissIcon />
                 </div>
             )}
             
-            <div className={`divider ${inputValue ? 'hidden' : ''}`}></div>
-            
-            <div className={`browse-icon ${inputValue ? 'hidden' : ''}`}>
-                <FaArrowRight />
+            <div className={cx("browse-icon", inputValue ? 'hidden' : '')}>
+                <BrowseIcon />
             </div>
         </div>
     )

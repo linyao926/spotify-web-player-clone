@@ -1,3 +1,8 @@
+@use '../index.scss';
+
+$search-box-max-width: 469px;
+$search-box-min-width: 410px;
+
 .search-box {
     display: flex;
     align-items: center;
@@ -6,6 +11,8 @@
     border-radius: 10px;
     background-color: var(--background-elevated-highlight);
     color: var(--text-subdued);
+    -webkit-transition: index.$transition;
+    transition: index.$transition;
   
     &.small {
       height: 32px;
@@ -16,18 +23,24 @@
     }
 
     &.large {
-      height: 48px;
-      width: 469px;
+      height: index.$size-base;
+      max-width: $search-box-max-width;
+      min-width: $search-box-min-width;
       border-radius: 50px;
       background-color: var(--background-highlight);
     }
-  
-    .search-icon {
+
+    .search-icon, 
+    .browse-icon,
+    .clear-icon {
       display: flex;
       align-items: center;
-      padding-right: 8px;
-      font-size: 18px;
-      color: #555;
+      width: index.$size-base;
+      height: index.$size-base;
+      padding: 12px;
+      margin-left: 0;
+      cursor: pointer;
+      color: var(--text-subdued);
     }
   
     input {
@@ -35,37 +48,48 @@
       height: 100%;
       border: none;
       outline: none;
-      font-size: 16px;
-      padding-left: 8px;
-      color: #333;
-    }
-  
-    .clear-icon {
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      padding-left: 8px;
-      font-size: 18px;
-      color: #555;
-    }
-  
-    .divider {
-      position: absolute;
-      right: 40px;
-      width: 1px;
-      height: 16px;
-      background-color: #ddd;
-    }
-  
-    .browse-icon {
-      position: absolute;
-      right: 10px;
-      font-size: 18px;
-      color: #555;
-      cursor: pointer;
+      background-color: transparent;
+      color: var(--text-base);
+      font-size: index.$font-size-base;
+      margin-right: 8px;
+      letter-spacing: 1.5px;
     }
   
     .hidden {
       display: none;
     }
+
+    &:hover {
+      background-color: var(--background-elevated-highlight);
+      box-shadow: inset 0 0 0 1px hsla(0, 0%, 100%, .1);
+    }
+
+    &:focus-within {
+      background-color: var(--background-elevated-highlight);
+      box-shadow: 0 0 0 2px var(--essential-base); 
+    }
+}
+
+input {
+  &::placeholder {
+    color: var(--text-subdued);
+    font-size: index.$font-size-base;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+  }
+}
+
+.browse-icon {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0px; 
+    top: 50%; 
+    transform: translateY(-50%); 
+    width: 1px;
+    height: 25px; 
+    background-color: var(--essential-subdued);
+  }
 }

@@ -1,4 +1,4 @@
-const urlMain = 'https://www.spotify.com/vn-en';
+const urlMain = 'https://www.spotify.com/vn-vi';
 const urlSub = 'spotify.com';
 
 const externalLink = {
@@ -13,7 +13,7 @@ const externalLink = {
     support: `https://support.${urlSub}`,
     download: `${urlMain}/download/`,
     legal: `${urlMain}/legal/`,
-    privacy: `${urlMain}/privacy/`,
+    safety: `${urlMain}/safetyandprivacy/`,
     policy: `${urlMain}/legal/privacy-policy/`,
     cookies: `${urlMain}/legal/cookies-policy/`,
     aboutAds: `${urlMain}/legal/privacy-policy/#s3`,

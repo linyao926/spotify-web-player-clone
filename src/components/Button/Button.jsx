@@ -16,6 +16,7 @@ function Button (props) {
         borderRadius = '',
         padding = '8px 32px',
         hoverEffect = ['hover-scale'],
+        styles,
     } = props;
 
     const buttonClasses = cx(
@@ -29,7 +30,7 @@ function Button (props) {
     );
 
     return (
-        <button className={buttonClasses} style={{ padding }}>
+        <button className={buttonClasses} style={{ padding, ...styles }}>
             {hasIcon && icon}
             <span>{children}</span>
         </button>

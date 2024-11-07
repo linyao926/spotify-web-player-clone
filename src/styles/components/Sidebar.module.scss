@@ -1,10 +1,14 @@
 @use '../index.scss';
 
 .sidebar {
-    width: 280px;
+    min-width: 280px;
+    max-width: 420px;
     height: 100%;
     background-color: var(--background-base);
     border-radius: index.$border-radius-base;
+    display: flex;
+    flex-direction: column;
+    position: relative;
 }
 
 .sidebar-header {
@@ -24,6 +28,7 @@
     border-radius: index.$border-radius-base;
     @include index.flex-center(column, space-between, flex-start);
     gap: 20px;
+    width: 100%;
 
     .create-playlist-prompt-text {
         @include index.flex-center(column, space-between, flex-start);
@@ -38,4 +43,50 @@
     .create-playlist-prompt-text__subtitle {
         font-size: index.$font-size-small;
     }
+}
+
+.sidebar-footer {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.sidebar-legal-links {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 32px 0;
+    padding: 0 index.$spacing-large;
+
+    a {
+        font-size: 0.813rem;
+        color: var(--text-subdued);
+        text-decoration: none;
+        margin-right: index.$spacing-medium;
+        margin-bottom: index.$spacing-base;
+        display: inline-flex;
+        align-items: center;
+        line-height: 1.3125rem;
+    }
+}
+
+.sidebar-footer-btn-wrapper {
+    margin-bottom: 32px;
+    padding: 0 index.$spacing-large;
+}
+
+.resize-bar {
+    width: 8px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    font-size: 16px;
+    font-weight: 400;
+    color: #fff;
 }

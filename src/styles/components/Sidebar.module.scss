@@ -1,0 +1,41 @@
+@use '../index.scss';
+
+.sidebar {
+    width: 280px;
+    height: 100%;
+    background-color: var(--background-base);
+    border-radius: index.$border-radius-base;
+}
+
+.sidebar-header {
+    @include index.flex-center($justify: space-between);
+    padding: 12px 16px 8px;
+    margin-bottom: 12px;
+}
+
+.sidebar-content {
+    padding: index.$spacing-base;
+}
+
+.create-playlist-prompt {
+    margin: 8px 0;
+    padding: 16px 20px;
+    background-color: var(--background-highlight);
+    border-radius: index.$border-radius-base;
+    @include index.flex-center(column, space-between, flex-start);
+    gap: 20px;
+
+    .create-playlist-prompt-text {
+        @include index.flex-center(column, space-between, flex-start);
+        gap: index.$spacing-base;
+    }
+
+    .create-playlist-prompt-text__title {
+        font-weight: bold;
+        font-size: index.$font-size-base;
+    }
+
+    .create-playlist-prompt-text__subtitle {
+        font-size: index.$font-size-small;
+    }
+}

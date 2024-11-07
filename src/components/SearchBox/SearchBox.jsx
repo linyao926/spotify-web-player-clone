@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { SearchIcon, BrowseIcon, DismissIcon } from '~/assets/icons/icons';
+import React, { useState, useRef, useEffect } from 'react';
+import { SearchIcon, BrowseIcon, FillBrowseIcon, DismissIcon } from '~/assets/icons/icons';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/SearchBox.module.scss';
 
@@ -12,6 +12,7 @@ function SearchBox (props) {
     } = props;
 
     const [inputValue, setInputValue] = useState('');
+    const [inputIsFocus, setInputIsFocus] = useState(false);
 
     const inputRef = useRef(null);
 
@@ -44,6 +45,8 @@ function SearchBox (props) {
                 ref={inputRef}
                 type="text"
                 value={inputValue}
+                onFocus={() => setInputIsFocus(true)}
+                onBlur={() => setInputIsFocus(false)}
                 onChange={handleChange}
                 onKeyDown={handleKeyDown}
                 placeholder="What do you want to play?"
@@ -56,7 +59,7 @@ function SearchBox (props) {
             )}
             
             <div className={cx("browse-icon", inputValue ? 'hidden' : '')}>
-                <BrowseIcon />
+                {inputIsFocus ? <FillBrowseIcon /> : <BrowseIcon />}
             </div>
         </div>
     )

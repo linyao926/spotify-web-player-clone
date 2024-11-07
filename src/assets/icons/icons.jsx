@@ -11,7 +11,7 @@ export const SpotifyLogoIcon = ({ className, height = '32' }) => (
     </svg>
 );
 
-export const FillHomeIcon = ({ className, width = '2.4rem', height = '2.4rem' }) => (
+export const FillHomeIcon = ({ className, width = '24px', height = '24px' }) => (
     <svg
         className={className}
         width={width}
@@ -24,7 +24,7 @@ export const FillHomeIcon = ({ className, width = '2.4rem', height = '2.4rem' })
     </svg>
 );
 
-export const HomeIcon = ({ className, width = '2.4rem', height = '2.4rem' }) => (
+export const HomeIcon = ({ className, width = '24px', height = '24px' }) => (
     <svg
         className={className}
         width={width}
@@ -37,7 +37,7 @@ export const HomeIcon = ({ className, width = '2.4rem', height = '2.4rem' }) => 
     </svg>
 );
 
-export const BrowseIcon = ({ className, width = '2.4rem', height = '2.4rem' }) => (
+export const BrowseIcon = ({ className, width = '24px', height = '24px' }) => (
     <svg
         className={className}
         width={width}
@@ -51,7 +51,20 @@ export const BrowseIcon = ({ className, width = '2.4rem', height = '2.4rem' }) =
     </svg>
 );
 
-export const SearchIcon = ({ className, width = '2.4rem', height = '2.4rem' }) => (
+export const FillBrowseIcon = ({ className, width = '24px', height = '24px' }) => (
+    <svg
+        className={className}
+        width={width}
+        height={height}
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path d="M4 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v4H4V2zM1.513 9.37A1 1 0 0 1 2.291 9H21.71a1 1 0 0 1 .978 1.208l-2.17 10.208A2 2 0 0 1 18.562 22H5.438a2 2 0 0 1-1.956-1.584l-2.17-10.208a1 1 0 0 1 .201-.837zM12 17.834c1.933 0 3.5-1.044 3.5-2.333 0-1.289-1.567-2.333-3.5-2.333S8.5 14.21 8.5 15.5c0 1.289 1.567 2.333 3.5 2.333z"></path>
+    </svg>
+);
+
+export const SearchIcon = ({ className, width = '24px', height = '24px' }) => (
     <svg
         className={className}
         width={width}
@@ -77,7 +90,7 @@ export const DismissIcon = ({ className, width = '1.6rem', height = '1.6rem' }) 
     </svg>
 );
 
-export const LibraryIcon = ({ className, width = '2.4rem', height = '2.4rem' }) => (
+export const LibraryIcon = ({ className, width = '24px', height = '24px' }) => (
     <svg
         className={className}
         width={width}
@@ -87,14 +100,12 @@ export const LibraryIcon = ({ className, width = '2.4rem', height = '2.4rem' }) 
         xmlns="http://www.w3.org/2000/svg"
     >
         <path
-            fillRule="evenodd"
-            clipRule="evenodd"
             d="M14.5 2.134a1 1 0 0 1 1 0l6 3.464a1 1 0 0 1 .5.866V21a1 1 0 0 1-1 1h-6a1 1 0 0 1-1-1V3a1 1 0 0 1 .5-.866zM16 4.732V20h4V7.041l-4-2.309zM3 22a1 1 0 0 1-1-1V3a1 1 0 0 1 2 0v18a1 1 0 0 1-1 1zm6 0a1 1 0 0 1-1-1V3a1 1 0 0 1 2 0v18a1 1 0 0 1-1 1z"
         ></path>
     </svg>
 );
 
-export const FillLibraryIcon = ({ className, width = '2.4rem', height = '2.4rem' }) => (
+export const FillLibraryIcon = ({ className, width = '24px', height = '24px' }) => (
     <svg
         className={className}
         width={width}
@@ -104,6 +115,19 @@ export const FillLibraryIcon = ({ className, width = '2.4rem', height = '2.4rem'
         xmlns="http://www.w3.org/2000/svg"
     >
         <path d="M3 22a1 1 0 0 1-1-1V3a1 1 0 0 1 2 0v18a1 1 0 0 1-1 1zM15.5 2.134A1 1 0 0 0 14 3v18a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V6.464a1 1 0 0 0-.5-.866l-6-3.464zM9 2a1 1 0 0 0-1 1v18a1 1 0 1 0 2 0V3a1 1 0 0 0-1-1z"></path>
+    </svg>
+);
+
+export const PlusIcon = ({ className, width = '16px', height = '16px' }) => (
+    <svg
+        className={className}
+        width={width}
+        height={height}
+        viewBox="0 0 16 16"
+        fill="#a7a7a7"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path d="M15.25 8a.75.75 0 0 1-.75.75H8.75v5.75a.75.75 0 0 1-1.5 0V8.75H1.5a.75.75 0 0 1 0-1.5h5.75V1.5a.75.75 0 0 1 1.5 0v5.75h5.75a.75.75 0 0 1 .75.75z"></path>
     </svg>
 );
 
@@ -679,7 +703,7 @@ export const AddToQueueIcon = ({ className, width = '1.6rem', height = '1.6rem' 
     </svg>
 );
 
-export const SettingIcon = ({ className, width = '2.4rem', height = '2.4rem' }) => (
+export const SettingIcon = ({ className, width = '24px', height = '24px' }) => (
     <svg
         className={className}
         width={width}

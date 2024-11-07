@@ -1,3 +1,4 @@
+import React from 'react';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/Button.module.scss';
 
@@ -8,24 +9,27 @@ function Button (props) {
         children,
         hasIcon = false,
         icon,
-        iconPosition,
+        iconPosition = '',
         size,
         variant,
         withBorder = false,
         borderRadius = '',
         padding = '8px 32px',
+        hoverEffect = ['hover-scale'],
     } = props;
 
-    const classNames = [
-        hasIcon ? iconPosition : '',
+    const buttonClasses = cx(
+        'btn',
+        iconPosition,
         variant,
-        withBorder ? 'with-border' : '',
+        { 'with-border': withBorder },
         borderRadius,
-        size,
-    ];
+        ...hoverEffect,
+        size
+    );
 
     return (
-        <button className={cx('btn', ...classNames)} style={{ padding }}>
+        <button className={buttonClasses} style={{ padding }}>
             {hasIcon && icon}
             <span>{children}</span>
         </button>

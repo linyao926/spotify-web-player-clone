@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import MainAppHeader from '~/components/MainAppHeader/MainAppHeader';
+import Sidebar from '~/components/Sidebar/Sidebar';
 import classNames from 'classnames/bind';
 import styles from '~/styles/MainAppLayout.module.scss';
 
@@ -10,9 +11,9 @@ function MainAppLayout () {
         <main className={cx('main-app')}>
             <MainAppHeader />
             <div className={cx('body-section')}>
-                <aside>sidebar</aside>
-                <section>content</section>
-                <div>overview layout</div>
+                <Sidebar />
+                <section className={cx('body-section-content')}>content</section>
+                <div className={cx('overview')}>overview layout</div>
             </div>
             <footer>footer</footer>
         </main>

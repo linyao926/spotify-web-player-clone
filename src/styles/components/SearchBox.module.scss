@@ -68,13 +68,19 @@ $search-box-min-width: 410px;
       background-color: var(--background-elevated-highlight);
       box-shadow: 0 0 0 2px var(--essential-base); 
     }
+
+    &:hover .search-icon,
+    &:focus-within .search-icon,
+    &:focus-within .browse-icon {
+      color: var(--text-base);
+    }
 }
 
 input {
   &::placeholder {
     color: var(--text-subdued);
     font-size: index.$font-size-base;
-    letter-spacing: 0.5px;
+    letter-spacing: normal;
     font-weight: 500;
   }
 }

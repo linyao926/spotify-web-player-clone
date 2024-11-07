@@ -33,10 +33,12 @@ function MainAppHeader () {
                     variant="transparent"
                     size="size-base"
                     padding="8px 32px 8px 8px"
+                    borderRadius="rounded"
                 >Sign up</Button>
                 <Button 
                     variant="background-base"
                     size="size-base"
+                    borderRadius="rounded"
                 >Log in</Button>
             </div>
         </header>

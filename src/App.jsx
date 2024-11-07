@@ -21,8 +21,6 @@ function App() {
       accessToken = params.get("access_token");
     }
 
-    console.log(accessToken);
-
     if (accessToken) {
       setToken(accessToken);
       setLogged(true);

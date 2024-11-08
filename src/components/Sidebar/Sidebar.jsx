@@ -1,9 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import SidebarHeader from './SidebarHeader';
 import CreatePlaylistPrompt from './CreatePlaylistPrompt';
 import SidebarFooter from './SidebarFooter';
 import ResizeBar from './ResizeBar';
-import Button from '../Button/Button';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/Sidebar.module.scss';
 

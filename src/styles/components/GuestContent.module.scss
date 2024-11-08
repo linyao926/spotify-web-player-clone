@@ -1,0 +1,16 @@
+@use '../index';
+
+.guest-content {
+    flex-grow: 1;
+    @include index.bodySectionBase;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.logo-wrapper {
+    @include index.absolute-center;
+    
+    svg {
+        height: 120px;
+    }
+}

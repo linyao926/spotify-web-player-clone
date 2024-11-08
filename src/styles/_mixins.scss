@@ -1,8 +1,19 @@
+@use './variables';
+
 @mixin flex-center($direction: row, $justify: center, $align: center) {
     display: flex;
     flex-direction: $direction;
     justify-content: $justify;
     align-items: $align;
+}
+
+@mixin bodySectionBase {
+    height: 100%;
+    background-color: var(--background-base);
+    border-radius: variables.$border-radius-base;
+    display: flex;
+    flex-direction: column;
+    position: relative;
 }
 
 @mixin breakpoint($size) {
@@ -31,10 +42,6 @@
 
 @mixin box-shadow($x: 0px, $y: 2px, $blur: 8px, $color: rgba(0, 0, 0, 0.2)) {
     box-shadow: $x $y $blur $color;
-}
-
-@mixin gradient($startColor, $endColor) {
-    background: linear-gradient(to right, $startColor, $endColor);
 }
 
 @mixin border($width: 1px, $style: solid, $color: var(--essential-subdued)) {

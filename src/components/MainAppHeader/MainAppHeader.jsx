@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { SpotifyLogoIcon, HomeIcon } from '~/assets/icons/icons';
+// import { useLocation } from 'react-router-dom';
+import { SpotifyLogoIcon, HomeIcon, FillHomeIcon } from '~/assets/icons/icons';
 import Button from '../Button/Button';
 import SearchBox from '../SearchBox/SearchBox';
 import classNames from 'classnames/bind';
@@ -8,6 +8,11 @@ import styles from '~/styles/components/MainAppHeader.module.scss';
 const cx = classNames.bind(styles);
 
 function MainAppHeader () {
+    // const location = useLocation();
+
+    // const isHomePage = location.pathname === '/';
+    const isHomePage = true;
+
     const handleSearch = (query) => {
         console.log("Searching for:", query);
     };
@@ -20,7 +25,8 @@ function MainAppHeader () {
             <div className={cx('header-navigation')}>
                 <Button 
                     hasIcon
-                    icon={<HomeIcon />}
+                    icon={isHomePage ? <FillHomeIcon /> : <HomeIcon />}
+                    iconActive
                     borderRadius="circle"
                     variant="elevated-base"
                     size="size-base"

@@ -1,0 +1,24 @@
+@use '../index.scss';
+
+.guest-footer-wrapper {
+    padding: index.$spacing-base;
+    width: 100%;
+}
+
+.guest-footer {
+    padding: 11px 24px 7px 15px;
+    height: var(--main-app-footer-height);
+    background-image: linear-gradient(90deg, #af2896, #509bf5);
+    @include index.flex-center($justify: space-between);
+}
+
+.guest-footer-title {
+    font-weight: bold;
+    font-size: index.$font-size-small;
+    line-height: index.$line-height-base;
+}
+
+.guest-footer-subtitle {
+    font-size: index.$font-size-base;
+    line-height: index.$line-height-base;
+}

@@ -10,6 +10,7 @@ function Button (props) {
         hasIcon = false,
         icon,
         iconPosition = '',
+        iconActive = false,
         size,
         variant,
         withBorder = false,
@@ -26,7 +27,8 @@ function Button (props) {
         { 'with-border': withBorder },
         borderRadius,
         ...hoverEffect,
-        size
+        size,
+        iconActive && 'icon-active',
     );
 
     return (

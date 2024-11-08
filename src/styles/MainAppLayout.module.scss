@@ -6,36 +6,20 @@
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    @include index.flex-center($direction: column);
 }
 
 .body-section {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include index.flex-center;
     gap: index.$spacing-base;
     width: 100%;
     flex-grow: 1;
     padding: 0 index.$spacing-base;
-
-    .body-section-content {
-        flex-grow: 1;
-        height: 100%;
-        background-color: lightcoral;
-    }
+    position: relative;
 
     .overview {
         width: 280px;
         height: 100%;
         background-color: lightgreen;
     }
-}
-
-footer {
-    height: var(--main-app-footer-height);
-    width: 100%;
-    background-color: yellow;
 }

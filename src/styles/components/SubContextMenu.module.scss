@@ -1,0 +1,45 @@
+@use '../index.scss';
+
+$box-shadow: 0 16px 24px rgba(0, 0, 0, .3), 0 6px 8px rgba(0, 0, 0, .2);
+
+.subcontext-menu {
+    position: absolute;
+    padding: 4px;
+    background-color: #282828;
+    border-radius: 4px;
+    -webkit-box-shadow: $box-shadow;
+    box-shadow: $box-shadow;
+    max-height: calc(100vh - 24px);
+    max-width: 350px;
+    min-width: 160px;
+    width: max-content;
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.subcontext-menu.align-right {
+    transform: translateX(-100%); 
+}
+  
+.subcontext-item {
+    background: transparent;
+    border: 0;
+    border-radius: 2px;
+    color: hsla(0, 0%, 100%, .9);
+    cursor: default;
+    @include index.flex-center($justify: space-between);
+    gap: 12px;
+    padding: 12px 8px 12px 12px;
+    font-size: index.$font-size-small;
+}
+
+.subcontext-item-text {
+    flex-grow: 1;
+
+    @include index.ellipsis-one-line;
+}
+  
+.subcontext-item:hover {
+    background-color: hsla(0, 0%, 100%, .1);
+    color: var(--text-base);
+}

@@ -11,6 +11,7 @@
   z-index: 1;
   transition: index.$transition;
   transform: scale(1);
+  position: relative;
 
   /* Size */
   &.size-small {

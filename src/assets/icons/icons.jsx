@@ -111,7 +111,7 @@ export const LibraryIcon = ({ className, width = '24px', height = '24px' }) => (
         width={width}
         height={height}
         viewBox="0 0 24 24"
-        fill="currentcolor"
+        fill="currentColor"
         xmlns="http://www.w3.org/2000/svg"
     >
         <path
@@ -126,7 +126,7 @@ export const FillLibraryIcon = ({ className, width = '24px', height = '24px' }) 
         width={width}
         height={height}
         viewBox="0 0 24 24"
-        fill="#a7a7a7"
+        fill="currentColor"
         xmlns="http://www.w3.org/2000/svg"
     >
         <path d="M3 22a1 1 0 0 1-1-1V3a1 1 0 0 1 2 0v18a1 1 0 0 1-1 1zM15.5 2.134A1 1 0 0 0 14 3v18a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V6.464a1 1 0 0 0-.5-.866l-6-3.464zM9 2a1 1 0 0 0-1 1v18a1 1 0 1 0 2 0V3a1 1 0 0 0-1-1z"></path>
@@ -139,10 +139,23 @@ export const PlusIcon = ({ className, width = '16px', height = '16px' }) => (
         width={width}
         height={height}
         viewBox="0 0 16 16"
-        fill="#a7a7a7"
+        fill="currentColor"
         xmlns="http://www.w3.org/2000/svg"
     >
         <path d="M15.25 8a.75.75 0 0 1-.75.75H8.75v5.75a.75.75 0 0 1-1.5 0V8.75H1.5a.75.75 0 0 1 0-1.5h5.75V1.5a.75.75 0 0 1 1.5 0v5.75h5.75a.75.75 0 0 1 .75.75z"></path>
+    </svg>
+);
+
+export const MusicalNotePlusIcon = ({ className, width = '16px', height = '16px' }) => (
+    <svg
+        className={className}
+        width={width}
+        height={height}
+        viewBox="0 0 16 16"
+        fill="currentColor"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path d="M2 0v2H0v1.5h2v2h1.5v-2h2V2h-2V0H2zm11.5 2.5H8.244A5.482 5.482 0 0 0 7.966 1H15v11.75A2.75 2.75 0 1 1 12.25 10h1.25V2.5zm0 9h-1.25a1.25 1.25 0 1 0 1.25 1.25V11.5zM4 8.107a5.465 5.465 0 0 0 1.5-.593v5.236A2.75 2.75 0 1 1 2.75 10H4V8.107zM4 11.5H2.75A1.25 1.25 0 1 0 4 12.75V11.5z"></path>
     </svg>
 );
 
@@ -162,6 +175,8 @@ export const LanguageIcon = ({ className, width = '1.6rem', height = '1.6rem' })
         ></path>
     </svg>
 );
+
+<svg data-encore-id="icon" role="img" aria-hidden="true" viewBox="0 0 16 16" class="Svg-sc-ytk21e-0 dYnaPI"></svg>
 
 export const DropDownIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
     <svg

@@ -16,6 +16,12 @@
     position: relative;
 }
 
+@mixin ellipsis-one-line{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 @mixin breakpoint($size) {
     @if $size == small {
         @media (max-width: 600px) { @content; }

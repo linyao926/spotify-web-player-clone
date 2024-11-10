@@ -18,6 +18,7 @@ function Button (props) {
         padding = '8px 32px',
         hoverEffect = ['hover-scale'],
         styles,
+        clickFunction,
     } = props;
 
     const buttonClasses = cx(
@@ -32,7 +33,9 @@ function Button (props) {
     );
 
     return (
-        <button className={buttonClasses} style={{ padding, ...styles }}>
+        <button className={buttonClasses} style={{ padding, ...styles }}
+            onClick={clickFunction}
+        >
             {hasIcon && icon}
             <span>{children}</span>
         </button>

@@ -22,6 +22,15 @@
     white-space: nowrap;
 }
 
+@mixin full-screen-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
 @mixin breakpoint($size) {
     @if $size == small {
         @media (max-width: 600px) { @content; }

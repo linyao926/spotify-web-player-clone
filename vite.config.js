@@ -11,6 +11,8 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         implementation: sass,
+        additionalData: `@use "sass:math";`,
+        silenceDeprecations: ['legacy-js-api']
       },
     },
   },

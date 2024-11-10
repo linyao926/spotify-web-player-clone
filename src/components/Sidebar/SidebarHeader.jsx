@@ -12,8 +12,6 @@ function SidebarHeader (props) {
     const createPlaylistMenu = [{
         name: "Create a new playlist",
         iconLeft: <MusicalNotePlusIcon />,
-        active: false,
-        toggle: false, 
         // onClick: toggleLibrary, 
     }];
 

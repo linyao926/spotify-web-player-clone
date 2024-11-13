@@ -1,5 +1,6 @@
 import React from 'react';
-import { useToggle } from '~/hooks/useToggle';
+import { useDispatch } from 'react-redux';
+import { openModal } from '~/redux/slices/uiSlice';
 import Button from '../Button/Button';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/Sidebar.module.scss';
@@ -7,7 +8,7 @@ import styles from '~/styles/components/Sidebar.module.scss';
 const cx = classNames.bind(styles);
 
 function CreatePlaylistPrompt () {
-    const { open } = useToggle();
+    const dispatch = useDispatch();
 
     return (
         <section className={cx('create-playlist-prompt')}>
@@ -24,7 +25,7 @@ function CreatePlaylistPrompt () {
                 size="size-small"
                 borderRadius="rounded"
                 padding="4px 16px"
-                clickFunction={open}
+                clickFunction={() => dispatch(openModal())}
             >Create playlist</Button>
         </section>
     )

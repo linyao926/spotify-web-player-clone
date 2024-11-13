@@ -1,7 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { openSubContext, closeSubContext } from '~/redux/slices/uiSlice';
+import { setPosition } from '~/redux/slices/positionSlice';
 import { FillLibraryIcon, PlusIcon, MusicalNotePlusIcon } from '~/assets/icons/icons';
 import Button from '../Button/Button';
-import { openSubContext, closeSubContext } from '~/services/utils.js';
 import SubContextMenu from '../SubContextMenu/SubContextMenu';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/Sidebar.module.scss';
@@ -15,13 +17,25 @@ function SidebarHeader (props) {
         // onClick: toggleLibrary, 
     }];
 
-    const [position, setPosition] = useState({ top: 0, left: 0 });
-    const [isSubcontextOpen, setIsSubcontextOpen] = useState(false);
+    const isSubContextOpen = useSelector((state) => state.ui.subContext.isOpen);
+    const position = useSelector((state) => state.position);
     
-    const handleOpenMenuClick = (event) => openSubContext(event, "bottom-right", setPosition, setIsSubcontextOpen);
+    const dispatch = useDispatch(); 
 
-    const handleCloseMenuClick = () => closeSubContext(setIsSubcontextOpen);
-
+    const handleOpenSubContext = (event) => {
+        event.stopPropagation();
+        const boundingRect = event.currentTarget.getBoundingClientRect();
+        dispatch(setPosition({ 
+            positionType: 'bottom-right', 
+            boundingRect: {
+                height: boundingRect.height,
+                width: boundingRect.width
+            } 
+        }));
+        dispatch(openSubContext());
+    };
+    const handleCloseSubContext = () => dispatch(closeSubContext());
+    
     return (
         <header className={cx('sidebar-header')}>
             <Button
@@ -45,9 +59,9 @@ function SidebarHeader (props) {
                     size="size-small"
                     padding="8px"
                     hoverEffect={["hover-none-scale", "hover-button-highlight"]}
-                    clickFunction={isSubcontextOpen ? handleCloseMenuClick : handleOpenMenuClick}
+                    clickFunction={isSubContextOpen ? handleCloseSubContext : (event) => handleOpenSubContext(event)}
                 />
-                {isSubcontextOpen && <SubContextMenu 
+                {isSubContextOpen && <SubContextMenu 
                     items={createPlaylistMenu} 
                     position={position} 
                     alignRight

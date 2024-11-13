@@ -1,5 +1,6 @@
 import React from 'react';
-import { useToggle } from '~/hooks/useToggle';
+import { useDispatch } from 'react-redux';
+import { closeModal } from '~/redux/slices/uiSlice';
 import Button from '../Button/Button';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/LoginPrompt.module.scss';
@@ -7,7 +8,7 @@ import styles from '~/styles/components/LoginPrompt.module.scss';
 const cx = classNames.bind(styles);
 
 const LoginPrompt = () => {
-    const { close } = useToggle();
+    const dispatch = useDispatch();
 
     return (
         <div className={cx('login-prompt')}>
@@ -35,7 +36,7 @@ const LoginPrompt = () => {
             <Button 
                 size="size-small"
                 variant="transparent"
-                clickFunction={close}
+                clickFunction={() => dispatch(closeModal())}
             >Close</Button>
         </div>
     );

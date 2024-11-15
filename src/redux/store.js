@@ -5,6 +5,7 @@ import positionReducer from './slices/positionSlice';
 // import playlistReducer from './slices/playlistSlice';
 // import trackReducer from './slices/trackSlice';
 // import nowPlayingReducer from './slices/nowPlayingSlice';
+import { checkTokenExpirationMiddleware } from '~/services/auth';
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,8 @@ export const store = configureStore({
     // track: trackReducer,
     // nowPlaying: nowPlayingReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(checkTokenExpirationMiddleware),
 });
 
 export default store;

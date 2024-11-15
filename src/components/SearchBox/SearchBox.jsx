@@ -1,4 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
+import { openModal } from '~/redux/slices/uiSlice';
 import { SearchIcon, BrowseIcon, FillBrowseIcon, DismissIcon } from '~/assets/icons/icons';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/SearchBox.module.scss';
@@ -13,10 +16,15 @@ function SearchBox (props) {
 
     const [inputValue, setInputValue] = useState('');
     const [inputIsFocus, setInputIsFocus] = useState(false);
+    
+    const { accessToken } = useSelector((state) => state.user);
 
+    const dispatch = useDispatch();
     const inputRef = useRef(null);
+    const navigate = useNavigate();
 
     const handleSearchIconClick = () => {
+        accessToken ? navigate("/search") : dispatch(openModal());
         inputRef.current.focus();
     };
 
@@ -45,7 +53,10 @@ function SearchBox (props) {
                 ref={inputRef}
                 type="text"
                 value={inputValue}
-                onFocus={() => setInputIsFocus(true)}
+                onFocus={() => {
+                    accessToken ? navigate("/search") : dispatch(openModal());
+                    setInputIsFocus(true);
+                }}
                 onBlur={() => setInputIsFocus(false)}
                 onChange={handleChange}
                 onKeyDown={handleKeyDown}
@@ -58,7 +69,11 @@ function SearchBox (props) {
                 </div>
             )}
             
-            <div className={cx("browse-icon", inputValue ? 'hidden' : '')}>
+            <div className={cx("browse-icon", inputValue ? 'hidden' : '')}
+                onClick={() => {
+                    accessToken ? navigate("/search") : dispatch(openModal())
+                }}
+            >
                 {inputIsFocus ? <FillBrowseIcon /> : <BrowseIcon />}
             </div>
         </div>

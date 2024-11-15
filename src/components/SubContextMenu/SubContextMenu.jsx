@@ -17,8 +17,8 @@ const SubContextMenu = (props) => {
     const handleMouseEnter = (item, event) => {
         if (item.subMenu) {
             const subMenuPosition = {
-            top: event.currentTarget.offsetTop,
-            left: event.currentTarget.offsetWidth + 10,
+                top: event.currentTarget.offsetTop,
+                left: event.currentTarget.offsetWidth + 10,
             };
             setSubMenu({ items: item.subMenu, position: subMenuPosition });
         }

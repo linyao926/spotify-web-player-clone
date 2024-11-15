@@ -14,6 +14,7 @@ const redirect_uri = process.env.REDIRECT_URI_LOCAL;
 
 let access_token;
 let refresh_token;
+let expires_in;
 
 const generateRandomString = function (length) {
     var text = '';
@@ -62,7 +63,8 @@ app.get('/auth/callback', (req, res) => {
       if (!error && response.statusCode === 200) {
         access_token = body.access_token;
         refresh_token = body.refresh_token;
-        res.redirect(`http://localhost:5173?access_token=${access_token}`);
+        expires_in = body.expires_in;
+        res.redirect(`http://localhost:5173/?access_token=${access_token}&refresh_token=${refresh_token}&expires_in=${expires_in}`);
       } else {
         console.error("Error in auth/callback:", error);
         res.status(500).send('Authentication failed');
@@ -97,8 +99,10 @@ app.get('/refresh_token', function(req, res) {
   request.post(authOptions, function(error, response, body) {
     if (!error && response.statusCode === 200) {
       access_token = body.access_token;
+      expires_in = body.expires_in;
       res.send({
         'access_token': access_token,
+        'refresh_token': refresh_token
       });
     } else {
       console.error("Error in refresh_token:", error);

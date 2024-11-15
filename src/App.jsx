@@ -1,58 +1,26 @@
-import { useEffect, useState } from 'react';
-import config from './config';
-import MainAppLayout from './layouts/MainAppLayout';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setTokens } from '~/redux/slices/userSlice'; 
+import AppRoutes from '~/routes/AppRoutes';
 import './styles/global.scss';
 
 function App() {
-  const [token, setToken] = useState('');
-  const [logged, setLogged] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const hash = window.location.hash;
-    const queryString = window.location.search;
+    const params = new URLSearchParams(window.location.search);
+    const accessToken = params.get('access_token');
+    const refreshToken = params.get('refresh_token');
+    const expiresIn = params.get('expires_in');
 
-    let accessToken = null;
-
-    if (hash) {
-      const params = new URLSearchParams(hash.substring(1));
-      accessToken = params.get("access_token");
-    } else if (queryString) {
-      const params = new URLSearchParams(queryString);
-      accessToken = params.get("access_token");
-    }
-
-    if (accessToken) {
-      setToken(accessToken);
-      setLogged(true);
-      
-      // Xóa mã token khỏi URL để bảo mật
+    if (accessToken && refreshToken && expiresIn) {
+      dispatch(setTokens({ accessToken, refreshToken, expiresIn }));
       window.history.replaceState({}, document.title, "/");
     }
-  }, []);
-
-  useEffect(() => {
-    if (logged) {
-      async function getToken() {
-        try {
-          const response = await fetch('/auth/token');
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          const json = await response.json();
-          setToken(json.access_token);
-        } catch (error) {
-          console.error("Failed to fetch token:", error);
-        }
-      }
-  
-      getToken();
-    }
-  }, [logged]);
+  }, [dispatch]);
   
   return (
-    <MainAppLayout>
-      
-    </MainAppLayout>
+      <AppRoutes />
   );
 }
 

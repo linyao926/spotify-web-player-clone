@@ -3,10 +3,11 @@
 .btn {
   display: inline-flex;
   align-items: center;
-  color: #000;
   border: none;
+  color: #000;
   font-size: index.$font-size-base;
   font-weight: 700;
+  text-decoration: none;
   cursor: pointer;
   z-index: 1;
   transition: index.$transition;

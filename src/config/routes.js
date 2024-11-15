@@ -7,11 +7,8 @@ const routes = {
     artist: `/artist/:artistId/`,
     profile: `/user/:userId/`,
     download: `/download`,
-    settings: 'preferences',
-    likedTracks: '/collection/tracks',
-    savedPlaylist: '/collection/playlists',
-    likedAlbums: '/collection/albums',
-    followArtists: '/collection/artists',
+    settings: '/settings',
+    collectionTracks: '/collection/tracks',
     login: '/auth/login',
 };
 

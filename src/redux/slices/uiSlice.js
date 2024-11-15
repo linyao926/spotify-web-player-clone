@@ -21,6 +21,12 @@ const uiSlice = createSlice({
         closeModal: (state) => {
             state.modal.isOpen = false;
         },
+        openDialog: (state) => {
+            state.modal.isOpen = true;
+        },
+        closeDialog: (state) => {
+            state.modal.isOpen = false;
+        },
         
     }
 });

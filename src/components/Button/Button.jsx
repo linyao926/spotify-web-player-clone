@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/Button.module.scss';
 
@@ -19,6 +20,8 @@ function Button (props) {
         hoverEffect = ['hover-scale'],
         styles,
         clickFunction,
+        routeLink="",
+        externalLink=""
     } = props;
 
     const buttonClasses = cx(
@@ -32,14 +35,41 @@ function Button (props) {
         iconActive && 'icon-active',
     );
 
-    return (
-        <button className={buttonClasses} style={{ padding, ...styles }}
-            onClick={clickFunction}
-        >
+    const ButtonContent = (
+        <>
             {hasIcon && icon}
             <span>{children}</span>
-        </button>
-    )
+        </>
+    );
+
+    if (routeLink) {
+        return (
+            <Link className={buttonClasses} style={{ padding, ...styles }}
+                  onClick={clickFunction}
+                  to={routeLink}
+            >
+                {ButtonContent}
+            </Link>
+        );
+    } else if (externalLink) {
+        return (
+            <a  href={externalLink} 
+                target="_blank" 
+                className={buttonClasses} 
+                style={{ padding, ...styles }}
+            >
+                {ButtonContent}
+            </a>
+        );
+    } else {
+        return (
+            <button className={buttonClasses} style={{ padding, ...styles }}
+                    onClick={clickFunction}
+            >
+                {ButtonContent}
+            </button>
+        )
+    }
 };
 
 export default Button;

@@ -1,17 +1,19 @@
-// import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { SpotifyLogoIcon, HomeIcon, FillHomeIcon } from '~/assets/icons/icons';
 import Button from '../Button/Button';
 import SearchBox from '../SearchBox/SearchBox';
+import config from '~/config';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/MainAppHeader.module.scss';
 
 const cx = classNames.bind(styles);
 
 function MainAppHeader () {
-    // const location = useLocation();
+    const { accessToken } = useSelector((state) => state.user);
+    const location = useLocation();
+    const isHomePage = location.pathname === '/';
 
-    // const isHomePage = location.pathname === '/';
-    const isHomePage = true;
 
     const handleSearch = (query) => {
         console.log("Searching for:", query);
@@ -31,6 +33,7 @@ function MainAppHeader () {
                     variant="elevated-base"
                     size="size-base"
                     padding="12px"
+                    routeLink="/"
                 />
                 <SearchBox size="large" borderRadius="rounded" onSearch={handleSearch} />
             </div>
@@ -45,6 +48,7 @@ function MainAppHeader () {
                     variant="background-base"
                     size="size-base"
                     borderRadius="rounded"
+                    routeLink={config.routes.login}
                 >Log in</Button>
             </div>
         </header>

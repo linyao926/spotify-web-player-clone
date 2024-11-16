@@ -1,6 +1,8 @@
 @use '../index.scss';
 
 $logo-size: 72px;
+$avatar-wrapper-size: 48px;
+$avatar-size: 32px;
 
 .header {
     height: var(--main-app-header-height);
@@ -19,6 +21,7 @@ $logo-size: 72px;
 
 .header-logo {
     justify-content: center;
+    color: var(--text-base);
     width: $logo-size;
     z-index: 1;
     cursor: pointer;
@@ -30,5 +33,35 @@ $logo-size: 72px;
 
     div {
         margin-left: index.$spacing-base;
+    }
+}
+
+.header-user-actions {
+    @include index.flex-center;
+    gap: index.$spacing-base;
+}
+
+.user-avatar-wrapper {
+    background-color: var(--background-elevated-base);    
+    border-radius: 50%;
+    width: $avatar-wrapper-size;
+    height: $avatar-wrapper-size;
+    padding: index.$spacing-base;
+    @include index.flex-center;
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+}
+
+.user-avatar {
+    width: $avatar-size;
+    height: $avatar-size;
+    border-radius: 50%;
+    transform: scale(1);
+    transition: index.$transition;
+
+    &:hover {
+        transform: scale(1.05);
+        transform-origin: center;
     }
 }

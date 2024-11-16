@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { openSubContext, closeSubContext } from '~/redux/slices/uiSlice';
-import { setPosition } from '~/redux/slices/positionSlice';
+import React, {useEffect} from 'react';
+import { useSelector } from 'react-redux';
+import { useSubContext } from '~/hooks/useSubContext';
 import { FillLibraryIcon, PlusIcon, MusicalNotePlusIcon } from '~/assets/icons/icons';
 import Button from '../Button/Button';
 import SubContextMenu from '../SubContextMenu/SubContextMenu';
@@ -14,27 +13,12 @@ function SidebarHeader (props) {
     const createPlaylistMenu = [{
         name: "Create a new playlist",
         iconLeft: <MusicalNotePlusIcon />,
-        // onClick: toggleLibrary, 
     }];
 
-    const isSubContextOpen = useSelector((state) => state.ui.subContext.isOpen);
+    const isSubContextOpen = useSelector((state) => state.ui.subContext.contexts['create-playlist'].isOpen);
     const position = useSelector((state) => state.position);
-    
-    const dispatch = useDispatch(); 
 
-    const handleOpenSubContext = (event) => {
-        event.stopPropagation();
-        const boundingRect = event.currentTarget.getBoundingClientRect();
-        dispatch(setPosition({ 
-            positionType: 'bottom-right', 
-            boundingRect: {
-                height: boundingRect.height,
-                width: boundingRect.width
-            } 
-        }));
-        dispatch(openSubContext());
-    };
-    const handleCloseSubContext = () => dispatch(closeSubContext());
+    const { handleOpenSubContext, handleCloseSubContext } = useSubContext();
     
     return (
         <header className={cx('sidebar-header')}>
@@ -59,7 +43,11 @@ function SidebarHeader (props) {
                     size="size-small"
                     padding="8px"
                     hoverEffect={["hover-none-scale", "hover-button-highlight"]}
-                    clickFunction={isSubContextOpen ? handleCloseSubContext : (event) => handleOpenSubContext(event)}
+                    clickFunction={ 
+                        isSubContextOpen 
+                        ? (event) => handleCloseSubContext('create-playlist')
+                        : (event) => handleOpenSubContext(event, 'create-playlist')
+                    }
                 />
                 {isSubContextOpen && <SubContextMenu 
                     items={createPlaylistMenu} 

@@ -40,19 +40,28 @@ const SubContextMenu = (props) => {
             className={cx("subcontext-menu", alignRight ? 'align-right' : '')} 
             style={{ top: position.top, left: position.left }}
         >
-            {items.map((item, index) => (
-                <div 
-                    key={index} 
-                    className={cx("subcontext-item", activeItems[index] ? "active" : "")} 
-                    onClick={() => handleItemClick(item, index)}
-                    onMouseEnter={(event) => handleMouseEnter(item, event)} 
-                >
-                    {item.iconLeft && item.iconLeft}
-                    <span className={cx("subcontext-item-text")}>{item.name}</span>
-                    {item.iconRight && item.iconRight}
-                    {item.subMenu && <span className={cx("arrow")}>▶</span>}
-                </div>
-            ))}
+            {items.map((item, index) => {
+                const itemClasses = cx(
+                    "subcontext-item", 
+                    activeItems[index] ? "active" : "", 
+                    item.textUnderline && "text-underline", 
+                    item.borderBottom && 'border-bottom'
+                );
+                
+                return (
+                    <div 
+                        key={index} 
+                        className={itemClasses} 
+                        onClick={() => handleItemClick(item, index)}
+                        onMouseEnter={(event) => handleMouseEnter(item, event)} 
+                    >
+                        {item.iconLeft && <span className={cx('subcontext-icon')}>{item.iconLeft}</span>}
+                        <span className={cx("subcontext-item-text")}>{item.name}</span>
+                        {item.iconRight && <span className={cx('subcontext-icon')}>{item.iconRight}</span>}
+                        {item.subMenu && <span className={cx("arrow")}>▶</span>}
+                    </div>
+                )
+            })}
             {subMenu && (
                 <SubContextMenu 
                     items={subMenu.items} 

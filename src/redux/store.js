@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from './slices/userSlice';
+import authReducer from './slices/authSlice';
 import uiReducer from './slices/uiSlice';
 import positionReducer from './slices/positionSlice';
 // import playlistReducer from './slices/playlistSlice';
@@ -10,6 +11,7 @@ import { checkTokenExpirationMiddleware } from '~/services/auth';
 export const store = configureStore({
   reducer: {
     user: userReducer,
+    auth: authReducer,
     ui: uiReducer,
     position: positionReducer,
     // playlist: playlistReducer,

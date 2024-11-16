@@ -18,7 +18,7 @@ function MainAppLayout () {
 
     const isModalOpen = useSelector((state) => state.ui.modal.isOpen);
     const isDialogOpen = useSelector((state) => state.ui.dialog.isOpen);
-    const { accessToken } = useSelector((state) => state.user);
+    const { accessToken } = useSelector((state) => state.auth);
 
     return (
         <main className={cx('main-app')}

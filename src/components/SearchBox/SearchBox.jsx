@@ -17,7 +17,7 @@ function SearchBox (props) {
     const [inputValue, setInputValue] = useState('');
     const [inputIsFocus, setInputIsFocus] = useState(false);
     
-    const { accessToken } = useSelector((state) => state.user);
+    const { accessToken } = useSelector((state) => state.auth);
 
     const dispatch = useDispatch();
     const inputRef = useRef(null);

@@ -11,7 +11,7 @@ $box-shadow: 0 16px 24px rgba(0, 0, 0, .3), 0 6px 8px rgba(0, 0, 0, .2);
     box-shadow: $box-shadow;
     max-height: calc(100vh - 24px);
     max-width: 350px;
-    min-width: 160px;
+    min-width: 188px;
     width: max-content;
     z-index: 2;
     overflow-y: auto;
@@ -31,15 +31,33 @@ $box-shadow: 0 16px 24px rgba(0, 0, 0, .3), 0 6px 8px rgba(0, 0, 0, .2);
     gap: 12px;
     padding: 12px 8px 12px 12px;
     font-size: index.$font-size-small;
+    height: 44px;
+}
+
+.subcontext-item.border-bottom {
+    border-bottom: 1px solid #3e3e3e;
+}
+
+.subcontext-icon {
+    width: 1rem;
+    height: 1rem;
+
+    svg {
+        width: 1rem;
+        height: 1rem;
+    }
 }
 
 .subcontext-item-text {
     flex-grow: 1;
-
     @include index.ellipsis-one-line;
 }
   
 .subcontext-item:hover {
     background-color: hsla(0, 0%, 100%, .1);
     color: var(--text-base);
+}
+
+.subcontext-item.text-underline:hover {
+    text-decoration: underline;
 }

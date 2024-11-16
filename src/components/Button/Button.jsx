@@ -21,7 +21,8 @@ function Button (props) {
         styles,
         clickFunction,
         routeLink="",
-        externalLink=""
+        externalLink="",
+        disableBlank = false,
     } = props;
 
     const buttonClasses = cx(
@@ -54,7 +55,7 @@ function Button (props) {
     } else if (externalLink) {
         return (
             <a  href={externalLink} 
-                target="_blank" 
+                target={disableBlank ? "_self" : "_blank"}
                 className={buttonClasses} 
                 style={{ padding, ...styles }}
             >

@@ -60,12 +60,16 @@ export const useSubContext = () => {
   const dispatch = useDispatch();
 
   // Hàm mở subcontext
-  const handleOpenSubContext = (event, id) => {
+  const handleOpenSubContext = (event, id, position) => {
     event.stopPropagation();
     const boundingRect = event.currentTarget.getBoundingClientRect();
+    const { clientX, clientY } = event;
+
     dispatch(
       setPosition({
-        positionType: 'bottom-right',
+        positionType: position,
+        clientX, 
+        clientY,
         boundingRect: {
           height: boundingRect.height,
           width: boundingRect.width,
@@ -75,15 +79,7 @@ export const useSubContext = () => {
     dispatch(openSubContext({ id }));
   };
 
-  // Hàm đóng subcontext
-  const handleCloseSubContext = (id) => {
-    if (id && typeof id !== 'string' && typeof id !== 'number') {
-      console.error('Invalid ID provided to handleCloseSubContext');
-      return;
-    }
-    
-    dispatch(closeSpecificSubContext({ id }));
-  };
+  const handleCloseSubContext = (id) => dispatch(closeSpecificSubContext({ id }));
 
   return { handleOpenSubContext, handleCloseSubContext };
 };

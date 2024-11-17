@@ -15,6 +15,11 @@ const uiSlice = createSlice({
     },
     reducers: {
         openSubContext: (state, action) => {
+            if (state.subContext.contexts) {
+                Object.keys(state.subContext.contexts).forEach((key) => {
+                    state.subContext.contexts[key].isOpen = false;
+                });
+            }
             const { id } = action.payload;
             state.subContext.contexts[id] = { isOpen: true };
         },

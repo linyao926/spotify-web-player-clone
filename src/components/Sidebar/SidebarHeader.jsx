@@ -1,60 +1,95 @@
-import React, {useEffect} from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useSubContext } from '~/hooks/useSubContext';
-import { FillLibraryIcon, PlusIcon, MusicalNotePlusIcon } from '~/assets/icons/icons';
+import { 
+    FillLibraryIcon, 
+    ShowMoreIcon, 
+    ShowLessIcon 
+} from '~/assets/icons/icons';
 import Button from '../Button/Button';
-import SubContextMenu from '../SubContextMenu/SubContextMenu';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/Sidebar.module.scss';
 
 const cx = classNames.bind(styles);
 
 function SidebarHeader (props) {
-    const createPlaylistMenu = [{
-        name: "Create a new playlist",
-        iconLeft: <MusicalNotePlusIcon />,
-    }];
+    const {
+        sidebarWidth, 
+        setSidebarWidth, 
+        isCollapsed, 
+        setIsCollapsed, 
+        isShowMore, 
+        setIsShowMore,
+        createPlaylistBtn
+    } = props;
+    
+    const [previousWidth, setPreviousWidth] = useState(280);
+    const screenWidth = window.innerWidth;
+    
+    // Constants
+    const COLLAPSE_WIDTH = 72;
+    const NORMAL_MIN_WIDTH = 280;
+    const NORMAL_MAX_WIDTH = 420;
+    const SHOW_MORE_MIN_WIDTH = 584;
+    const SHOW_MORE_MAX_WIDTH = screenWidth - 416;
+    
+    const { accessToken } = useSelector((state) => state.auth);
 
-    const isSubContextOpen = useSelector((state) => state.ui.subContext.contexts['create-playlist'].isOpen);
-    const position = useSelector((state) => state.position);
+    const toggleCollapse = () => {
+        if (isCollapsed) {
+            setSidebarWidth(previousWidth);
+            setIsCollapsed(false);
+        } else {
+            setPreviousWidth(sidebarWidth); 
+            setSidebarWidth(COLLAPSE_WIDTH);
+            setIsCollapsed(true);
+        }
+    };
+    
+    const toggleShowMore = () => {
+        if (isShowMore) {
+            if (previousWidth > SHOW_MORE_MIN_WIDTH ) {
+                setSidebarWidth(NORMAL_MAX_WIDTH);
+            } else {
+                setSidebarWidth(previousWidth);
+            }
+            setIsShowMore(false);
+        } else {
+            setPreviousWidth(sidebarWidth); 
+            setSidebarWidth(SHOW_MORE_MIN_WIDTH);
+            setIsShowMore(true);
+        }
+    };
 
-    const { handleOpenSubContext, handleCloseSubContext } = useSubContext();
+    const isShowMoreVisible = SHOW_MORE_MAX_WIDTH >= SHOW_MORE_MIN_WIDTH;
     
     return (
-        <header className={cx('sidebar-header')}>
+        <header className={cx('sidebar-header', isCollapsed && 'collapsed')}>
             <Button
                 hasIcon
                 iconPosition="icon-left"
                 icon={<FillLibraryIcon />}
-                borderRadius="rounded"
+                borderRadius={isCollapsed ? "circle" : "rounded"}
                 variant="transparent"
                 size="size-medium"
                 padding="4px 8px"
                 hoverEffect={["hover-none-scale"]}
+                clickFunction={toggleCollapse}
             >
-                Your Library
+                {!isCollapsed && 'Your Library'}
             </Button>
-            <div className={cx('btn-wrapper')}>
-                <Button 
+            {!isCollapsed && <div className={cx('sidebar-header-actions')}>
+                {createPlaylistBtn}
+                {isShowMoreVisible && accessToken && <Button 
                     hasIcon
-                    icon={<PlusIcon />}
+                    icon={isShowMore ? <ShowLessIcon /> : <ShowMoreIcon />}
                     borderRadius="circle"
                     variant="transparent"
                     size="size-small"
                     padding="8px"
                     hoverEffect={["hover-none-scale", "hover-button-highlight"]}
-                    clickFunction={ 
-                        isSubContextOpen 
-                        ? (event) => handleCloseSubContext('create-playlist')
-                        : (event) => handleOpenSubContext(event, 'create-playlist')
-                    }
-                />
-                {isSubContextOpen && <SubContextMenu 
-                    items={createPlaylistMenu} 
-                    position={position} 
-                    alignRight
+                    clickFunction={toggleShowMore}
                 />}
-            </div>
+            </div>}
         </header>
     )
 };

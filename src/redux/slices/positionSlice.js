@@ -21,6 +21,9 @@ const positionSlice = createSlice({
         } else if (positionType === 'bottom-right' && boundingRect) {
             state.top = boundingRect.height + 8;
             state.left = boundingRect.width;
+        } else if (positionType === 'bottom-left' && boundingRect) {
+          state.top = boundingRect.height + 8;
+          state.left = 0; 
         }
       },
     },

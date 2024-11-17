@@ -1,15 +1,31 @@
 @use '../index.scss';
 
 .sidebar {
-    min-width: 280px;
-    max-width: 420px;
     @include index.bodySectionBase;
+
+    &.collapsed {
+        align-items: center;
+    }
 }
 
 .sidebar-header {
     @include index.flex-center($justify: space-between);
     padding: 12px 16px 8px;
     margin-bottom: 12px;
+
+    .sidebar-header-actions {
+        @include index.flex-center;
+        gap: index.$spacing-base;
+    }
+
+    &.collapsed {
+        padding: 16px 8px 4px;
+        margin-bottom: 0;
+
+        span {
+            display: none;
+        }
+    }
 }
 
 .sidebar-content {

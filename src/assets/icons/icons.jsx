@@ -198,6 +198,32 @@ export const MusicalNotePlusIcon = ({ className, width = '16px', height = '16px'
     </svg>
 );
 
+export const ShowMoreIcon = ({ className, width = '16px', height = '16px' }) => (
+    <svg
+        className={className}
+        width={width}
+        height={height}
+        viewBox="0 0 16 16"
+        fill="currentColor"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path d="M7.19 1A.749.749 0 0 1 8.47.47L16 7.99l-7.53 7.521a.75.75 0 0 1-1.234-.815.75.75 0 0 1 .174-.243l5.72-5.714H.75a.75.75 0 1 1 0-1.498h12.38L7.41 1.529a.749.749 0 0 1-.22-.53z"></path>
+    </svg>
+);
+
+export const ShowLessIcon = ({ className, width = '16px', height = '16px' }) => (
+    <svg
+        className={className}
+        width={width}
+        height={height}
+        viewBox="0 0 16 16"
+        fill="currentColor"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path d="M8.81 1A.749.749 0 0 0 7.53.47L0 7.99l7.53 7.521a.75.75 0 0 0 1.234-.815.75.75 0 0 0-.174-.243L2.87 8.74h12.38a.75.75 0 1 0 0-1.498H2.87l5.72-5.713c.14-.14.22-.331.22-.53z"></path>
+    </svg>
+);
+
 export const LanguageIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
     <svg
         className={className}

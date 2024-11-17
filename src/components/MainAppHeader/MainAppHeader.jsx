@@ -87,7 +87,7 @@ function MainAppHeader () {
                 onClick={
                     isSubContextOpen 
                     ? (event) => handleCloseSubContext('profile')
-                    : (event) => handleOpenSubContext(event, 'profile')
+                    : (event) => handleOpenSubContext(event, 'profile', 'bottom-right')
                 }
             >
                 {userData 

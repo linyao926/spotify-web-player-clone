@@ -23,6 +23,7 @@ function Button (props) {
         routeLink="",
         externalLink="",
         disableBlank = false,
+        disableButton = false,
     } = props;
 
     const buttonClasses = cx(
@@ -34,6 +35,7 @@ function Button (props) {
         ...hoverEffect,
         size,
         iconActive && 'icon-active',
+        disableButton && 'disable',
     );
 
     const ButtonContent = (

@@ -108,6 +108,15 @@
   &.with-border:hover {
     border: 1px solid var(--essential-base);
   }
+
+  &.disable {
+    cursor: not-allowed;
+    color: #363636;
+
+    svg {
+      fill: #363636;
+    }
+  }
 }
 
 .size-small {

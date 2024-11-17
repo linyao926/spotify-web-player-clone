@@ -26,9 +26,12 @@
     --decorative-subdued: #292929;
 
     --main-app-header-height: 64px;
-    --main-app-footer-height: 66px;
+    --main-app-footer-height: 72px;
 
     --content-header-font-size: 4.5rem;
+
+    --progress-bar-transform: 0%;
+    --progress-bar-duration: 1000ms;
 }
 
 * {

@@ -6,7 +6,7 @@ import MainAppHeader from '~/components/MainAppHeader/MainAppHeader';
 import Sidebar from '~/components/Sidebar/Sidebar';
 import GuestContent from '~/components/GuestContent/GuestContent';
 import GuestFooter from '~/components/GuestFooter/GuestFooter';
-import PlayerControls from '~/components/PlayerControls/PlayerControls';
+import PlayingBar from '~/components/PlayingBar/PlayingBar';
 import LoginPrompt from '~/components/LoginPrompt/LoginPrompt';
 import classNames from 'classnames/bind';
 import styles from '~/styles/MainAppLayout.module.scss';
@@ -30,7 +30,7 @@ function MainAppLayout () {
                 {accessToken ? <Outlet /> : <GuestContent />}
                 {accessToken && isDialogOpen && <div className={cx('overview')}>listening panel</div>}
             </div>
-            {accessToken ? <PlayerControls/> : <GuestFooter />}
+            {accessToken ? <PlayingBar/> : <GuestFooter />}
             {isModalOpen && <LoginPrompt />}
         </main>
     )

@@ -2,6 +2,7 @@
 
 $background-color-disable: #4d4d4d;
 $progress-bar-height: 4px;
+$slider-thumb-size: 12px;
 
 .playing-bar-wrapper {
     padding: index.$spacing-base;
@@ -62,9 +63,11 @@ $progress-bar-height: 4px;
 .playback-position {
     min-width: 40px;
     text-align: right;
+    cursor: default;
 }
 
-.playback-progressbar {
+.playback-progressbar,
+.volume-bar {
     flex-grow: 1;
     @include index.flex-center;
     position: relative;
@@ -72,54 +75,92 @@ $progress-bar-height: 4px;
     background-color: $background-color-disable; 
     border-radius: 4px; 
     cursor: default;
-
-    .hidden-visually {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        opacity: 0; 
-    }
-
-    input[type="range"] {
-        cursor: default;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-    }
-
-    .progress-bar-background {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        background-color: var(--essential-base); 
-        border-radius: 4px; 
-        width: 0%; 
-        transition: width 0.1s linear; 
-        cursor: default;
-
-        &:hover {
-            background-color: var(--essential-positive); 
-        }
-    }
+    min-width: 93px;
 
     &.active {
         cursor: pointer;
+    }
+
+    &:hover .range-slider-background {
+        background-color: var(--essential-positive); 
+    }
+
+    &:hover .range-slider-thumb {
+        opacity: 1;
     }
 }
 
 .playback-duration {
     min-width: 40px;
     text-align: left;
+    cursor: default;
 }
 
 // Playing actions
 .playing-bar-actions {
     width: 30%;
     height: 100%;
-    background-color: aquamarine;
+    @include index.flex-center($justify: flex-end);
+    padding-right: index.$spacing-base;
+}
+
+.volume {
+    @include index.flex-center;
+}
+
+// Slider bar
+.hidden-visually {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0; 
+}
+
+.range-slider {
+    cursor: default;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.range-slider-thumb,
+.range-slider::-webkit-slider-thumb { 
+    -webkit-appearance: none;
+    appearance: none;
+    width: $slider-thumb-size;
+    height: $slider-thumb-size;
+    border-radius: 50%;
+    background: var(--essential-base);
+    cursor: pointer;
+} 
+
+.range-slider::-moz-range-thumb { 
+    width: $slider-thumb-size;
+    height: $slider-thumb-size;
+    border-radius: 50%;
+    background: var(--essential-base);
+    cursor: pointer;
+}
+
+.range-slider-thumb { 
+    position: absolute; 
+    top: 50%; 
+    transform: translate(-6px ,-50%); 
+    opacity: 0;
+}
+
+.range-slider-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: var(--essential-base); 
+    border-radius: 4px; 
+    width: 0%; 
+    transition: width 0.1s linear; 
+    cursor: default;
 }

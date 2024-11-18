@@ -49,9 +49,18 @@ function PlayerControls() {
             <div className={cx('playback')}>
                 <div className={cx("playback-position")}>-:--</div>
                 <div className={cx("playback-progressbar")}>
-                    <label className={cx("hidden-visually")}>
-                        Change progress
+                    <div 
+                        className={cx("range-slider-background")}
+                        style={{ width: `${progress}%` }}
+                    ></div>
+                    <div 
+                        className={cx("range-slider-thumb")} 
+                        style={{ left: `${progress}%` }} 
+                    ></div>
+                    <label className={cx("hidden-visually")}> 
+                        Change progress 
                         <input 
+                            className={cx('range-slider')}
                             disabled="" 
                             type="range" 
                             min="0" 
@@ -61,9 +70,6 @@ function PlayerControls() {
                             onChange={handleInputChange}
                         />
                     </label>
-                    <div className={cx("progress-bar-background")}
-                        style={{ width: `${progress}%` }}
-                    ></div>
                 </div>
                 <div className={cx("playback-duration")}>-:--</div>
             </div>

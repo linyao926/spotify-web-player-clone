@@ -1,4 +1,4 @@
-@use 'index';
+@use '../index.scss';
 
 .main-app {
     background-color: var(--background-press);
@@ -15,6 +15,7 @@
     gap: index.$spacing-base;
     width: 100%;
     flex-grow: 1;
+    overflow: hidden;
     padding: 0 index.$spacing-base;
     position: relative;
 

@@ -1,20 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { fetchData } from '~/api/api';
 
 export const fetchUserData = createAsyncThunk(
   'user/fetchUserData',
   async (accessToken, { rejectWithValue }) => {
     try {
-      const response = await fetch('https://api.spotify.com/v1/me', {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      
-      if (!response.ok) {
-        throw new Error('Failed to fetch user data');
-      }
-      
-      const data = await response.json();
+      const data = await fetchData('me', accessToken);
       return data;
     } catch (error) {
       return rejectWithValue(error.message);

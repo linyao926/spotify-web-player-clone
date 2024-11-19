@@ -1,0 +1,85 @@
+@use '../index.scss';
+
+.content-footer {
+    @include index.flex-center(column, flex-end, flex-start);
+    padding: index.$spacing-base index.$spacing-large 40px;
+    margin-top: 32px;
+    width: 100%;
+}
+
+.content-footer-top,
+.content-footer-company-links,
+.social-media-buttons,
+.content-footer-bottom,
+.content-footer-legal-links {
+    @include index.flex-center(row, space-between, flex-start);
+}
+
+.content-footer-top {
+    width: 100%;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.content-footer-company-links {
+    justify-content: flex-start;
+    flex: 1 1 50%;
+    flex-wrap: wrap;
+}
+
+.group-links {
+    @include index.flex-center(column, center, flex-start);
+    margin: 0 24px 32px 0;
+    width: 20%;
+
+    h3 {
+        color: var(--text-base);
+        font-size: index.$font-size-base;
+        margin-bottom: index.$spacing-base;
+        line-height: 1.5;
+    }
+
+    a {
+        color: var(--text-subdued);
+        text-decoration: none;
+        margin-bottom: index.$spacing-base;
+        line-height: 1.5;
+        transition: all 0.2s;
+
+        &:hover {
+            color: var(--text-base);
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    }
+}
+
+.social-media-buttons {
+    margin-bottom: 40px;
+    gap: index.$spacing-medium;
+}
+
+.content-footer-bottom {
+    width: 100%;
+    padding-top: 40px;
+    margin-bottom: index.$spacing-base;
+    line-height: 1.5;
+    font-size: index.$font-size-small;
+    color: var(--text-subdued);
+
+    a {
+        color: var(--text-subdued);
+        text-decoration: none;
+        transition: all 0.2s;
+
+        &:hover {
+            color: var(--text-base);
+            cursor: pointer;
+        }
+    }
+}
+
+.content-footer-legal-links {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: index.$spacing-medium;
+}

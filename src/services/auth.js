@@ -1,4 +1,4 @@
-// import { store } from 'react-redux';
+import store from '~/redux/store';
 import { updateTokenFetchTime } from '~/redux/slices/authSlice';
 import axios from 'axios';
 

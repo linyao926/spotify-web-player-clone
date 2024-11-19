@@ -10,6 +10,7 @@ $avatar-size: 32px;
     background-color: var(--background-press);
     padding: index.$spacing-base;
     position: relative;
+    flex-shrink: 0;
 }
 
 .header,

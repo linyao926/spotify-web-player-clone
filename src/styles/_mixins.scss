@@ -15,7 +15,7 @@
     flex-direction: column;
     position: relative;
 }
-
+    
 @mixin ellipsis-one-line{
     overflow: hidden;
     text-overflow: ellipsis;
@@ -62,3 +62,28 @@
 @mixin border($width: 1px, $style: solid, $color: var(--essential-subdued)) {
     border: $width $style $color;
 }
+
+
+// Grid layout 
+@mixin row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -(variables.$gutter-width / 2);
+    margin-left: -(variables.$gutter-width / 2);
+}
+
+@mixin col($columns) {
+    flex: 0 0 percentage($columns / variables.$grid-columns);
+    max-width: percentage($columns / variables.$grid-columns);
+    padding-right: variables.$gutter-width / 2;
+    padding-left: variables.$gutter-width / 2;
+}
+
+@mixin grid-container($item-height: 48px, $min-col-width: 270px) {
+    display: grid;
+    grid-gap: variables.$spacing-base;
+    grid-auto-rows: $item-height;
+    grid-template: auto / repeat(auto-fill, minmax(max($min-col-width, 25%), 1fr));
+    grid-template-rows: $item-height;
+}
+  

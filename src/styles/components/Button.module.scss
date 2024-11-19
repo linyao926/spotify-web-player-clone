@@ -55,9 +55,16 @@
     color: var(--text-subdued);
   }
 
+  &.non-active {
+    background-color: var(--background-tinted-base);
+    color: var(--text-base);
+  }
+
   /* Type */
   &.circle {
     border-radius: 50%;
+    justify-content: center;
+    aspect-ratio: 1;
   }
 
   &.rounded {
@@ -119,7 +126,8 @@
   }
 }
 
-.size-small {
+.size-small,
+.small-icon {
   svg {
     width: 16px;
     height: 16px;

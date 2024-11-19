@@ -27,7 +27,35 @@ const generateRandomString = function (length) {
 };
 
 app.get('/auth/login', (req, res) => {
-    const scope = 'streaming user-read-email user-read-private';
+  const scope = [
+    // Images
+    'ugc-image-upload',
+    
+    // Spotify Connect
+    'user-read-playback-state',
+    'user-modify-playback-state',
+    'user-read-currently-playing',
+    
+    // Playback
+    'app-remote-control',
+    'streaming',
+    
+    // Playlists
+    'playlist-read-private',
+    'playlist-read-collaborative',
+    
+    // Follow
+    'user-follow-read',
+    
+    // Listening History
+    'user-read-playback-position',
+    'user-top-read',
+    'user-read-recently-played',
+    
+    // Users
+    'user-read-email',
+    'user-read-private',
+  ].join(' ');
   
     const state = generateRandomString(16);
   

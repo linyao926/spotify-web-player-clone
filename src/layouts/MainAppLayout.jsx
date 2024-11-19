@@ -4,12 +4,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { closeSubContext } from '~/redux/slices/uiSlice';
 import MainAppHeader from '~/components/MainAppHeader/MainAppHeader';
 import Sidebar from '~/components/Sidebar/Sidebar';
-import GuestContent from '~/components/GuestContent/GuestContent';
-import GuestFooter from '~/components/GuestFooter/GuestFooter';
+import GuestContent from '~/components/Guest/GuestContent/GuestContent';
+import GuestFooter from '~/components/Guest/GuestFooter/GuestFooter';
 import PlayingBar from '~/components/PlayingBar/PlayingBar';
 import LoginPrompt from '~/components/LoginPrompt/LoginPrompt';
 import classNames from 'classnames/bind';
-import styles from '~/styles/MainAppLayout.module.scss';
+import styles from '~/styles/layouts/MainAppLayout.module.scss';
 
 const cx = classNames.bind(styles);
 

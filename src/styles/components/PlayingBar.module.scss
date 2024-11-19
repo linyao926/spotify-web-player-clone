@@ -7,6 +7,7 @@ $slider-thumb-size: 12px;
 .playing-bar-wrapper {
     padding: index.$spacing-base;
     width: 100%;
+    flex-shrink: 0;
 }
 
 .playing-bar {
@@ -17,8 +18,8 @@ $slider-thumb-size: 12px;
 // Playing info
 .now-playing-info {
     width: 30%;
-    background-color: aqua;
     height: 100%;
+    @include index.flex-center($justify: flex-start);
 }
 
 // Player controls

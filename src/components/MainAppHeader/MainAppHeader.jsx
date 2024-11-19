@@ -12,7 +12,7 @@ import {
 } from '~/assets/icons/icons';
 import Button from '../Button/Button';
 import SearchBox from '../SearchBox/SearchBox';
-import { profileSubContext } from '~/components/SubContextMenu/subContextItems';
+import { profileSubContext } from '~/constants/subContextItems';
 import SubContextMenu from '~/components/SubContextMenu/SubContextMenu';
 import config from '~/config';
 import classNames from 'classnames/bind';

@@ -24,6 +24,7 @@ function Button (props) {
         externalLink="",
         disableBlank = false,
         disableButton = false,
+        iconSize,
     } = props;
 
     const buttonClasses = cx(
@@ -36,6 +37,7 @@ function Button (props) {
         size,
         iconActive && 'icon-active',
         disableButton && 'disable',
+        iconSize,
     );
 
     const ButtonContent = (

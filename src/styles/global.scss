@@ -32,6 +32,12 @@
 
     --progress-bar-transform: 0%;
     --progress-bar-duration: 1000ms;
+
+    --mask-image: url(https://open.spotifycdn.com/cdn/images/mask.01073394.png);
+    --mask-image-rtl: url(https://open.spotifycdn.com/cdn/images/mask-rtl.1e659743.png);
+    --mask-image-expanded: url(https://open.spotifycdn.com/cdn/images/expanded-mask.b89e4858.png);
+    --mask-image-expanded-rtl: url(https://open.spotifycdn.com/cdn/images/expanded-mask-rtl.87cee49e.png);
+    --title-line-clamp: 2;
 }
 
 * {

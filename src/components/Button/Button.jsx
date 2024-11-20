@@ -15,6 +15,7 @@ function Button (props) {
         size,
         variant,
         withBorder = false,
+        withBoxshadow = false,
         borderRadius = '',
         padding = '8px 32px',
         hoverEffect = ['hover-scale'],
@@ -38,6 +39,7 @@ function Button (props) {
         iconActive && 'icon-active',
         disableButton && 'disable',
         iconSize,
+        withBoxshadow && 'with-box-shadow',
     );
 
     const ButtonContent = (

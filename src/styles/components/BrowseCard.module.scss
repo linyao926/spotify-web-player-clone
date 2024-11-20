@@ -1,0 +1,46 @@
+$img-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2);
+$img-transform: rotate(25deg) translate(18%, -2%);
+
+.browse-card {
+    background: rgb(80, 55, 80);
+    border-radius: 8px;
+    height: 162px;
+    overflow: hidden;
+    // padding-bottom: 56.25%;
+    display: block;
+    position: relative;
+    width: 288px;
+    cursor: pointer;
+}
+
+.browse-card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--text-base);
+    text-decoration: none;
+    text-wrap: balance;
+    -ms-hyphens: auto;
+    hyphens: auto;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    padding: 16px;
+    position: absolute;
+    -webkit-padding-end: 30%;
+    padding-inline-end: 30%;
+}
+
+.browse-card-img {
+    display: block;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    -webkit-transform: $img-transform;
+    transform: $img-transform;
+    border-radius: 4px;
+    -webkit-box-shadow: $img-box-shadow;
+    box-shadow: $img-box-shadow;
+    width: 45%;
+    object-fit: cover;
+    object-position: center center;
+}
+

@@ -19,6 +19,13 @@ $line-height-base: 1.5;
 $size-small: 32px;
 $size-base: 48px;
 
-$transition: all .1s ease-in;
+$transition: all .2s ease-in;
+$opacity-transition: opacity .3s;
 
 $border-radius-base: 10px;
+$border-radius-img-base: 6px;
+
+$box-shadow-img-base: 0 8px 24px rgba(0, 0, 0, .5);
+$box-shadow-btn-base: 0 8px 8px rgba(0, 0, 0, .3);
+
+$not-last-child-after-content: "•";

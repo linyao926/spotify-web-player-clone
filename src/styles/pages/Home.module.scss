@@ -7,31 +7,39 @@ $border-radius-value: 4px;
 .home-page {
     flex-grow: 1;
     @include index.bodySectionBase;
-    // overflow: hidden;
     overflow-y: auto;
     padding-bottom: index.$spacing-large;
-    // position: relative;
 }
 
 .home-page-header-buttons {
-    // position: sticky;
-    // top: 0;
+    position: sticky;
+    top: 0;
     z-index: 1;
     width: 100%;
     height: 64px;
     padding-inline: 40px;
     @include index.flex-center($justify: flex-start);
     gap: index.$spacing-base;
+    flex-shrink: 0;
 }
 
 .home-page-content {
     padding: $padding-content;
+
+    section {
+        margin-top: 24px;
+        width: 100%;
+    }
+
+    h3 {
+        margin-bottom: 16px;
+    }
 }
 
 .content-top-items {
     width: 100%;
     @include index.grid-container($item-height: $top-item-height, $min-col-width: 270px);
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   
     .item-wrapper {
         width: 100%;
@@ -46,7 +54,7 @@ $border-radius-value: 4px;
         }
 
         &:hover .item-btn-wrapper {
-            visibility: visible;
+            opacity: 1;
         }
     }
 
@@ -70,6 +78,7 @@ $border-radius-value: 4px;
     }
 
     .item-btn-wrapper {
-        visibility: hidden;
+        opacity: 0;
+        transition: index.$opacity-transition;
     }
 }

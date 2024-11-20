@@ -14,6 +14,10 @@
   transform: scale(1);
   position: relative;
 
+  &.with-box-shadow {
+    box-shadow: index.$box-shadow-btn-base;
+  }
+
   /* Size */
   &.size-small {
     height: index.$button-height-small;
@@ -131,6 +135,20 @@
   svg {
     width: 16px;
     height: 16px;
+  }
+}
+
+.medium-icon {
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.large-icon {
+  svg {
+    width: 32px;
+    height: 32px;
   }
 }
 

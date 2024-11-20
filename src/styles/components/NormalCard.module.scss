@@ -1,0 +1,65 @@
+@use '../index.scss';
+
+$card-width: 184px;
+
+.normal-card {
+    width: $card-width;
+    height: auto;
+    border-radius: index.$border-radius-base;
+    padding: 12px;
+    @include index.flex-center(column, $align: flex-start);
+    gap: index.$spacing-base;
+
+    &:hover {
+        background-color: var(--background-highlight);
+    }
+
+    &:hover .play-btn-wrapper{
+        opacity: 1;
+    }
+}
+
+.normal-card-top {
+    position: relative;
+}
+
+.normal-card-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    border-radius: index.$border-radius-img-base;
+    box-shadow: index.$box-shadow-img-base;
+
+    &.circle {
+        border-radius: 50%;
+    }
+}
+
+.play-btn-wrapper {
+    position: absolute;
+    bottom: index.$spacing-base;
+    right: index.$spacing-base;
+    opacity: 0;
+    transition: index.$opacity-transition;
+}
+
+.normal-card-bottom {
+    @include index.flex-center(column, $align: flex-start);
+
+    a {
+        text-decoration: none;
+        font-size: index.$font-size-small;
+        color: var(--text-subdued);
+        line-height: 1.5;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    .normal-card-title {
+        font-size: index.$font-size-base;
+        color: var(--text-base);
+    }
+}

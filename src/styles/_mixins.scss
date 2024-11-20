@@ -22,6 +22,14 @@
     white-space: nowrap;
 }
 
+@mixin ellipsis-multiline($max-lines: 2){
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: $max-lines;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+}
+
 @mixin full-screen-overlay {
     position: fixed;
     top: 0;
@@ -65,20 +73,6 @@
 
 
 // Grid layout 
-@mixin row {
-    display: flex;
-    flex-wrap: wrap;
-    margin-right: -(variables.$gutter-width / 2);
-    margin-left: -(variables.$gutter-width / 2);
-}
-
-@mixin col($columns) {
-    flex: 0 0 percentage($columns / variables.$grid-columns);
-    max-width: percentage($columns / variables.$grid-columns);
-    padding-right: variables.$gutter-width / 2;
-    padding-left: variables.$gutter-width / 2;
-}
-
 @mixin grid-container($item-height: 48px, $min-col-width: 270px) {
     display: grid;
     grid-gap: variables.$spacing-base;
@@ -86,4 +80,38 @@
     grid-template: auto / repeat(auto-fill, minmax(max($min-col-width, 25%), 1fr));
     grid-template-rows: $item-height;
 }
+
+@mixin dynamic-grid($template: default) {
+    @if $template == default {
+      grid-template-columns: 
+        [index] var(--tracklist-index-column-width, 16px) 
+        [first] minmax(120px, var(--col1, 6fr)) 
+        [var1] minmax(120px, var(--col2, 4fr)) 
+        [var2] minmax(120px, var(--col3, 3fr)) 
+        [last] minmax(120px, var(--col4, 1fr));
+    } @else if $template == four-cols {
+      grid-template-columns: 
+        [index] var(--tracklist-index-column-width, 16px)
+        [first] minmax(120px, var(--col1, 4fr)) 
+        [var1] minmax(120px, var(--col2, 2fr))
+        [last] minmax(120px, var(--col3, 1fr)) 
+    } @else if $template == three-cols {
+      grid-template-columns: 
+        [index] var(--tracklist-index-column-width, 16px) 
+        [first] minmax(120px, var(--col1, 4fr)) 
+        [var1] minmax(120px, var(--col2, 2fr)) 
+        [last] minmax(120px, var(--col3, 1fr));
+    } @else if $template == two-cols {
+      grid-template-columns: 
+        [first] minmax(120px, var(--col0, 4fr)) 
+        [var1] minmax(120px, var(--col1, 2fr)) 
+        [last] minmax(120px, var(--col2, 1fr));
+    } @else if $template == single-col {
+      grid-template-columns: 
+        [first] minmax(120px, var(--col0, 4fr)) 
+        [last] minmax(120px, var(--col1, 1fr));
+    } @else {
+      @warn "Template type not recognized. Please provide a valid option.";
+    }
+  }
   

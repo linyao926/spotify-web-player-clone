@@ -1,0 +1,174 @@
+@use '../index.scss';
+
+$track-item-height: 56px;
+$track-item-img-height: 40px;
+
+.track-item-card {
+    display: grid;
+    gap: index.$spacing-medium;
+    height: $track-item-height;
+    padding: 0 index.$spacing-medium;
+    text-decoration: none;
+    color: var(--text-subdued);
+    font-size: index.$font-size-small;
+    line-height: index.$line-height-base;
+    border-radius: 4px;
+
+    // Hover
+    &:hover {
+        background-color: var(--background-tinted-base);
+    }
+
+    &:hover .show-play-icon {
+        span {
+            opacity: 0;
+        }
+
+        .track-item-card-img {
+            background-color: #282828;
+        }
+
+        .play-icon-wrapper {
+            opacity: 1;
+            border-radius: 4px;
+            color: var(--text-base);
+        }
+    }
+
+    &:hover .btn-wrapper{
+        opacity: 1;
+    }
+
+    &:hover .track-item-album,
+    &:hover .track-item-index,
+    &:hover .track-item-card-info-text {
+        color: var(--text-base);
+    }
+
+    // Template grid
+    &.two-cols {
+        @include index.dynamic-grid(two-cols)
+    }
+
+    &.three-cols {
+        @include index.dynamic-grid(three-cols);
+    }
+
+    &.three-cols-non-index {
+        @include index.dynamic-grid(three-cols-non-index);
+    }
+
+    &.four-cols {
+        @include index.dynamic-grid(four-cols);
+    }
+
+    &.default {
+        @include index.dynamic-grid;
+    }
+}
+
+.track-item-index {
+    @include index.flex-center;
+    position: relative;
+}
+
+// Info
+.track-item-card-info {
+    @include index.flex-center($justify: flex-start);
+    gap: 12px;
+    height: 100%;
+}
+
+.track-item-card-img-wrapper {
+    position: relative;
+}
+
+.track-item-card-img {
+    display: block;
+    height: $track-item-img-height;
+    width: auto;
+    aspect-ratio: 1;
+    border-radius: 4px;
+    flex-shrink: 0;
+    object-fit: cover;
+    object-position: center center;
+}
+
+.play-icon-wrapper {
+    @include index.absolute-center;
+    @include index.flex-center;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    transition: index.$opacity-transition;
+
+    svg {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+.show-play-icon {
+    margin: -8px;
+}
+
+.track-item-card-img-wrapper .play-icon-wrapper {
+    background: rgba(0, 0, 0, .5);
+}
+
+.track-item-card-info-text {
+    @include index.flex-center(column, $align: flex-start);
+
+    span:hover {
+        text-decoration: underline;
+    }
+}
+
+.track-item-card-title {
+    color: var(--text-base);
+    font-size: index.$font-size-base;
+}
+
+.track-item-card-title,
+.track-item-author {
+    width: 100%;
+    min-width: 0;
+    @include index.ellipsis-one-line;
+}
+
+.track-item-album {
+    width: 100%;
+    min-width: 0;
+    @include index.ellipsis-one-line;
+    height: 100%; 
+    line-height: $track-item-height; 
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.track-item-added-date {
+    @include index.flex-center($justify: flex-start);
+}
+
+// Actions
+.track-item-card-actions {
+    height: 100%;
+    @include index.flex-center($justify: flex-end);
+    padding-right: 8px;
+
+    span:not(:last-child) {
+        margin-right: 12px;
+    }
+}
+
+.btn-wrapper {
+    transition: index.$opacity-transition;
+    opacity: 0;
+}
+
+.track-item-duration {
+    flex-grow: 1;
+    text-align: end;
+}

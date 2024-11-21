@@ -5,11 +5,6 @@ import { fetchEpisodes } from '~/redux/slices/episodesSlice';
 import { PlayIcon } from '~/assets/icons';
 import ContentFooter from '~/components/ContentFooter/ContentFooter';
 import Button from '~/components/Button/Button';
-import NormalCard from '~/components/Card/NormalCard/NormalCard';
-import BrowseCard from '~/components/Card/BrowseCard/BrowseCard';
-import PodcastCard from '~/components/Card/PodcastCard/PodcastCard';
-import TopResultSearchCard from '~/components/Card/TopResultSearchCard/TopResultSearchCard';
-import TrackItemCard from '~/components/Card/TrackItemCard/TrackItemCard';
 import classNames from 'classnames/bind';
 import styles from '~/styles/pages/Home.module.scss';
 
@@ -83,33 +78,6 @@ function Home() {
             {getTopItem('https://i.scdn.co/image/ab67616d0000b273837c410cf75e723672455329', 'Liked Songs')}
             {getTopItem('https://i.scdn.co/image/ab67616d0000b273837c410cf75e723672455329', 'Liked Songs')}
             {getTopItem('https://i.scdn.co/image/ab67616d0000b273837c410cf75e723672455329', 'Liked Songs')}
-          </section>
-
-          <section>
-            <h3>Normal Card</h3>
-            <NormalCard />
-          </section>
-
-          <section>
-            <h3>Browse Card</h3>
-            <BrowseCard />
-          </section>
-
-          <section>
-            <h3>Podcast Card</h3>
-            <PodcastCard />
-          </section>
-
-          <section>
-            <h3>Top Result Card</h3>
-            <TopResultSearchCard />
-          </section>
-
-          <section>
-            <h3>Track Item Card</h3>
-            <h4>Two cols</h4>
-            <TopResultSearchCard />
-            
           </section>
         </div>
         <ContentFooter />

@@ -304,6 +304,19 @@ export const AddToLibraryIcon = ({ className, width = '1.6rem', height = '1.6rem
     </svg>
 );
 
+export const AddToLibrarySmallIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+    <svg
+        className={className}
+        width={width}
+        height={height}
+        viewBox="0 0 16 16"
+        fill="currentcolor"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"></path><path d="M11.75 8a.75.75 0 0 1-.75.75H8.75V11a.75.75 0 0 1-1.5 0V8.75H5a.75.75 0 0 1 0-1.5h2.25V5a.75.75 0 0 1 1.5 0v2.25H11a.75.75 0 0 1 .75.75z"></path>
+    </svg>
+);
+
 export const OptionIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
     <svg
         className={className}
@@ -314,6 +327,19 @@ export const OptionIcon = ({ className, width = '1.6rem', height = '1.6rem' }) =
         xmlns="http://www.w3.org/2000/svg"
     >
         <path d="M4.5 13.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm15 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-7.5 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"></path>
+    </svg>
+);
+
+export const OptionSmallIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+    <svg
+        className={className}
+        width={width}
+        height={height}
+        viewBox="0 0 16 16"
+        fill="currentcolor"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path d="M3 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm6.5 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM16 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"></path>
     </svg>
 );
 
@@ -367,6 +393,19 @@ export const PlayIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => 
         xmlns="http://www.w3.org/2000/svg"
     >
         <path d="M3 1.713a.7.7 0 0 1 1.05-.607l10.89 6.288a.7.7 0 0 1 0 1.212L4.05 14.894A.7.7 0 0 1 3 14.288V1.713z"></path>
+    </svg>
+);
+
+export const PlayLargeIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+    <svg
+        className={className}
+        width={width}
+        height={height}
+        viewBox="0 0 24 24"
+        fill="currentcolor"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path d="m7.05 3.606 13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"></path>
     </svg>
 );
 

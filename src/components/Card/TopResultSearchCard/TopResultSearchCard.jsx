@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { PlayIcon } from '~/assets/icons';
+import { PlayLargeIcon } from '~/assets/icons';
 import Button from '~/components/Button/Button';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/TopResultSearchCard.module.scss';
@@ -41,7 +41,7 @@ const TopResultSearchCard = (props) => {
             <span className={cx("play-btn-wrapper")}>
                 <Button 
                     hasIcon 
-                    icon={<PlayIcon />} 
+                    icon={<PlayLargeIcon />} 
                     borderRadius="circle" 
                     variant="primary" 
                     size="size-base" 

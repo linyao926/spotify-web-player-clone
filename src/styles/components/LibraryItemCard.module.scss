@@ -1,0 +1,112 @@
+@use '../index.scss';
+
+$library-item-height: 64px;
+$library-item-img-height: 48px;
+
+// grid-area: 1 / listRow / 1 / lastPlayedAt;
+
+// grid-template-areas: "listRow addedAt lastPlayedAt";
+//     grid-template-columns: 1fr var(--columnSize) var(--columnSize);
+.library-item-card {
+    display: grid;
+    height: $library-item-height;
+    gap: 24px;
+    grid-template-areas: "listRow addedAt lastPlayedAt";
+    grid-template-columns: 1fr var(--columnSize, 20%) var(--columnSize, 20%);
+    text-decoration: none;
+    color: var(--text-subdued);
+    font-size: index.$font-size-small;
+    line-height: index.$line-height-base;
+    border-radius: 4px;
+    padding: 0 index.$spacing-base;
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--background-tinted-base);
+    }
+
+    &:hover .library-item-img-wrapper {
+        span {
+            opacity: 0;
+        }
+
+        .track-item-card-img {
+            background-color: #282828;
+        }
+
+        .play-icon-wrapper {
+            opacity: 1;
+            border-radius: 4px;
+            color: var(--text-base);
+        }
+    }
+}
+
+.library-item-card-info {
+    @include index.flex-center($justify: flex-start);
+    gap: 12px;
+    grid-area: 1 / listRow / 1 / lastPlayedAt;
+}
+
+.library-item-img-wrapper {
+    position: relative;
+}
+
+.library-item-img {
+    display: block;
+    height: $library-item-img-height;
+    width: auto;
+    aspect-ratio: 1;
+    border-radius: 4px;
+    flex-shrink: 0;
+    object-fit: cover;
+    object-position: center center;
+}
+
+.play-icon-wrapper {
+    @include index.absolute-center;
+    @include index.flex-center;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    transition: index.$opacity-transition;
+    background: rgba(0, 0, 0, .5);
+}
+
+.library-item-info-text {
+    @include index.flex-center(column, $align: flex-start);
+}
+
+.library-item-title {
+    color: var(--text-base);
+    font-size: index.$font-size-base;
+}
+
+.library-item-title,
+.library-item-author {
+    width: 100%;
+    min-width: 0;
+    @include index.ellipsis-one-line;
+}
+
+.library-item-sub-title {
+    text-transform: capitalize;
+
+    span:not(:last-child):after {
+        content: index.$not-last-child-after-content;
+        margin: 0 4px;
+    }
+}
+
+.library-item-added-date,
+.library-item-played {
+    @include index.flex-center($justify: flex-start);
+}
+
+.library-item-added-date {
+    grid-area: addedAt;
+}
+
+.library-item-played {
+    grid-area: lastPlayedAt;
+}

@@ -2,6 +2,7 @@
 
 .sidebar {
     @include index.bodySectionBase;
+    flex-shrink: 0;
 
     &.collapsed {
         align-items: center;

@@ -83,35 +83,43 @@
 
 @mixin dynamic-grid($template: default) {
     @if $template == default {
-      grid-template-columns: 
-        [index] var(--tracklist-index-column-width, 16px) 
-        [first] minmax(120px, var(--col1, 6fr)) 
-        [var1] minmax(120px, var(--col2, 4fr)) 
-        [var2] minmax(120px, var(--col3, 3fr)) 
-        [last] minmax(120px, var(--col4, 1fr));
+        grid-template-columns: 
+            [index] var(--tracklist-index-column-width, 16px) 
+            [first] minmax(120px, var(--col1, 6fr)) 
+            [var1] minmax(120px, var(--col2, 4fr)) 
+            [var2] minmax(120px, var(--col3, 3fr)) 
+            [last] minmax(120px, var(--col4, 1fr));
     } @else if $template == four-cols {
-      grid-template-columns: 
-        [index] var(--tracklist-index-column-width, 16px)
-        [first] minmax(120px, var(--col1, 4fr)) 
-        [var1] minmax(120px, var(--col2, 2fr))
-        [last] minmax(120px, var(--col3, 1fr)) 
+        grid-template-columns: 
+            [index] var(--tracklist-index-column-width, 16px)
+            [first] minmax(120px, var(--col1, 4fr)) 
+            [var1] minmax(120px, var(--col2, 2fr))
+            [last] minmax(120px, var(--col3, 1fr)) 
     } @else if $template == three-cols {
-      grid-template-columns: 
-        [index] var(--tracklist-index-column-width, 16px) 
-        [first] minmax(120px, var(--col1, 4fr)) 
-        [var1] minmax(120px, var(--col2, 2fr)) 
-        [last] minmax(120px, var(--col3, 1fr));
+        grid-template-columns: 
+            [index] var(--tracklist-index-column-width, 16px) 
+            [first] minmax(120px, var(--col1, 4fr)) 
+            [last] minmax(120px, var(--col2, 1fr));
+    } @else if $template == three-cols-non-index {
+        grid-template-columns: 
+            [first] minmax(120px, var(--col0, 4fr)) 
+            [var1] minmax(120px, var(--col1, 2fr)) 
+            [last] minmax(120px, var(--col2, 1fr));
     } @else if $template == two-cols {
-      grid-template-columns: 
-        [first] minmax(120px, var(--col0, 4fr)) 
-        [var1] minmax(120px, var(--col1, 2fr)) 
-        [last] minmax(120px, var(--col2, 1fr));
-    } @else if $template == single-col {
-      grid-template-columns: 
-        [first] minmax(120px, var(--col0, 4fr)) 
-        [last] minmax(120px, var(--col1, 1fr));
+        grid-template-columns: 
+            [first] minmax(120px, var(--col0, 4fr)) 
+            [last] minmax(120px, var(--col1, 1fr));
     } @else {
       @warn "Template type not recognized. Please provide a valid option.";
     }
-  }
+}
+
+// @else if $template == three-cols {
+//     grid-template-columns: 
+//       [index] var(--tracklist-index-column-width, 16px) 
+//       [first] minmax(120px, var(--col1, 4fr)) 
+//       [var1] minmax(120px, var(--col2, 2fr)) 
+//       [last] minmax(120px, var(--col3, 1fr));
+//   }
+
   

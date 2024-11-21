@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserTopItems } from '~/redux/slices/userTopItemsSlice';
 import { fetchEpisodes } from '~/redux/slices/episodesSlice';
 import { PlayIcon } from '~/assets/icons';
+import MediaSection from '~/components/MediaSection/MediaSection';
 import ContentFooter from '~/components/ContentFooter/ContentFooter';
 import Button from '~/components/Button/Button';
 import classNames from 'classnames/bind';
@@ -79,6 +80,8 @@ function Home() {
             {getTopItem('https://i.scdn.co/image/ab67616d0000b273837c410cf75e723672455329', 'Liked Songs')}
             {getTopItem('https://i.scdn.co/image/ab67616d0000b273837c410cf75e723672455329', 'Liked Songs')}
           </section>
+
+          <MediaSection />
         </div>
         <ContentFooter />
       </div>

@@ -343,6 +343,32 @@ export const OptionSmallIcon = ({ className, width = '1.6rem', height = '1.6rem'
     </svg>
 );
 
+export const PrevIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+    <svg
+        className={className}
+        width={width}
+        height={height}
+        viewBox="0 0 16 16"
+        fill="currentcolor"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path d="M11.03.47a.75.75 0 0 1 0 1.06L4.56 8l6.47 6.47a.75.75 0 1 1-1.06 1.06L2.44 8 9.97.47a.75.75 0 0 1 1.06 0z"></path>
+    </svg>
+);
+
+export const NextIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+    <svg
+        className={className}
+        width={width}
+        height={height}
+        viewBox="0 0 16 16"
+        fill="currentcolor"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path d="M4.97.47a.75.75 0 0 0 0 1.06L11.44 8l-6.47 6.47a.75.75 0 1 0 1.06 1.06L13.56 8 6.03.47a.75.75 0 0 0-1.06 0z"></path>
+    </svg>
+);
+
 // Player controls
 export const ShuffleIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
     <svg
@@ -357,7 +383,7 @@ export const ShuffleIcon = ({ className, width = '1.6rem', height = '1.6rem' }) 
     </svg>
 );
 
-export const PreviousIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const PreviousTrackIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
     <svg
         className={className}
         width={width}
@@ -409,7 +435,7 @@ export const PlayLargeIcon = ({ className, width = '1.6rem', height = '1.6rem' }
     </svg>
 );
 
-export const NextIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const NextTrackIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
     <svg
         className={className}
         width={width}

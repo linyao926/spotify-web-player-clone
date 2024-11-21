@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import {  
   ShuffleIcon,
-  PreviousIcon,
+  PreviousTrackIcon,
   PauseIcon,
-  NextIcon,
+  NextTrackIcon,
   RepeatIcon,
 } from '~/assets/icons/icons';
 import Button from '../Button/Button';
@@ -39,11 +39,11 @@ function PlayerControls() {
         <div className={cx('player-controls')}>
             <div className={cx('general-controls')}>
                 {createIconButton(<ShuffleIcon />)}
-                {createIconButton(<PreviousIcon />)}
+                {createIconButton(<PreviousTrackIcon />)}
                 <span className={cx('playpause-wrapper')}>
                     {createIconButton(<PauseIcon />)}
                 </span>
-                {createIconButton(<NextIcon />)}
+                {createIconButton(<NextTrackIcon />)}
                 {createIconButton(<RepeatIcon />)}
             </div>
             <div className={cx('playback')}>

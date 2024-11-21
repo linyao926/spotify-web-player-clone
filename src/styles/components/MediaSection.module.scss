@@ -1,0 +1,55 @@
+@use '../index.scss';
+
+.media-section {
+    position: relative;
+}
+
+.media-section-header {
+    font-size: index.$font-size-small;
+    @include index.flex-center($justify: space-between, $align: flex-end);
+    height: 48px;
+    padding-bottom: index.$spacing-base;
+}
+
+.media-section-header-title,
+.media-section-header-sub-title {
+    text-decoration: none;
+    color: var(--text-base);
+    font-weight: bold;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.media-section-header-title {
+    font-size: 1.5rem;
+}
+
+.swiper-wrap {
+    width: 100vw;
+    overflow: visible;
+}
+
+.swiper-container {
+    overflow: visible;
+}
+
+.swiper-button-prev, 
+.swiper-button-next {
+    position: absolute;
+    // transform: translate(0, -50%);
+    z-index: 2;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.swiper-button-prev {
+    left: -24px;
+}
+
+.swiper-button-next {
+    right: -24px;
+}

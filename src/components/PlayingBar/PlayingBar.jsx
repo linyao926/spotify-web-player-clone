@@ -1,7 +1,7 @@
 import React from 'react';
 import {  
   ShuffleIcon,
-  PreviousIcon,
+  PreviousTrackIcon,
 } from '~/assets/icons/icons';
 import PlayingInfo from './PlayingInfo';
 import PlayerControls from './PlayerControls';

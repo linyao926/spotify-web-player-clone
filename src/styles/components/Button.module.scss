@@ -64,10 +64,16 @@
     color: var(--text-base);
   }
 
+  &.dark-background { 
+    background-color: #1f1f1f; 
+    color: var(--text-base); 
+  }
+
   /* Type */
   &.circle {
     border-radius: 50%;
     justify-content: center;
+    width: auto;
     aspect-ratio: 1;
   }
 

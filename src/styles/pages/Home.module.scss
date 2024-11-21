@@ -7,6 +7,8 @@ $border-radius-value: 4px;
 .home-page {
     flex-grow: 1;
     @include index.bodySectionBase;
+    overflow: visible;
+    overflow-x: hidden;
     overflow-y: auto;
     padding-bottom: index.$spacing-large;
 }
@@ -14,7 +16,7 @@ $border-radius-value: 4px;
 .home-page-header-buttons {
     position: sticky;
     top: 0;
-    z-index: 1;
+    z-index: 3;
     width: 100%;
     height: 64px;
     padding-inline: 40px;
@@ -28,7 +30,6 @@ $border-radius-value: 4px;
 
     section {
         margin-top: 24px;
-        width: 100%;
     }
 
     h3 {

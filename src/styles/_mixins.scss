@@ -15,6 +15,13 @@
     flex-direction: column;
     position: relative;
 }
+
+@mixin imgBase($background: var(--background-base)) {
+    display: block;
+    aspect-ratio: 1;
+    background: $background;
+    border-radius: variables.$border-radius-img-base;
+}
     
 @mixin ellipsis-one-line{
     overflow: hidden;

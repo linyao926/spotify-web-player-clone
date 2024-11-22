@@ -1,15 +1,15 @@
 @use '../index';
 
-$padding-content: 0 40px;
+$padding-content: 4px var(--padding-content) 0;
 $top-item-height: 48px;
 $border-radius-value: 4px;
 
 .home-page {
-    flex-grow: 1;
+    width: 100%;
+    min-width: index.$body-section-content-min-width;
+    height: inherit;
     @include index.bodySectionBase;
     overflow: visible;
-    overflow-x: hidden;
-    overflow-y: auto;
     padding-bottom: index.$spacing-large;
 }
 
@@ -19,7 +19,7 @@ $border-radius-value: 4px;
     z-index: 3;
     width: 100%;
     height: 64px;
-    padding-inline: 40px;
+    padding-inline: var(--padding-content);
     @include index.flex-center($justify: flex-start);
     gap: index.$spacing-base;
     flex-shrink: 0;
@@ -27,10 +27,8 @@ $border-radius-value: 4px;
 
 .home-page-content {
     padding: $padding-content;
-
-    section {
-        margin-top: 24px;
-    }
+    @include index.flex-center(column, $align: flex-start);
+    gap: 2rem;
 
     h3 {
         margin-bottom: 16px;
@@ -40,7 +38,7 @@ $border-radius-value: 4px;
 .content-top-items {
     width: 100%;
     @include index.grid-container($item-height: $top-item-height, $min-col-width: 270px);
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   
     .item-wrapper {
         width: 100%;
@@ -60,6 +58,7 @@ $border-radius-value: 4px;
     }
 
     .item-img {
+        display: block;
         width: auto;
         height: 100%;
         aspect-ratio: 1;
@@ -76,6 +75,7 @@ $border-radius-value: 4px;
     .item-name {
         font-size: index.$font-size-small;
         font-weight: bold;
+        @include index.ellipsis-one-line;
     }
 
     .item-btn-wrapper {

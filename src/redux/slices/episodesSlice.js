@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchData } from '~/api/api';
+import { fetchData } from '~/services/api';
 
 export const fetchEpisodes = createAsyncThunk('episodes/fetchEpisodes', 
     async ({accessToken, id}, { rejectWithValue }) => {

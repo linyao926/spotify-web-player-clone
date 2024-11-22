@@ -290,7 +290,7 @@ function Track() {
                             padding: '36px 12px 0',
                         }}
                     >
-                        Popular Tracks by
+                        PopularPlaylist Tracks by
                         <span
                             style={{
                                 padding: `8px 0 26px`,
@@ -489,7 +489,7 @@ function Track() {
                         className={cx('top-tracks-header')}
                         style={{ padding: `24px clamp(16px,16px + (${containerWidth} - 600)/424 * 8px, 24px) 0` }}
                     >
-                        Popular Tracks by
+                        PopularPlaylist Tracks by
                     </div>
 
                     <Segment

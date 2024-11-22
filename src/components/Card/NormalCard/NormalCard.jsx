@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { PlayLargeIcon } from '~/assets/icons';
 import Button from '~/components/Button/Button';
 import classNames from 'classnames/bind';
@@ -10,18 +10,29 @@ const cx = classNames.bind(styles);
 const NormalCard = (props) => {
     const {
         imgCircle = false,
+        imgUrl = '',
+        title,
+        subtitle,
+        routeLink = '/search',
     } = props;
 
+    const navigate = useNavigate();
+
     return (
-        <div className={cx('normal-card')}>
+        <div className={cx('normal-card')}
+            onClick={() => navigate(routeLink)}
+        >
             <div className={cx('normal-card-top')}>
-                <img 
-                    draggable="false" 
-                    loading="lazy" 
-                    src="https://i.scdn.co/image/ab67616d00001e0227c1a17d71ecaf008c1357e7" 
-                    alt="" 
-                    className={cx('normal-card-img', imgCircle && 'circle')} 
-                />
+                {imgUrl 
+                    ? <img 
+                        draggable="false" 
+                        loading="lazy" 
+                        src={imgUrl} 
+                        alt="" 
+                        className={cx('normal-card-img', imgCircle && 'circle')} 
+                    />
+                    : <span className={cx('normal-card-img', imgCircle && 'circle', 'img-fallback')}></span>
+                }
                 <div className={cx('play-btn-wrapper')}>
                     <Button 
                         hasIcon 
@@ -37,11 +48,11 @@ const NormalCard = (props) => {
             <div className={cx('normal-card-bottom')}>
                 <Link className={cx('normal-card-title')}
                     to="/"
-                >虞兮叹</Link>
+                >{title}</Link>
                 <Link 
                     draggable="false" dir="auto" 
                     to="/artist/1qpe09vYC83Kbgro8hv4HN"
-                >闻人听書_</Link>
+                >{subtitle}</Link>
             </div>
         </div>
     );

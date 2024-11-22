@@ -27,7 +27,10 @@ function MainAppLayout () {
             <MainAppHeader />
             <div className={cx('body-section')}>
                 <Sidebar />
-                {accessToken ? <Outlet /> : <GuestContent />}
+                {accessToken 
+                    ? <Outlet /> 
+                    : <GuestContent />
+                }
                 {accessToken && isDialogOpen && <div className={cx('overview')}>listening panel</div>}
             </div>
             {accessToken ? <PlayingBar/> : <GuestFooter />}

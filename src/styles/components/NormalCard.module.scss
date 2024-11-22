@@ -6,9 +6,11 @@ $card-width: 184px;
     width: 100%;
     height: auto;
     border-radius: index.$border-radius-base;
-    padding: 12px;
+    padding: var(--padding-normal-card);
     @include index.flex-center(column, $align: flex-start);
     gap: index.$spacing-base;
+    min-width: 172px;
+    max-width: 320px;
 
     &:hover {
         background-color: var(--background-highlight);
@@ -21,8 +23,7 @@ $card-width: 184px;
 
 .normal-card-top {
     position: relative;
-    width: fit-content;
-    height: fit-content;
+    width: 100%;
 }
 
 .normal-card-img {
@@ -32,6 +33,7 @@ $card-width: 184px;
     aspect-ratio: 1;
     border-radius: index.$border-radius-img-base;
     box-shadow: index.$box-shadow-img-base;
+    background-color: inherit;
 
     &.circle {
         border-radius: 50%;

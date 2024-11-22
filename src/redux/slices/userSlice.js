@@ -1,12 +1,24 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchData } from '~/api/api';
+import { fetchData } from '~/services/api';
 
 export const fetchUserData = createAsyncThunk(
   'user/fetchUserData',
-  async (accessToken, { rejectWithValue }) => {
+  async ({accessToken, endpoint = ''}, { rejectWithValue }) => {
     try {
-      const data = await fetchData('me', accessToken);
-      return data;
+      const userInfo = await fetchData('/me', accessToken);
+      
+      // const userPlaylists = await fetchData('/me/playlists', accessToken);
+      
+      // const savedTracks = await fetchData('/me/tracks', accessToken);
+      
+      // const savedAlbums = await fetchData('/me/albums', accessToken);
+
+      return {
+        userInfo,
+        // userPlaylists,
+        // savedTracks,
+        // savedAlbums,
+      };
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -14,7 +26,10 @@ export const fetchUserData = createAsyncThunk(
 );
 
 const initialState = {
-  userData: null,
+  userInfo: null,
+  userPlaylists: [],
+  savedTracks: [],
+  savedAlbums: [],
   status: 'idle', // idle | loading | succeeded | failed
   error: null,
 };
@@ -22,9 +37,7 @@ const initialState = {
 const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {
-    
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchUserData.pending, (state) => {
@@ -32,7 +45,7 @@ const userSlice = createSlice({
       })
       .addCase(fetchUserData.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.userData = action.payload;
+        state.userInfo = action.payload;
       })
       .addCase(fetchUserData.rejected, (state, action) => {
         state.status = 'failed';
@@ -41,4 +54,8 @@ const userSlice = createSlice({
   },
 });
 
+export const selectUserInfo = (state) => state.user.userInfo;
+// export const selectUserPlaylists = (state) => state.user.userPlaylists;
+// export const selectSavedTracks = (state) => state.user.savedTracks;
+// export const selectSavedAlbums = (state) => state.user.savedAlbums;
 export default userSlice.reducer;

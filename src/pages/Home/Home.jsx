@@ -1,7 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux'; 
-import { fetchUserTopItems } from '~/redux/slices/userTopItemsSlice';
-import { fetchEpisodes } from '~/redux/slices/episodesSlice';
+import { 
+  fetchHomeData, 
+  selectRecentlyPlayed, 
+  selectRecommendedToday, 
+  selectPopularPlaylist, 
+  selectNewReleases,
+  selectTopArtists,
+  selectTopTracks,
+} from '~/redux/slices/homeDataSlice';
+import ScrollWrapper from '~/components/ScrollWrapper/ScrollWrapper';
 import { PlayIcon } from '~/assets/icons';
 import MediaSection from '~/components/MediaSection/MediaSection';
 import ContentFooter from '~/components/ContentFooter/ContentFooter';
@@ -14,19 +22,24 @@ const cx = classNames.bind(styles);
 function Home() {
     const dispatch = useDispatch(); 
     const { accessToken } = useSelector((state) => state.auth);
-    const topItems = useSelector((state) => state.userTopItems.items); 
-    const topItemsStatus = useSelector((state) => state.userTopItems.status); 
-    const topItemsError = useSelector((state) => state.userTopItems.error);
+    const recentlyPlayed = useSelector(selectRecentlyPlayed);
+    const recommendedToday = useSelector(selectRecommendedToday);
+    const popularplaylist = useSelector(selectPopularPlaylist);
+    const newReleases = useSelector(selectNewReleases);
+    const topArtists = useSelector(selectTopArtists);
+    const topTracks = useSelector(selectTopTracks);
+    const loading = useSelector((state) => state.home.loading);
+    const error = useSelector((state) => state.home.error);
 
-    const episode = useSelector((state) => state.episodes.episode); 
+    const contentRef = useRef(null);
 
-    // useEffect(() => { 
-    //   dispatch(fetchUserTopItems({accessToken, type: 'artists'})); 
-    // }, [accessToken, dispatch]); 
+    useEffect(() => {
+      if (accessToken) {
+        dispatch(fetchHomeData(accessToken));
+      }
+    }, [accessToken, dispatch]);
 
-    // useEffect(() => { 
-    //   dispatch(fetchEpisodes({accessToken, id: '1VhbJb7HoPfpdq6MzrkoPp'})); 
-    // }, [accessToken, dispatch]); 
+    // console.log(topTracks)
 
     const getHeaderButton = (text, active = true) => {
         return (
@@ -67,24 +80,53 @@ function Home() {
     };
     
     return (
-      <div className={cx('home-page')}>
-        <header className={cx("home-page-header-buttons")}>
-            {getHeaderButton('All')}
-            {getHeaderButton('Music', false)}
-            {getHeaderButton('Podcasts', false)}
-        </header>
-        <div className={cx('home-page-content')}>
-          <section className={cx("content-top-items")}>
-            {getTopItem('https://i.scdn.co/image/ab67616d0000b273837c410cf75e723672455329', 'Liked Songs')}
-            {getTopItem('https://i.scdn.co/image/ab67616d0000b273837c410cf75e723672455329', 'Liked Songs')}
-            {getTopItem('https://i.scdn.co/image/ab67616d0000b273837c410cf75e723672455329', 'Liked Songs')}
-            {getTopItem('https://i.scdn.co/image/ab67616d0000b273837c410cf75e723672455329', 'Liked Songs')}
-          </section>
+        <>
+          <ScrollWrapper target={contentRef} />
+          <div className={cx('home-page')} ref={contentRef}>
+            <header className={cx("home-page-header-buttons")}>
+                {getHeaderButton('All')}
+                {getHeaderButton('Music', false)}
+                {getHeaderButton('Podcasts', false)}
+            </header>
+            <div className={cx('home-page-content')}>
+              <section className={cx("content-top-items")}>
+                {getTopItem(topArtists[0]?.images[0]?.url, topArtists[0]?.name)}
+                {getTopItem(topArtists[1]?.images[0]?.url, topArtists[1]?.name)}
+                {getTopItem(topTracks[0]?.album?.images[0]?.url, topTracks[0]?.name)}
+                {getTopItem(topTracks[1]?.album?.images[0]?.url, topTracks[1]?.name)}
+              </section>
 
-          <MediaSection />
-        </div>
-        <ContentFooter />
-      </div>
+              {recentlyPlayed.length > 0 && <MediaSection 
+                  data={recentlyPlayed}
+                  type="track"
+                  title='Recently played'
+                  routeLink = '/genre/recently-played'
+              />}
+
+              {recommendedToday.length > 0 && <MediaSection 
+                  data={recommendedToday}
+                  type="album"
+                  title='Recommended for today'
+                  routeLink = '/section/recommended-today'
+              />}
+
+              {popularplaylist.length > 0 && <MediaSection 
+                  data={popularplaylist}
+                  type="playlist"
+                  title='PopularPlaylist'
+                  routeLink = '/section/popularplaylist'
+              />}
+
+              {newReleases.length > 0 && <MediaSection 
+                  data={newReleases}
+                  type="album"
+                  title='New Releases'
+                  routeLink = '/section/new-releases'
+              />}
+            </div>
+            <ContentFooter />
+          </div>
+        </>
     );
 }
   

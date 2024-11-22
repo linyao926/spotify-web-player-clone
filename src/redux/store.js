@@ -1,9 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
+
+import homeReducer from './slices/homeDataSlice';
+
 import userReducer from './slices/userSlice';
 import authReducer from './slices/authSlice';
 import uiReducer from './slices/uiSlice';
 import positionReducer from './slices/positionSlice';
-import userTopItemsReducer from './slices/userTopItemsSlice';
+import trackSliceReducer from './slices/trackSlice';
 import episodesReducer from './slices/episodesSlice';
 // import playlistReducer from './slices/playlistSlice';
 // import trackReducer from './slices/trackSlice';
@@ -12,11 +15,12 @@ import { checkTokenExpirationMiddleware } from '~/services/auth';
 
 export const store = configureStore({
   reducer: {
+    home: homeReducer,
     user: userReducer,
     auth: authReducer,
     ui: uiReducer,
     position: positionReducer,
-    userTopItems: userTopItemsReducer,
+    track: trackSliceReducer,
     episodes: episodesReducer,
     // playlist: playlistReducer,
     // track: trackReducer,

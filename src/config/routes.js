@@ -7,6 +7,7 @@ const routes = {
     artist: `/artist/:artistId/`,
     ownProfile: `/user/:userId/`,
     userProfile: `/user/:userId/`,
+    genre: `/genre/:genreId`,
     download: `/download`,
     settings: '/settings',
     collectionTracks: '/collection/tracks',

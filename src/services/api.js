@@ -1,8 +1,10 @@
-const BASE_URL = 'https://api.spotify.com/v1/';
+const BASE_URL = 'https://api.spotify.com/v1';
 
-export const fetchData = async (endpoint, accessToken) => {
+export const fetchData = async (endpoint, accessToken, limit = 10) => {
     try {
-      const response = await fetch(`${BASE_URL}${endpoint}`, {
+      const endpointWithLimit = `${endpoint}${endpoint.includes('?') ? '&' : '?'}limit=${limit}`;
+      
+      const response = await fetch(`${BASE_URL}${endpointWithLimit}`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

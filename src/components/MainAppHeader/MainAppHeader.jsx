@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserData } from '~/redux/slices/userSlice';
+import { selectUserInfo, fetchUserData } from '~/redux/slices/userSlice';
 import { useSubContext } from '~/hooks/useSubContext';
 import { 
     SpotifyLogoIcon, 
@@ -22,24 +22,22 @@ const cx = classNames.bind(styles);
 
 function MainAppHeader () {
     const dispatch = useDispatch();
-
-    const { handleOpenSubContext, handleCloseSubContext } = useSubContext();
-
-    const userData = useSelector((state) => state.user.userData);
-    const userStatus = useSelector((state) => state.user.status);
     const { accessToken } = useSelector((state) => state.auth);
+    const userData = useSelector(selectUserInfo);
+    const userStatus = useSelector((state) => state.user.status);
+
     const isSubContextOpen = useSelector((state) => state.ui.subContext.contexts['profile'].isOpen);
     const position = useSelector((state) => state.position);
+    const { handleOpenSubContext, handleCloseSubContext } = useSubContext();
 
     const location = useLocation();
     const isHomePage = location.pathname === '/';
 
     useEffect(() => {
         if (accessToken && userStatus === 'idle') {
-          dispatch(fetchUserData(accessToken));
+          dispatch(fetchUserData({accessToken}));
         }
     }, [accessToken, userStatus, dispatch]);
-
 
     const guestActions = (
         <>
@@ -86,13 +84,13 @@ function MainAppHeader () {
             <div className={cx("user-avatar-wrapper")}
                 onClick={
                     isSubContextOpen 
-                    ? (event) => handleCloseSubContext('profile')
+                    ? () => handleCloseSubContext('profile')
                     : (event) => handleOpenSubContext(event, 'profile', 'bottom-right')
                 }
             >
-                {userData 
+                {userData
                 ?   <img 
-                        src={userData.images[0]?.url} 
+                        src={userData.userInfo.images[0]?.url} 
                         alt="User Avatar" 
                         className={cx('user-avatar')}
                     /> 

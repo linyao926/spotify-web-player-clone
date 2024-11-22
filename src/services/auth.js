@@ -37,7 +37,7 @@ export const getRefreshToken = async () => {
     }
 }
 
-export const checkTokenExpirationMiddleware = (store) => (next) => (action) => {
+export const checkTokenExpirationMiddleware = (store) => (next) => async (action) => {
   const state = store.getState();
   const tokenExpiresIn = state.auth.tokenExpiresIn;
   const tokenFetchTime = state.auth.tokenFetchTime;
@@ -45,8 +45,12 @@ export const checkTokenExpirationMiddleware = (store) => (next) => (action) => {
 
   if (tokenFetchTime > 0 && tokenExpiresIn > 0) {
     if (currentTime > (tokenFetchTime + tokenExpiresIn * 1000)) {
-        getRefreshToken();
+      try {
+        await getRefreshToken(); 
         store.dispatch(updateTokenFetchTime(Date.now()));
+      } catch (error) {
+        console.error('Error refreshing token:', error);
+      }
     }
   }
 

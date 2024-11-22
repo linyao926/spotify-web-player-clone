@@ -1,12 +1,9 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useLayoutEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Swiper,  SwiperSlide } from 'swiper/react';
+import CustomSwiper from './CustomSwiper';
 import NormalCard from '~/components/Card/NormalCard/NormalCard';
 import { PlayLargeIcon, PrevIcon, NextIcon } from '~/assets/icons';
 import Button from '~/components/Button/Button';
-// Import Swiper styles
-import 'swiper/scss';
-
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/MediaSection.module.scss';
 
@@ -19,13 +16,49 @@ const MediaSection = (props) => {
         showAll = true,
     } = props;
 
-    const swiperRef = useRef();
+    const slidesData = Array(10).fill(<NormalCard />);
 
     const [isFirstSwiperSlide, setIsFirstSwiperSlide] = useState(true);
     const [isLastSwiperSlide, setIsLastSwiperSlide] = useState(false);
     const [slidesPerView, setSlidesPerView] = useState(5);
+    const [slidesOffsetBefore, setSlidesOffsetBefore] = useState(40);
+    const [swiperHeight, setSwiperHeight] = useState(null);
+    const [swiperBtnTop, setSwiperBtnTop] = useState(null);
+    const [slideWidth, setSlideWidth] = useState(200);
 
-    const transitionStyle = {transition: 'all 0.3s'};
+    useEffect(() => {
+        if (!isFirstSwiperSlide) {
+            setSlidesOffsetBefore(0);
+        } else {
+            setSlidesOffsetBefore(40);
+        }
+    }, [isFirstSwiperSlide]);
+    
+    useEffect(() => {
+        if (swiperHeight) {
+            setSwiperBtnTop(swiperHeight / 2 + 32);
+        }
+    }, [swiperHeight]);
+
+    const swiperRef = useRef(null);
+
+    const handleNextClick = () => {
+        if (swiperRef.current) {
+            swiperRef.current.slideNext(); 
+        }
+    };
+
+    const handlePrevClick = () => {
+        if (swiperRef.current) {
+            swiperRef.current.slidePrev(); 
+        }
+    };
+
+    const swiperBtnStyle = (first = false, last = false) => ({
+        transition: 'all 0.3s',
+        top: swiperBtnTop && `${swiperBtnTop}px`,
+        opacity: (first || last) ? '0' : '1',
+    });
     
     return (
         <section className={cx('media-section')}>
@@ -39,74 +72,22 @@ const MediaSection = (props) => {
             </header>
             <div className={cx('swiper-wrap')}
                 style={{
-                    marginLeft: !isFirstSwiperSlide ? `-${swiperRef.current?.slidesSizesGrid[0] -40}px` : '-40px',
-                    ...transitionStyle,
+                    marginLeft: !isFirstSwiperSlide ? `-${slideWidth -40}px` : '-40px',
                 }}
             >
-                <Swiper
-                    onSwiper={(swiper) => {
-                        swiperRef.current = swiper;
-                    }}
-                    onSlideChange={() => {
-                        // console.log(swiperRef.current)
-                        if (swiperRef.current.activeIndex > 0) {
-                            setIsFirstSwiperSlide(false);
-                        } else {
-                            setIsFirstSwiperSlide(true);
-                        }
-
-                        if (swiperRef.current.activeIndex === swiperRef.current.slides.length - slidesPerView) {
-                            setIsLastSwiperSlide(true);
-                        } else {
-                            setIsLastSwiperSlide(false);
-                        }
-                    }}
-                    spaceBetween={0}
+                <CustomSwiper 
+                    slidesData={slidesData}
                     slidesPerView={slidesPerView}
-                    slidesOffsetBefore={40}
-                    // slidesOffsetAfter={swiperRef.current?.slidesSizesGrid[0] + 40}
-                >
-                    <SwiperSlide>
-                        <NormalCard />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <NormalCard />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <NormalCard />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <NormalCard />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <NormalCard />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <NormalCard />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <NormalCard />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <NormalCard />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <NormalCard />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <NormalCard />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <NormalCard />
-                    </SwiperSlide>
-                </Swiper>
+                    slidesOffsetBefore={slidesOffsetBefore}
+                    setIsFirstSwiperSlide={setIsFirstSwiperSlide}
+                    setIsLastSwiperSlide={setIsLastSwiperSlide}
+                    setSwiperHeight={setSwiperHeight}
+                    setSlideWidth={setSlideWidth}
+                    swiperRefFromParent={swiperRef}
+                />
                 <span className={cx('swiper-button-prev')}
-                    onClick={() => swiperRef.current.slidePrev()}
-                    style={{
-                        top: `${swiperRef.current?.wrapperEl.clientHeight / 2 + 32}px`,
-                        opacity: isFirstSwiperSlide ? '0' : '1',
-                        ...transitionStyle,
-                    }}
+                    onClick={handlePrevClick}
+                    style={swiperBtnStyle(isFirstSwiperSlide, false)}
                 >
                     <Button 
                         hasIcon
@@ -118,12 +99,8 @@ const MediaSection = (props) => {
                     />
                 </span>
                 <span className={cx('swiper-button-next')}
-                    onClick={() => swiperRef.current.slideNext()}
-                    style={{
-                        top: swiperRef.current && `${swiperRef.current?.wrapperEl.clientHeight / 2 + 32}px`,
-                        opacity: isLastSwiperSlide ? '0' : '1',
-                        ...transitionStyle,
-                    }}
+                    onClick={handleNextClick}
+                    style={swiperBtnStyle(false, isLastSwiperSlide)}
                 >
                     <Button 
                         hasIcon

@@ -35,10 +35,13 @@
     overflow: visible;
 }
 
+.swiper-btn-wrapper {
+    opacity: 0;
+}
+
 .swiper-button-prev, 
 .swiper-button-next {
     position: absolute;
-    // transform: translate(0, -50%);
     z-index: 2;
     cursor: pointer;
     display: flex;

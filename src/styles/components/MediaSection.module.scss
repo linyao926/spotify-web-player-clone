@@ -6,10 +6,7 @@
 }
 
 .media-section-header {
-    font-size: index.$font-size-small;
-    @include index.flex-center($justify: space-between, $align: flex-end);
-    height: 48px;
-    padding-bottom: index.$spacing-base;
+    @include index.sectionHeaderBase;
 }
 
 .media-section-header-title,

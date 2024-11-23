@@ -16,11 +16,26 @@
     position: relative;
 }
 
+@mixin pageContentBase {
+    @include bodySectionBase;
+    width: 100%;
+    min-width: variables.$body-section-content-min-width;
+    overflow: visible;
+    padding-bottom: variables.$spacing-large;
+}
+
 @mixin imgBase($background: var(--background-base)) {
     display: block;
     aspect-ratio: 1;
     background: $background;
     border-radius: variables.$border-radius-img-base;
+}
+
+@mixin sectionHeaderBase($background: var(--background-base)) {
+    font-size: variables.$font-size-small;
+    @include flex-center($justify: space-between, $align: flex-end);
+    height: 48px;
+    padding-bottom: variables.$spacing-base;
 }
     
 @mixin ellipsis-one-line{

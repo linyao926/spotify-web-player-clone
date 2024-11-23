@@ -9,7 +9,9 @@ $img-transform: rotate(25deg) translate(18%, -2%);
     // padding-bottom: 56.25%;
     display: block;
     position: relative;
-    width: 288px;
+    min-width: 230px;
+    max-width: 356px;
+    flex-grow: 1;
     cursor: pointer;
 }
 

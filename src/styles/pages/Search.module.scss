@@ -1,0 +1,22 @@
+@use '../index.scss';
+
+.search-page-content {
+    @include index.pageContentBase;
+}
+
+.browse-page {
+    padding: 32px 24px 0;
+
+    h3 {
+        @include index.sectionHeaderBase;
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 16px;
+    }
+}
+
+.browse-content {
+    @include index.flex-center;
+    gap: 24px;
+    flex-wrap: wrap;
+}

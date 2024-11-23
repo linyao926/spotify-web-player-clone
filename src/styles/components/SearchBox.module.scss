@@ -98,4 +98,8 @@ input {
     height: 25px; 
     background-color: var(--essential-subdued);
   }
+
+  &.active {
+    color: var(--essential-base);
+  }
 }

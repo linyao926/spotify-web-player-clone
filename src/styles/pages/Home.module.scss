@@ -5,12 +5,7 @@ $top-item-height: 48px;
 $border-radius-value: 4px;
 
 .home-page {
-    width: 100%;
-    min-width: index.$body-section-content-min-width;
-    height: inherit;
-    @include index.bodySectionBase;
-    overflow: visible;
-    padding-bottom: index.$spacing-large;
+    @include index.pageContentBase;
 }
 
 .home-page-header-buttons {

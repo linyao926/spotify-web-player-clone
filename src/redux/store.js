@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 import homeReducer from './slices/homeDataSlice';
+import browseReducer from './slices/browseDataSlice';
 
 import userReducer from './slices/userSlice';
 import authReducer from './slices/authSlice';
@@ -16,6 +17,7 @@ import { checkTokenExpirationMiddleware } from '~/services/auth';
 export const store = configureStore({
   reducer: {
     home: homeReducer,
+    browse: browseReducer,
     user: userReducer,
     auth: authReducer,
     ui: uiReducer,

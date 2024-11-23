@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { openModal } from '~/redux/slices/uiSlice';
 import { SearchIcon, BrowseIcon, FillBrowseIcon, DismissIcon } from '~/assets/icons/icons';
@@ -18,6 +18,9 @@ function SearchBox (props) {
     const [inputIsFocus, setInputIsFocus] = useState(false);
     
     const { accessToken } = useSelector((state) => state.auth);
+
+    const location = useLocation();
+    const isSearchPage = location.pathname === '/search';
 
     const dispatch = useDispatch();
     const inputRef = useRef(null);
@@ -69,12 +72,12 @@ function SearchBox (props) {
                 </div>
             )}
             
-            <div className={cx("browse-icon", inputValue ? 'hidden' : '')}
+            <div className={cx("browse-icon", inputValue ? 'hidden' : '', isSearchPage && 'active')}
                 onClick={() => {
                     accessToken ? navigate("/search") : dispatch(openModal())
                 }}
             >
-                {inputIsFocus ? <FillBrowseIcon /> : <BrowseIcon />}
+                {isSearchPage ? <FillBrowseIcon /> : <BrowseIcon />}
             </div>
         </div>
     )

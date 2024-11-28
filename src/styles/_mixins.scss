@@ -29,6 +29,7 @@
     aspect-ratio: 1;
     background: $background;
     border-radius: variables.$border-radius-img-base;
+    flex-shrink: 0;
 }
 
 @mixin sectionHeaderBase($background: var(--background-base)) {

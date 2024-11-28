@@ -1,5 +1,5 @@
 import React from 'react';
-import { ExternalIcon } from "~/assets/icons/icons";
+import { ExternalIcon, CompactIcon, ListIcon, ItemActiveIcon } from "~/assets/icons/icons";
 import config from "~/config";
 
 export const profileSubContext = [
@@ -23,4 +23,21 @@ export const profileSubContext = [
       name: "Log out",
     //   onClick: () => {}
     },
+];
+
+export const trackListViewAsSubContext = [
+  {
+    name: "View as",
+    disableItem: true,
+  },
+  {
+    name: "Compact",
+    iconLeft: <CompactIcon />,
+    value: 'compact'
+  },
+  {
+    name: "List",
+    iconLeft: <ListIcon />,
+    value: 'list'
+  }
 ];

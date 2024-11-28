@@ -26,6 +26,7 @@ function Button (props) {
         disableBlank = false,
         disableButton = false,
         iconSize,
+        color,
     } = props;
 
     const buttonClasses = cx(
@@ -40,6 +41,7 @@ function Button (props) {
         disableButton && 'disable',
         iconSize,
         withBoxshadow && 'with-box-shadow',
+        color,
     );
 
     const ButtonContent = (

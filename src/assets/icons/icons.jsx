@@ -291,6 +291,32 @@ export const FacebookIcon = ({ className, width = '1.6rem', height = '1.6rem' })
     </svg>
 );
 
+export const PlaylistFallbackIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+    <svg
+        className={className}
+        width={width}
+        height={height}
+        viewBox="0 0 24 24"
+        fill="currentcolor"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path d="M6 3h15v15.167a3.5 3.5 0 1 1-3.5-3.5H19V5H8v13.167a3.5 3.5 0 1 1-3.5-3.5H6V3zm0 13.667H4.5a1.5 1.5 0 1 0 1.5 1.5v-1.5zm13 0h-1.5a1.5 1.5 0 1 0 1.5 1.5v-1.5z"></path>
+    </svg>
+);
+
+export const EditIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+    <svg
+        className={className}
+        width={width}
+        height={height}
+        viewBox="0 0 24 24"
+        fill="currentcolor"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path d="M17.318 1.975a3.329 3.329 0 1 1 4.707 4.707L8.451 20.256c-.49.49-1.082.867-1.735 1.103L2.34 22.94a1 1 0 0 1-1.28-1.28l1.581-4.376a4.726 4.726 0 0 1 1.103-1.735L17.318 1.975zm3.293 1.414a1.329 1.329 0 0 0-1.88 0L5.159 16.963c-.283.283-.5.624-.636 1l-.857 2.372 2.371-.857a2.726 2.726 0 0 0 1.001-.636L20.611 5.268a1.329 1.329 0 0 0 0-1.879z"></path>
+    </svg>
+);
+
 export const AddToLibraryIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
     <svg
         className={className}
@@ -317,6 +343,19 @@ export const AddToLibrarySmallIcon = ({ className, width = '1.6rem', height = '1
     </svg>
 );
 
+export const RemoveLibraryIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+    <svg
+        className={className}
+        width={width}
+        height={height}
+        viewBox="0 0 24 24"
+        fill="currentcolor"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path d="M1 12C1 5.925 5.925 1 12 1s11 4.925 11 11-4.925 11-11 11S1 18.075 1 12zm16.398-2.38a1 1 0 0 0-1.414-1.413l-6.011 6.01-1.894-1.893a1 1 0 0 0-1.414 1.414l3.308 3.308 7.425-7.425z"></path>
+    </svg>
+);
+
 export const OptionIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
     <svg
         className={className}
@@ -340,6 +379,45 @@ export const OptionSmallIcon = ({ className, width = '1.6rem', height = '1.6rem'
         xmlns="http://www.w3.org/2000/svg"
     >
         <path d="M3 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm6.5 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM16 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"></path>
+    </svg>
+);
+
+export const CompactIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+    <svg
+        className={className}
+        width={width}
+        height={height}
+        viewBox="0 0 16 16"
+        fill="currentcolor"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path d="M15.5 13.5H.5V12h15v1.5zm0-4.75H.5v-1.5h15v1.5zm0-4.75H.5V2.5h15V4z"></path>
+    </svg>
+);
+
+export const ListIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+    <svg
+        className={className}
+        width={width}
+        height={height}
+        viewBox="0 0 16 16"
+        fill="currentcolor"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path d="M15 14.5H5V13h10v1.5zm0-5.75H5v-1.5h10v1.5zM15 3H5V1.5h10V3zM3 3H1V1.5h2V3zm0 11.5H1V13h2v1.5zm0-5.75H1v-1.5h2v1.5z"></path>
+    </svg>
+);
+
+export const ItemActiveIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+    <svg
+        className={className}
+        width={width}
+        height={height}
+        viewBox="0 0 16 16"
+        fill="currentcolor"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path d="M15.53 2.47a.75.75 0 0 1 0 1.06L4.907 14.153.47 9.716a.75.75 0 0 1 1.06-1.06l3.377 3.376L14.47 2.47a.75.75 0 0 1 1.06 0z"></path>
     </svg>
 );
 

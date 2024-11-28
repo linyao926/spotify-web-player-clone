@@ -7,11 +7,13 @@ const uiSlice = createSlice({
             contexts: {
                 profile: { isOpen: false },
                 'create-playlist': { isOpen: false },
+                'track-list-view-as': { isOpen: false },
             }  
         },
         dialog: { isOpen: false },
         modal: { isOpen: false },
-        notification: { isOpen: false }
+        notification: { isOpen: false },
+        viewMode: 'compact',
     },
     reducers: {
         openSubContext: (state, action) => {
@@ -48,7 +50,9 @@ const uiSlice = createSlice({
         closeDialog: (state) => {
             state.modal.isOpen = false;
         },
-        
+        setViewMode: (state, action) => {
+            state.viewMode = action.payload; // cập nhật viewMode
+        },
     }
 });
 
@@ -58,6 +62,7 @@ export const {
   closeSpecificSubContext,
   openModal,
   closeModal,
+  setViewMode,
   
 } = uiSlice.actions;
 export default uiSlice.reducer;

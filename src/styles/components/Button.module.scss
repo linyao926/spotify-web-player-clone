@@ -108,6 +108,11 @@
     color: var(--text-base);
   }
 
+  /* Color */
+  &.primary-color {
+    color: var(--text-positive);
+  }
+
   /* Hover */
   &.hover-scale:hover {
     transform: scale(1.05);

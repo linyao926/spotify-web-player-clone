@@ -12,6 +12,7 @@ const SubContextMenu = (props) => {
     } = props;
 
     const [activeItems, setActiveItems] = useState(items.map(item => item.active || false));
+    const [disableItems, setDisableItems] = useState(items.map(item => item.disableItem || false));
     const [subMenu, setSubMenu] = useState(null);
 
     const handleMouseEnter = (item, event) => {
@@ -45,7 +46,8 @@ const SubContextMenu = (props) => {
                     "subcontext-item", 
                     activeItems[index] ? "active" : "", 
                     item.textUnderline && "text-underline", 
-                    item.borderBottom && 'border-bottom'
+                    item.borderBottom && 'border-bottom',
+                    disableItems[index] ? "disable" : ""
                 );
                 
                 return (

@@ -32,6 +32,20 @@ $box-shadow: 0 16px 24px rgba(0, 0, 0, .3), 0 6px 8px rgba(0, 0, 0, .2);
     padding: 12px 8px 12px 12px;
     font-size: index.$font-size-small;
     height: 44px;
+
+    &.active {
+        color: var(--text-positive);
+    }
+
+    &.disable {
+        color: var(--text-subdued);
+        font-weight: bold;
+
+        &:hover {
+            background: transparent;
+            color: var(--text-subdued);
+        }
+    }
 }
 
 .subcontext-item.border-bottom {

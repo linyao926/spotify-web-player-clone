@@ -1,0 +1,188 @@
+@use '../index';
+
+$primary-back-ground-color: rgb(120, 136, 104);
+
+.media-detail-layout {
+    @include index.pageContentBase;
+}
+
+.media-detail-header {
+    font-size: index.$font-size-small;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: bold;
+    @include index.flex-center($justify: flex-start, $align: flex-end);
+    padding: var(--content-spacing);
+    gap: var(--content-spacing);
+    position: relative;
+}
+
+.header-background,
+.gradient-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.header-background {
+    background-color: $primary-back-ground-color;
+}
+
+.gradient-overlay {
+    background: linear-gradient(transparent 0, rgba(0, 0, 0, .5) 100%), var(--background-noise);
+}
+
+.cover-img-container {
+    width: clamp(128px, 128px + (100vw - var(--left-sidebar-width, 0) * 1px - var(--panel-width, 0) * 1px - 600px) / 424 * 104, 232px);
+    height: auto;
+    aspect-ratio: 1;
+    box-shadow: 0 4px 60px rgba(0, 0, 0, .5);
+    border-radius: 4px;
+    position: relative;
+    @include index.flex-center;
+    background-color: #282828;
+    color: var(--essential-subdued);
+
+    svg {
+        width: 48px;
+        height: 48px;
+    }
+
+    &:hover .cover-img-fallback {
+        opacity: 0;
+    }
+
+    &:hover .photo-edit-section {
+        opacity: 1;
+    }
+
+    &:hover .cover-img + .photo-edit-section {
+        background-color: rgba(0, 0, 0, .7);
+    }
+}
+
+.cover-img {
+    display: block;
+    object-fit: cover;
+    object-position: center center;
+    border-radius: 4px;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+}
+
+.photo-edit-section {
+    @include index.flex-center(column);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    color: var(--essential-base);
+    font-size: index.$font-size-base;
+    line-height: 1.5;
+    opacity: 0;
+}
+
+.media-information-container {
+    @include index.flex-center(column, flex-end, flex-start);
+    height: auto;
+    z-index: 3;
+}
+
+.media-information-type {
+    color: var(--text-base);
+    text-transform: capitalize;
+}
+
+.media-information-subtitles {
+    @include index.flex-center($justify: flex-start);
+
+    span:not(:last-child):after {
+        content: index.$not-last-child-after-content;
+        margin: 0 4px;
+    }
+}
+
+.media-information-author-img {
+    display: block;
+    object-fit: cover;
+    object-position: center center;
+    border-radius: 50%;
+    width: 24px;
+    height: auto;
+    aspect-ratio: 1;
+    margin-right: 4px;
+}
+
+.media-information-author,
+.media-information-album {
+    @include index.flex-center($justify: flex-start);
+    color: var(--text-base);
+    text-decoration: none;
+}
+
+.media-information-author:after,
+.media-information-album:after {
+    color: var(--text-subdued);
+}
+
+.media-stats {
+    span:not(:last-child):after {
+        content: ',';
+        margin: 0 4px 0 0;
+    }
+}
+
+.media-detail-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.media-detail-actions-background {
+    background-color: $primary-back-ground-color;
+    background-image: linear-gradient(rgba(0, 0, 0, .6) 0, var(--background-base) 100%), var(--background-noise);
+    width: 100%;
+    height: 232px;
+    position: absolute;
+    z-index: -1;
+}
+
+.media-detail-actions {
+    padding: var(--content-spacing);
+    @include index.flex-center($justify: space-between);   
+}
+
+.media-detail-actions-left {
+    @include index.flex-center;
+
+    .btn-wrapper {
+        margin-right: calc(var(--content-spacing) + 8px);
+    }
+}
+
+.view-as-dropdown {
+    position: relative;
+    padding: index.$spacing-base;
+}
+
+.view-as-dropdown-btn {
+    font-size: index.$font-size-small;
+    color: var(--text-subdued);
+    font-weight: bold;
+    @include index.flex-center;
+    gap: 8px;
+    cursor: pointer;
+
+    svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    &:hover {
+        color: var(--text-base);
+    }
+}

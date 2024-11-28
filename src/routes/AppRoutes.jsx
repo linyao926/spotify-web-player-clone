@@ -8,6 +8,7 @@ import {
 // Import your page components
 import Home from '~/pages/Home/Home';
 import Browse from '~/pages/Search/Browse';
+import Playlist from '~/pages/Playlist/Playlist';
 import NotFound from './NotFound'; 
 
 // Import the MainAppLayout
@@ -25,6 +26,10 @@ const routes = [{
         {
           path: '/search',
           element: <Browse />,
+        },
+        {
+          path: '/playlist',
+          element: <Playlist />,
         },
         {
             path: '*', // Catch-all route for undefined paths

@@ -1,0 +1,50 @@
+@use '../index.scss';
+
+.edit-playlist {
+    @include index.full-screen-overlay;
+    @include index.flex-center(column);
+    gap: index.$spacing-base;
+    z-index: 2;
+}
+
+.edit-playlist-container {
+    background-color: #282828;
+    min-height: 384px;
+    width: 524px;
+    border-radius: 8px;
+    @include index.flex-center(column, space-between);
+    gap: 16px;
+    padding: 0 24px 24px;
+
+    header {
+        @include index.flex-center($justify: space-between);
+        padding: 24px;
+        width: 100%;
+    }
+
+    h3 {
+        font-size: 1.5rem;
+        line-height: 1.2;
+    }
+}
+
+.edit-playlist-content {
+    background-color: #282828;
+    @include index.flex-center;
+    gap: 16px;
+}
+
+.content-img-wrapper {
+    width: 180px;
+    @include index.imgBase;
+}
+
+.content-img {
+    width: 100%;
+    @include index.imgBase;
+}
+
+.upload-image-consent {
+    font-size: index.$font-size-small;
+    font-weight: bold;
+}

@@ -20,7 +20,7 @@ function Browse() {
 
     return (
         <MediaDetailLayout
-            coverUrl = 'https://misc.scdn.co/liked-songs/liked-songs-300.png'
+            coverUrl = ''
             coverFallback = {<PlaylistFallbackIcon />}
             type = 'playlist'
             title = 'Playlist 2024'

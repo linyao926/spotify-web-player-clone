@@ -1,0 +1,27 @@
+@use '../index.scss';
+
+.alert-message {
+    @include index.flex-center($justify: flex-start);
+    gap: index.$spacing-base;
+    border-radius: 4px;
+    color: #fff;
+    height: 32px;
+    width: 100%;
+    padding: 0 8px;
+    background-color: #2e77d0;
+
+    // Type
+    &.error {
+        background-color: var(--essential-negative);
+    }
+
+    // Font size
+    &.small {
+        font-size: index.$font-size-small;
+
+        svg {
+            width: 16px;
+            height: 16px;
+        }
+    }
+}

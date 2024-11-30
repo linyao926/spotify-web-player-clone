@@ -25,7 +25,7 @@ function CreatePlaylistPrompt () {
                 size="size-small"
                 borderRadius="rounded"
                 padding="4px 16px"
-                clickFunction={() => dispatch(openModal())}
+                clickFunction={() => dispatch(openModal({id: 'login-prompt'}))}
             >Create playlist</Button>
         </section>
     )

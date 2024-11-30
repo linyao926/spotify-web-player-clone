@@ -27,7 +27,7 @@ function SearchBox (props) {
     const navigate = useNavigate();
 
     const handleSearchIconClick = () => {
-        accessToken ? navigate("/search") : dispatch(openModal());
+        accessToken ? navigate("/search") : dispatch(openModal({id: 'login-prompt'}));
         inputRef.current.focus();
     };
 
@@ -57,7 +57,7 @@ function SearchBox (props) {
                 type="text"
                 value={inputValue}
                 onFocus={() => {
-                    accessToken ? navigate("/search") : dispatch(openModal());
+                    accessToken ? navigate("/search") : dispatch(openModal({id: 'login-prompt'}));
                     setInputIsFocus(true);
                 }}
                 onBlur={() => setInputIsFocus(false)}
@@ -74,7 +74,7 @@ function SearchBox (props) {
             
             <div className={cx("browse-icon", inputValue ? 'hidden' : '', isSearchPage && 'active')}
                 onClick={() => {
-                    accessToken ? navigate("/search") : dispatch(openModal())
+                    accessToken ? navigate("/search") : dispatch(openModal({id: 'login-prompt'}))
                 }}
             >
                 {isSearchPage ? <FillBrowseIcon /> : <BrowseIcon />}

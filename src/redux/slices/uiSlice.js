@@ -1,5 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const openFunction = (state, action) => {    
+    if (state) {
+        Object.keys(state).forEach((key) => {
+            state[key].isOpen = false;
+        });
+    }
+
+    if (action.payload && action.payload.id) {
+        state[action.payload.id] = { isOpen: true };
+    }
+};
+
+const closeFunction = (state, action) => {
+    const { id } = action.payload;
+    
+    if (state[id]) {
+        state[id].isOpen = false;
+    }
+};
+
 const uiSlice = createSlice({
     name: 'ui',
     initialState: {
@@ -11,20 +31,15 @@ const uiSlice = createSlice({
             }  
         },
         dialog: { isOpen: false },
-        modal: { isOpen: false },
+        modal: { 
+            'login-prompt': { isOpen: false },
+            'edit-playlist': { isOpen: false },
+        },
         notification: { isOpen: false },
         viewMode: 'compact',
     },
     reducers: {
-        openSubContext: (state, action) => {
-            if (state.subContext.contexts) {
-                Object.keys(state.subContext.contexts).forEach((key) => {
-                    state.subContext.contexts[key].isOpen = false;
-                });
-            }
-            const { id } = action.payload;
-            state.subContext.contexts[id] = { isOpen: true };
-        },
+        openSubContext: (state, action) => openFunction(state.subContext.contexts, action),
         closeSubContext: (state) => {
             if (state.subContext.contexts) {
                 Object.keys(state.subContext.contexts).forEach((key) => {
@@ -32,18 +47,9 @@ const uiSlice = createSlice({
                 });
             }
         },
-        closeSpecificSubContext: (state, action) => {
-            const { id } = action.payload;
-            if (state.subContext.contexts[id]) {
-                state.subContext.contexts[id].isOpen = false;
-            }
-        },
-        openModal: (state) => {
-            state.modal.isOpen = true;
-        },
-        closeModal: (state) => {
-            state.modal.isOpen = false;
-        },
+        closeSpecificSubContext: (state, action) => closeFunction(state.subContext.contexts, action),
+        openModal: (state, action) => openFunction(state.modal, action),
+        closeModal: (state, action) => closeFunction(state.modal, action),
         openDialog: (state) => {
             state.modal.isOpen = true;
         },

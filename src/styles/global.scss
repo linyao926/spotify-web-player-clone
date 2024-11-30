@@ -39,6 +39,7 @@
     --left-sidebar-width: 72;
     --panel-width: 0;
     --content-spacing: clamp(16px, 16px + (100vw - var(--left-sidebar-width, 72) * 1px - var(--panel-width, 0) * 1px - 600px) / 424 * 8, 24px);
+    --content-cover-width: clamp(128px, 128px + (100vw - var(--left-sidebar-width, 0) * 1px - var(--panel-width, 0) * 1px - 600px) / 424 * 104, 232px);
 
     --background-noise: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgc3RpdGNoVGlsZXM9InN0aXRjaCIgdHlwZT0iZnJhY3RhbE5vaXNlIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxwYXRoIGQ9Ik0wIDBoMzAwdjMwMEgweiIgZmlsdGVyPSJ1cmwoI2EpIiBvcGFjaXR5PSIuMDUiLz48L3N2Zz4=);
     
@@ -48,11 +49,19 @@
     --mask-image-expanded-rtl: url(https://open.spotifycdn.com/cdn/images/expanded-mask-rtl.87cee49e.png);
 }
 
+@font-face {
+    font-family: 'Circular Std';
+    src: url('/path-to-font/CircularStd-Bold.woff2') format('woff2'),
+         url('/path-to-font/CircularStd-Bold.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
 * {
     box-sizing: border-box;
     padding: 0;
     margin: 0;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: 'Circular Std', 'Helvetica Neue', Arial, sans-serif;
 }
 
 .btn-wrapper {

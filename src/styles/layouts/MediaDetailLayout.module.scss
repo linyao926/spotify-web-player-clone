@@ -1,6 +1,6 @@
 @use '../index';
 
-$primary-back-ground-color: rgb(120, 136, 104);
+$primary-back-ground-color: rgb(83, 83, 83);;
 
 .media-detail-layout {
     @include index.pageContentBase;
@@ -34,7 +34,7 @@ $primary-back-ground-color: rgb(120, 136, 104);
 }
 
 .cover-img-container {
-    width: clamp(128px, 128px + (100vw - var(--left-sidebar-width, 0) * 1px - var(--panel-width, 0) * 1px - 600px) / 424 * 104, 232px);
+    width: var(--content-cover-width);
     height: auto;
     aspect-ratio: 1;
     box-shadow: 0 4px 60px rgba(0, 0, 0, .5);
@@ -43,6 +43,7 @@ $primary-back-ground-color: rgb(120, 136, 104);
     @include index.flex-center;
     background-color: #282828;
     color: var(--essential-subdued);
+    flex-shrink: 0;
 
     svg {
         width: 48px;
@@ -90,6 +91,7 @@ $primary-back-ground-color: rgb(120, 136, 104);
     @include index.flex-center(column, flex-end, flex-start);
     height: auto;
     z-index: 3;
+    flex: 1;
 }
 
 .media-information-type {
@@ -99,6 +101,7 @@ $primary-back-ground-color: rgb(120, 136, 104);
 
 .media-information-subtitles {
     @include index.flex-center($justify: flex-start);
+    flex-wrap: wrap;
 
     span:not(:last-child):after {
         content: index.$not-last-child-after-content;

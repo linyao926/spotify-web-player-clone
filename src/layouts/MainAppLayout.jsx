@@ -16,7 +16,7 @@ const cx = classNames.bind(styles);
 function MainAppLayout () {
     const dispatch = useDispatch(); 
 
-    const isModalOpen = useSelector((state) => state.ui.modal.isOpen);
+    const isLoginPromptOpen = useSelector((state) => state.ui.modal['login-prompt'].isOpen);
     const isDialogOpen = useSelector((state) => state.ui.dialog.isOpen);
     const { accessToken } = useSelector((state) => state.auth);
 
@@ -34,7 +34,7 @@ function MainAppLayout () {
                 {accessToken && isDialogOpen && <div className={cx('overview')}>listening panel</div>}
             </div>
             {accessToken ? <PlayingBar/> : <GuestFooter />}
-            {isModalOpen && <LoginPrompt />}
+            {isLoginPromptOpen && <LoginPrompt />}
         </main>
     )
 };

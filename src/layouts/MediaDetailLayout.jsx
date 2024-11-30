@@ -4,6 +4,7 @@ import {
   fetchBrowseData, 
   selectBrowseData
 } from '~/redux/slices/browseDataSlice';
+import { openModal } from '~/redux/slices/uiSlice';
 import { 
     PlayIcon, 
     AddToLibraryIcon, 
@@ -55,6 +56,7 @@ function MediaDetailLayout(props) {
     const { accessToken } = useSelector((state) => state.auth);
     const viewMode = useSelector((state) => state.ui.viewMode);
     const isSubContextOpen = useSelector((state) => state.ui.subContext.contexts['track-list-view-as'].isOpen);
+    const isEditOpen = useSelector((state) => state.ui.modal['edit-playlist'].isOpen);
     const position = useSelector((state) => state.position);
     const { handleOpenSubContext, handleCloseSubContext } = useSubContext();
 
@@ -99,7 +101,9 @@ function MediaDetailLayout(props) {
                     ? <img className={cx('cover-img')} alt='cover' src={coverUrl} />
                     : <span className={cx('cover-img-fallback')}>{coverFallback}</span>
                     }
-                    {isEditable && <div className={cx('photo-edit-section')}>
+                    {isEditable && <div className={cx('photo-edit-section')} 
+                        onClick={() => dispatch(openModal({id: 'edit-playlist'}))}
+                    >
                         <EditIcon />
                         <span>Choose photo</span>
                     </div>}
@@ -195,7 +199,12 @@ function MediaDetailLayout(props) {
                 {children}
             </div>
             <ContentFooter />
-            <EditPlaylistModal />
+            {isEditOpen && <EditPlaylistModal 
+                coverUrl = {coverUrl}
+                coverFallback = {coverFallback}
+                title = {title}
+                description = {description}
+            />}
         </div>
       </>
     );

@@ -131,6 +131,10 @@
     border: 1px solid var(--essential-base);
   }
 
+  &.primary-color:hover {
+    color: var(--text-positive);
+  }
+
   &.disable {
     cursor: not-allowed;
     color: #363636;
@@ -163,15 +167,23 @@
   }
 }
 
-.icon-left:hover,
-.icon-right:hover  {
-    svg {
-      fill: var(--essential-base);
-    }
-}
+// .icon-left:hover,
+// .icon-right:hover  {
+//     svg {
+//       fill: var(--essential-base);
+//     }
+// }
 
 .hover-button-highlight:hover {
   background-color: var(--background-highlight);
+  
+  svg {
+    fill: var(--essential-base);
+  }
+}
+
+.hover-button-tinted-base:hover {
+  background-color: var(--background-tinted-base);
   
   svg {
     fill: var(--essential-base);

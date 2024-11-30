@@ -2,9 +2,8 @@
 
 .edit-playlist {
     @include index.full-screen-overlay;
-    @include index.flex-center(column);
-    gap: index.$spacing-base;
-    z-index: 2;
+    @include index.flex-center;
+    z-index: 4;
 }
 
 .edit-playlist-container {
@@ -12,13 +11,13 @@
     min-height: 384px;
     width: 524px;
     border-radius: 8px;
-    @include index.flex-center(column, space-between);
-    gap: 16px;
-    padding: 0 24px 24px;
+    @include index.flex-center(column, flex-start);
+    padding: 24px;
+    position: relative;
 
     header {
         @include index.flex-center($justify: space-between);
-        padding: 24px;
+        padding-bottom: 24px;
         width: 100%;
     }
 
@@ -26,25 +25,155 @@
         font-size: 1.5rem;
         line-height: 1.2;
     }
+
+    .close-btn-wrapper {
+        margin-right: -8px;
+    }
+}
+
+.alert-message-wrapper {
+    width: 100%;
+    margin: 0 24px 16px;
 }
 
 .edit-playlist-content {
     background-color: #282828;
     @include index.flex-center;
     gap: 16px;
-}
-
-.content-img-wrapper {
-    width: 180px;
-    @include index.imgBase;
-}
-
-.content-img {
     width: 100%;
+    height: 180px;
+}
+
+.cover-img-wrapper {
+    width: 180px;
+    height: auto;
     @include index.imgBase;
+    box-shadow: 0 4px 60px rgba(0, 0, 0, .5);
+    @include index.flex-center;
+    background-color: #282828;
+    color: var(--essential-subdued);
+    position: relative;
+
+    svg {
+        width: 48px;
+        height: 48px;
+    }
+
+    &:hover .cover-img-fallback {
+        opacity: 0;
+    }
+
+    &:hover .photo-edit-section {
+        opacity: 1;
+    }
+
+    &:hover .cover-img + .photo-edit-section {
+        background-color: rgba(0, 0, 0, .7);
+    }
+}
+
+.cover-img {
+    width: 100%;
+    height: auto;
+    @include index.imgBase;
+}
+
+.photo-edit-section {
+    @include index.flex-center(column);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    color: var(--essential-base);
+    font-size: index.$font-size-base;
+    line-height: 1.5;
+    opacity: 0;
+}
+
+.form-wrapper {
+    @include index.flex-center(column, flex-start, flex-start);
+    gap: 16px;
+    flex-grow: 1;
+    height: 100%;
+}
+
+.label-for-input {
+    flex-shrink: 0;
+}
+
+.label-for-textarea {
+    flex-grow: 1;
+}
+
+label {
+    position: relative;
+    width: 100%;
+
+    span {
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        left: 10px;
+        color: var(--text-subdued);
+        inset-inline-start: 10px;
+        transform: translateY(-50%);
+        font-weight: 700;
+        font-size: index.$font-size-small;
+        transition: index.$opacity-transition;
+    }
+
+    input {
+        height: 40px;
+        padding: 0 12px;
+    }
+
+    input::-webkit-input-placeholder {
+        font-size: index.$font-size-small;
+        color: #757575;
+    }
+
+    textarea {
+        resize: none;
+        height: 100%;
+        padding: 12px;
+    }
+
+    input,
+    textarea {
+        width: 100%;
+        font-size: index.$font-size-small;
+        border-radius: 4px;
+        background: hsla(0, 0%, 100%, .1);
+        border: 1px solid transparent;
+        outline: none;
+        color: var(--text-base);
+
+        &:focus {
+            background-color: #333;
+            border: 1px solid #535353;
+            outline: none;
+        }
+
+    }
+    &:focus-within span {
+        opacity: 1;
+    }
+}
+
+input.error {
+    box-shadow: inset 0 -2px 0 0 #e91429;
+}
+
+.save-btn-wrapper {
+    width: 100%;
+    @include index.flex-center($justify: flex-end);
+    padding: index.$spacing-base 0;
 }
 
 .upload-image-consent {
-    font-size: index.$font-size-small;
+    font-size: 0.8125rem;
     font-weight: bold;
+    line-height: 1.3;
 }

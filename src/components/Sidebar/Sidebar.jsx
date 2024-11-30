@@ -30,7 +30,6 @@ function Sidebar (props) {
         isCollapsed: false,
         isShowMore: false,
     };
-    
 
     const [sidebarWidth, setSidebarWidth] = useState(initialState.sidebarWidth);
     const [isCollapsed, setIsCollapsed] = useState(initialState.isCollapsed);
@@ -64,6 +63,8 @@ function Sidebar (props) {
         name: "Create a new playlist",
         iconLeft: <MusicalNotePlusIcon />,
     }];
+
+    document.documentElement.style.setProperty('--left-sidebar-width', sidebarWidth);
 
     const CreatePlaylistBtn = () => {
         let positionType = isCollapsed ? 'bottom-left' : 'bottom-right';

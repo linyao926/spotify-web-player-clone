@@ -1,90 +1,98 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux'; 
-import { 
-  fetchBrowseData, 
-  selectBrowseData
-} from '~/redux/slices/browseDataSlice';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 
-function ResponsiveTitle(props) {
-    const { 
-        title, 
-        sidebarWidth = 0, 
-        extraComponentWidth = 0, 
-        isExtraComponentVisible = false 
-    } = props;
+function ResponsiveTitle({ title }) {
+  const titleRef = useRef(null);
+  const cloneRef = useRef(null);
 
-    const [fontSize, setFontSize] = useState(92);
-    const [lineCount, setLineCount] = useState(1);
-    const titleRef = useRef(null);
+  const [fontSize, setFontSize] = useState(6);
+  const [translateXValue, setTranslateXValue] = useState(6);
 
-    const calculateAvailableWidth = () => {
-        const windowWidth = window.innerWidth;
-        const extraWidth = isExtraComponentVisible ? extraComponentWidth : 0;
-        return windowWidth - sidebarWidth - extraWidth - 40; // 40px for padding
+  const fontSizeSteps = [6, 4.5, 3, 2]; 
+  const translateValueSteps = [6, 5, 3, 2];
+  const minFontSize = 2; 
+
+  const getContentWidth = useCallback(() => {
+    if (!cloneRef.current) return 0;
+    return cloneRef.current.scrollWidth;
+  }, []);
+
+  const adjustFontSize = useCallback(() => {
+    if (!titleRef.current) return;
+
+    const parentWidth = titleRef.current.parentNode.offsetWidth; 
+    let newFontSize = fontSizeSteps[0]; 
+
+    for (const step of fontSizeSteps) {
+      titleRef.current.style.fontSize = `${step}rem`;
+      cloneRef.current.style.fontSize = `${step}rem`; 
+
+      const contentWidth = getContentWidth();
+      if (contentWidth <= parentWidth) {
+        newFontSize = step;
+        break;
+      }
+    }
+
+    setFontSize(newFontSize);
+  }, [getContentWidth]);
+
+  useEffect(() => {
+    const parentElement = titleRef.current?.parentNode;
+
+    const resizeObserver = new ResizeObserver(() => {
+      adjustFontSize();
+    });
+
+    if (parentElement) {
+      resizeObserver.observe(parentElement);
+    }
+
+    return () => {
+      if (parentElement) {
+        resizeObserver.unobserve(parentElement);
+      }
     };
-    
-    const measureText = () => {
-        if (!titleRef.current) return;
-    
-        const titleElement = titleRef.current;
-        const computedStyle = window.getComputedStyle(titleElement);
-        const lineHeight = parseInt(computedStyle.lineHeight);
-        const height = titleElement.offsetHeight;
-        return Math.round(height / lineHeight);
-    };
-    
-    const adjustFontSize = () => {
-        const availableWidth = calculateAvailableWidth();
-        let newFontSize = 92;
-        let lines = measureText();
-    
-        // Adjust font size based on width and line count
-        if (availableWidth < 1200) newFontSize = 72;
-        if (availableWidth < 900) newFontSize = 48;
-        if (availableWidth < 600) newFontSize = 32;
-    
-        // If font size is 32 and still more than 3 lines, keep it at 32
-        if (newFontSize === 32 && lines > 3) {
-          setLineCount(3);
-        } else {
-          setLineCount(lines);
-        }
-    
-        setFontSize(newFontSize);
-      };
-    
-      useEffect(() => {
-        const handleResize = () => {
-          adjustFontSize();
-        };
-    
-        window.addEventListener('resize', handleResize);
-        adjustFontSize(); // Initial adjustment
-    
-        return () => {
-          window.removeEventListener('resize', handleResize);
-        };
-    }, [sidebarWidth, isExtraComponentVisible, title]);
+  }, [adjustFontSize]);
 
-    return (
-        <span 
-            ref={titleRef}
-            style={{
-                color: '#fff',
-                fontSize: `6rem`,
-                maxWidth: `${calculateAvailableWidth()}px`,
-                lineHeight: 1.3,
-                ...(fontSize === 32 && {
-                  display: '-webkit-box',
-                  WebkitLineClamp: '3',
-                  WebkitBoxOrient: 'vertical',
-                  overflow: 'hidden'
-                })
-            }}
-        >
-            {title}
-        </span>
-    );
+  useEffect(() => {
+    const index = Math.max(0, Math.min(translateValueSteps.length - 1, 6 - Math.ceil(fontSize))); 
+    
+    setTranslateXValue(translateValueSteps[index]);
+  }, [fontSize]);
+
+  return (
+    <>
+      <span
+        ref={cloneRef}
+        style={{
+          position: 'absolute',
+          visibility: 'hidden',
+          whiteSpace: 'nowrap',
+          fontSize: `${fontSize}rem`,
+        }}
+      >
+        {title}
+      </span>
+
+      <span
+        ref={titleRef}
+        style={{
+          transform: `translateX(-${translateXValue}px)`,
+          fontSize: `${fontSize}rem`,
+          lineHeight: 1.3,
+          color: '#fff',
+          ...(fontSize === minFontSize && {
+            display: '-webkit-box',
+            WebkitLineClamp: 3,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+          }),
+        }}
+      >
+        {title}
+      </span>
+    </>
+  );
 }
-  
+
 export default ResponsiveTitle;

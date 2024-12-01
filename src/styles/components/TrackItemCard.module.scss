@@ -13,6 +13,7 @@ $track-item-img-height: 40px;
     font-size: index.$font-size-small;
     line-height: index.$line-height-base;
     border-radius: 4px;
+    width: 100%;
 
     // Hover
     &:hover {
@@ -70,6 +71,7 @@ $track-item-img-height: 40px;
 .track-item-index {
     @include index.flex-center;
     position: relative;
+    font-size: index.$font-size-base;
 }
 
 // Info
@@ -118,6 +120,7 @@ $track-item-img-height: 40px;
 
 .track-item-card-info-text {
     @include index.flex-center(column, $align: flex-start);
+    width: calc(100% - $track-item-img-height - 12px) ;
 
     span:hover {
         text-decoration: underline;
@@ -171,4 +174,6 @@ $track-item-img-height: 40px;
 .track-item-duration {
     flex-grow: 1;
     text-align: end;
+    font-variant-numeric: tabular-nums;
+    font-family: "Montserrat", sans-serif;
 }

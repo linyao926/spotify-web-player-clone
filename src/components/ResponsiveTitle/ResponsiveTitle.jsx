@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 
-function ResponsiveTitle({ title }) {
+function ResponsiveTitle({ title, clickFunction = null}) {
   const titleRef = useRef(null);
   const cloneRef = useRef(null);
 
@@ -87,6 +87,10 @@ function ResponsiveTitle({ title }) {
             WebkitBoxOrient: 'vertical',
             overflow: 'hidden',
           }),
+          cursor: clickFunction ? 'pointer' : 'default'
+        }}
+        onClick={() => {
+          clickFunction && clickFunction();
         }}
       >
         {title}

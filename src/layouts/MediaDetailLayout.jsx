@@ -115,6 +115,11 @@ function MediaDetailLayout(props) {
                         sidebarWidth={72} 
                         extraComponentWidth={300} 
                         isExtraComponentVisible={false} 
+                        clickFunction={() => {
+                            if (isEditable) {
+                                dispatch(openModal({id: 'edit-playlist'}))
+                            }
+                        }}
                     />
                     {description && <div>{description}</div>}
                     <div className={cx('media-information-subtitles')}>

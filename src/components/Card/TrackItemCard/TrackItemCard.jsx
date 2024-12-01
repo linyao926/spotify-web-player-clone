@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { PlayLargeIcon } from '~/assets/icons';
+import { formatDate, formatMillisecondsToMinutes } from '~/utils/timeUtils';
 import Button from '~/components/Button/Button';
 import TrackItemCardInfo from './TrackItemCardInfo';
 import TrackItemCardActions from './TrackItemCardActions';
@@ -14,16 +15,18 @@ const TrackItemCard = (props) => {
         templateColumns = "default",
         routeLink = '/',
         trackIndex = 1,
-        imgUrl = 'https://i.scdn.co/image/ab67616d00001e0227c1a17d71ecaf008c1357e7',
-        title = 'Fake Love',
-        author = 'BTS',
-        album = 'The Most Beautiful Moment in Life Pt.1',
-        addedDate = 'Sep 22, 2023',
-        duration = '3:30',
+        imgUrl = '',
+        title = '',
+        author = '',
+        album = '',
+        addedDate = '',
+        duration = '',
         showIndex = false,
         showAlbum = false,
         showAddedDate = false,
     } = props;
+
+    // const formattedDate = formatDate(addedDate);
 
     return (
         <Link 
@@ -43,9 +46,9 @@ const TrackItemCard = (props) => {
                 showIndex={showIndex}
             />
             {showAlbum && <span className={cx('track-item-album')}>{album}</span>}
-            {showAddedDate && <span className={cx('track-item-added-date')}>{addedDate}</span>}
+            {showAddedDate && <span className={cx('track-item-added-date')}>{formatDate(addedDate)}</span>}
             <TrackItemCardActions 
-                duration={duration}
+                duration={formatMillisecondsToMinutes(duration)}
             />
         </Link>
     );

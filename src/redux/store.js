@@ -2,14 +2,14 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import homeReducer from './slices/homeDataSlice';
 import browseReducer from './slices/browseDataSlice';
+import playlistDataReducer from './slices/playlistDataSlice';
+import trackSliceReducer from './slices/trackSlice';
 
 import userReducer from './slices/userSlice';
 import authReducer from './slices/authSlice';
 import uiReducer from './slices/uiSlice';
 import positionReducer from './slices/positionSlice';
-import trackSliceReducer from './slices/trackSlice';
 import episodesReducer from './slices/episodesSlice';
-// import playlistReducer from './slices/playlistSlice';
 // import trackReducer from './slices/trackSlice';
 // import nowPlayingReducer from './slices/nowPlayingSlice';
 import { checkTokenExpirationMiddleware } from '~/services/auth';
@@ -18,13 +18,13 @@ export const store = configureStore({
   reducer: {
     home: homeReducer,
     browse: browseReducer,
+    playlistData: playlistDataReducer,
     user: userReducer,
     auth: authReducer,
     ui: uiReducer,
     position: positionReducer,
-    track: trackSliceReducer,
-    episodes: episodesReducer,
-    // playlist: playlistReducer,
+    // track: trackSliceReducer,
+    // episodes: episodesReducer,
     // track: trackReducer,
     // nowPlaying: nowPlayingReducer,
   },

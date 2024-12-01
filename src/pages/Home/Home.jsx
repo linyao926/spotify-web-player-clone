@@ -39,7 +39,7 @@ function Home() {
       }
     }, [accessToken, dispatch]);
 
-    // console.log(topTracks)
+    // console.log(popularplaylist)
 
     const getHeaderButton = (text, active = true) => {
         return (
@@ -103,7 +103,7 @@ function Home() {
                   routeLink = '/genre/recently-played'
               />}
 
-              {recommendedToday.length > 0 && <MediaSection 
+              {/* {recommendedToday.length > 0 && <MediaSection 
                   data={recommendedToday}
                   type="album"
                   title='Recommended for today'
@@ -115,7 +115,7 @@ function Home() {
                   type="playlist"
                   title='PopularPlaylist'
                   routeLink = '/section/popularplaylist'
-              />}
+              />} */}
 
               {newReleases.length > 0 && <MediaSection 
                   data={newReleases}

@@ -1,22 +1,34 @@
 import React, { useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'; 
 import { 
-  fetchBrowseData, 
-  selectBrowseData
-} from '~/redux/slices/browseDataSlice';
+    fetchPlaylistData, 
+    selectPlaylistData
+} from '~/redux/slices/playlistDataSlice';
 import { 
     PlaylistFallbackIcon,
 } from '~/assets/icons';
-import ScrollWrapper from '~/components/ScrollWrapper/ScrollWrapper';
 import MediaDetailLayout from '~/layouts/MediaDetailLayout';
+import TrackListSection from '~/components/TrackListSection/TrackListSection';
 // import classNames from 'classnames/bind';
 // import styles from '~/styles/pages/Search.module.scss';
 
 // const cx = classNames.bind(styles);
 
-function Browse() {
+function Playlist() {
     const dispatch = useDispatch(); 
     const { accessToken } = useSelector((state) => state.auth);
+    const playlistData = useSelector(selectPlaylistData);
+
+    useEffect(() => {
+        if (accessToken) {
+            dispatch(fetchPlaylistData({
+                accessToken, 
+                id: '6AtpvRxDKuY1TzM5P2dXFG'
+            }));
+        }
+    }, [accessToken, dispatch]);
+  
+    // console.log(playlistData);
 
     return (
         <MediaDetailLayout
@@ -32,9 +44,11 @@ function Browse() {
             canViewAs
             isEditable
         >
-            playlist content
+            <TrackListSection 
+                data={playlistData}
+            />
         </MediaDetailLayout>
     );
 }
   
-export default Browse;
+export default Playlist;

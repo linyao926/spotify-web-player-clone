@@ -1,0 +1,51 @@
+@use '../index.scss';
+
+.track-list {
+    display: block;
+    padding: var(--content-spacing);
+}
+
+.header-bar {
+    display: grid;
+    gap: index.$spacing-medium;
+    @include index.dynamic-grid;
+    height: 36px;
+    width: 100%;
+    margin: 0 0 calc(var(--content-spacing) - 8px);
+    padding: 0 index.$spacing-medium;
+    color: var(--text-subdued);
+    font-size: index.$font-size-small;
+    border-bottom: 1px solid hsla(0, 0%, 100%, .1);
+
+    svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    &.four-cols {
+        @include index.dynamic-grid(four-cols);
+    }
+
+    span {
+        @include index.flex-center($justify: flex-start);
+    }
+
+    .header-index,
+    .header-duration {
+        justify-content: center;
+    }
+}
+
+.header-title {
+    height: fit-content;
+    font-size: 24px;
+    margin-bottom: index.$spacing-medium;
+    border: none;
+    color: var(--text-base);
+    font-weight: bold;
+}
+
+.track-list-content {
+    @include index.flex-center(column);
+   
+}

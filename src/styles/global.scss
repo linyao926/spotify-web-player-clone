@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
 :root {
     --background-base: #121212;
     --background-highlight: #1f1f1f;
@@ -27,8 +29,7 @@
 
     --main-app-header-height: 64px;
     --main-app-footer-height: 72px;
-
-    --content-header-font-size: 4.5rem;
+    --content-top-bar-height: 64px;
 
     --progress-bar-transform: 0%;
     --progress-bar-duration: 1000ms;
@@ -61,7 +62,7 @@
     box-sizing: border-box;
     padding: 0;
     margin: 0;
-    font-family: 'Circular Std', 'Helvetica Neue', Arial, sans-serif;
+    font-family: "DM Sans", 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
 }
 
 .btn-wrapper {

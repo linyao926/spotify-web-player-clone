@@ -1,8 +1,9 @@
 const BASE_URL = 'https://api.spotify.com/v1';
 
+
 export const fetchData = async (endpoint, accessToken, limit = 10) => {
-    try {
-      const endpointWithLimit = `${endpoint}${endpoint.includes('?') ? '&' : '?'}limit=${limit}`;
+  try {
+    const endpointWithLimit = `${endpoint}${endpoint.includes('?') ? '&' : '?'}limit=${limit}`;
       
       const response = await fetch(`${BASE_URL}${endpointWithLimit}`, {
         headers: {

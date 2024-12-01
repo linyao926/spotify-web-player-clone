@@ -7,15 +7,15 @@ export const fetchHomeData = createAsyncThunk(
       try {
         const [
           recentlyPlayed,
-          recommendedToday,
-          popularplaylist,
+          // recommendedToday,
+          // popularplaylist,
           newReleases,
           topArtists,
           topTracks
         ] = await Promise.all([
           fetchData('/me/player/recently-played', accessToken),
-          fetchData('/recommendations?seed_genres=pop', accessToken),
-          fetchData('/browse/featured-playlists', accessToken),
+          // fetchData('/recommendations?seed_tracks=6MmN7FsbgqDLZH4H68hPpZ', accessToken),
+          // fetchData('/browse/featured-playlists', accessToken),
           fetchData('/browse/new-releases', accessToken),
           fetchData('/me/top/artists', accessToken, 2), 
           fetchData('/me/top/tracks', accessToken, 2)
@@ -23,10 +23,10 @@ export const fetchHomeData = createAsyncThunk(
   
         return {
           recentlyPlayed: recentlyPlayed.items,
-          recommendedToday: recommendedToday.tracks,
-          popularplaylist: popularplaylist.playlists.items,
+          // recommendedToday: recommendedToday.tracks,
+          // popularplaylist: popularplaylist.playlists.items,
           newReleases: newReleases.albums.items,
-          topArtists: topArtists.items,  // Trả về top artists
+          topArtists: topArtists.items,  
           topTracks: topTracks.items   
         };
       } catch (error) {

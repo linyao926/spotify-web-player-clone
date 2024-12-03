@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import useDynamicColumns from '~/hooks/useDynamicColumns';
 import { DurationRepresentIcon } from '~/assets/icons';
 import TrackItemCard from '~/components/Card/TrackItemCard/TrackItemCard';
 import classNames from 'classnames/bind';
@@ -8,15 +9,21 @@ const cx = classNames.bind(styles);
 
 const TrackListSection = (props) => {
     const {
-        headerType = 'title',
+        headerType = 'bar',
         title = 'Popular',
         data,
         viewAs = 'list',
-        showAlbum = false,
-        showAddedDate = false,
+        showAlbum = true,
+        showAddedDate = true,
+        initialColumns = 5,
     } = props;
 
+    const containerRef = useRef(null);
+    const { currentColumns, templateColumns } = useDynamicColumns(containerRef, initialColumns, true);
+
     const trackListItems = data.map((item, index) => {
+        const authors = item.track.artists.map(artist => artist.name);
+
         return (
             <TrackItemCard 
                 key={item.track.id}
@@ -24,25 +31,29 @@ const TrackListSection = (props) => {
                 trackIndex = {index + 1}
                 imgUrl = {item.track.album.images[0].url}
                 title = {item.track.name}
-                author = {item.track.artists[0].name}
+                authors = {authors}
                 album = {item.track.album.name}
                 addedDate = {item['added_at']}
                 duration = {item.track['duration_ms']}
                 showIndex
                 showAlbum = {showAlbum}
                 showAddedDate = {showAddedDate}
-                templateColumns = {showAlbum ? 'default' : 'three-cols'}
+                initialColumns = {initialColumns}
+                viewAs = {viewAs}
             />
         )
     });
 
     return (
         <section className={cx('track-list')}>
-            {headerType === 'bar' && <header className={cx('header-bar')}>
+            {headerType === 'bar' && <header className={cx('header-bar', templateColumns)}
+                ref={containerRef}            
+            >
                 <span className={cx('header-index')}>#</span>
                 <span>Title</span>
-                {showAlbum && <span>Album</span>}
-                {showAddedDate && <span>Date added</span>}
+                {viewAs === 'compact' && currentColumns >= 4 && <span>Artist</span>}
+                {(currentColumns >= 5 || (viewAs === 'list' && currentColumns >= 4)) && showAlbum && <span>Album</span>}
+                {(currentColumns >= 6 || (viewAs === 'list' && currentColumns >= 5)) && showAddedDate && <span>Date added</span>}
                 <span className={cx('header-duration')}><DurationRepresentIcon /></span>
             </header>}
             {headerType === 'title' && <header className={cx('header-title')}>

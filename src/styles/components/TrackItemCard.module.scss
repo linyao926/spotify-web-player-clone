@@ -66,6 +66,30 @@ $track-item-img-height: 40px;
     &.default {
         @include index.dynamic-grid;
     }
+
+    &.six-cols {
+        @include index.dynamic-grid(six-cols);
+    }
+}
+
+.track-item-card.compact {
+    height: 32px;
+    
+    &:hover .track-item-card-author-wrapper {
+        color: var(--text-base);
+    }
+
+    .track-item-card-title,
+    .track-item-card-author {
+        &:hover {
+            text-decoration: underline;
+            text-underline-offset: 3px
+        }
+    }
+
+    .track-item-card-author::after {
+        text-decoration: none;
+    }
 }
 
 .track-item-index {
@@ -124,6 +148,7 @@ $track-item-img-height: 40px;
 
     span:hover {
         text-decoration: underline;
+        text-underline-offset: 3px
     }
 }
 
@@ -133,21 +158,36 @@ $track-item-img-height: 40px;
 }
 
 .track-item-card-title,
-.track-item-author {
+.track-item-card-author-wrapper {
+    @include index.flex-center($justify: flex-start);
     width: 100%;
     min-width: 0;
     @include index.ellipsis-one-line;
 }
 
+.track-item-card-author-wrapper {
+    span:not(:last-child):after {
+        content: ',';
+        margin-right: 4px;
+        color: var(--text-subdued);
+        font-weight: bold;
+
+        &:hover {
+            color: var(--text-subdued);
+        }
+    }
+}
+
 .track-item-album {
     width: 100%;
     min-width: 0;
-    @include index.ellipsis-one-line;
     height: 100%; 
-    line-height: $track-item-height; 
+    @include index.ellipsis-one-line;
+    @include index.flex-center($justify: flex-start);
 
     &:hover {
         text-decoration: underline;
+        text-underline-offset: 3px;
     }
 }
 

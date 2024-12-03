@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import useDynamicColumns from '~/hooks/useDynamicColumns';
 import { PlayLargeIcon } from '~/assets/icons';
 import { formatDate, formatMillisecondsToMinutes } from '~/utils/timeUtils';
 import Button from '~/components/Button/Button';
@@ -12,12 +13,13 @@ const cx = classNames.bind(styles);
 
 const TrackItemCard = (props) => {
     const {
-        templateColumns = "default",
+        viewAs,
+        initialColumns = 5,
         routeLink = '/',
         trackIndex = 1,
         imgUrl = '',
         title = '',
-        author = '',
+        authors = [''],
         album = '',
         addedDate = '',
         duration = '',
@@ -26,12 +28,18 @@ const TrackItemCard = (props) => {
         showAddedDate = false,
     } = props;
 
-    // const formattedDate = formatDate(addedDate);
+    const containerRef = useRef(null);
+    const { currentColumns, templateColumns } = useDynamicColumns(containerRef, initialColumns, showIndex);
+
+    const authorList = authors.map(authorName => (
+        <span key={authorName} className={cx('track-item-card-author')}>{authorName}</span>
+    ));
 
     return (
         <Link 
-            className={cx('track-item-card', templateColumns)}
+            className={cx('track-item-card', templateColumns, viewAs)}
             to={routeLink}
+            ref={containerRef}
         >
             {showIndex && (
                 <div className={cx('track-item-index', 'show-play-icon')}>
@@ -39,14 +47,20 @@ const TrackItemCard = (props) => {
                     <span className={cx('play-icon-wrapper')}><PlayLargeIcon /></span>
                 </div>
             )}
-            <TrackItemCardInfo 
-                imgUrl={imgUrl}
-                title={title}
-                author={author}
-                showIndex={showIndex}
-            />
-            {showAlbum && <span className={cx('track-item-album')}>{album}</span>}
-            {showAddedDate && <span className={cx('track-item-added-date')}>{formatDate(addedDate)}</span>}
+            {viewAs === 'list' 
+                ? <TrackItemCardInfo 
+                    imgUrl={imgUrl}
+                    title={title}
+                    authors={authorList}
+                    showIndex={showIndex}
+                /> 
+                : <>
+                    <span className={cx('track-item-card-title')}>{title}</span>
+                    {currentColumns >= 4 && <span className={cx('track-item-card-author-wrapper')}>{authorList}</span>}
+                </>
+            }
+            {(currentColumns >= 5 || (viewAs === 'list' && currentColumns >= 4)) && showAlbum && <span className={cx('track-item-album')}>{album}</span>}
+            {(currentColumns >= 6 || (viewAs === 'list' && currentColumns >= 5)) && showAddedDate && <span className={cx('track-item-added-date')}>{formatDate(addedDate)}</span>}
             <TrackItemCardActions 
                 duration={formatMillisecondsToMinutes(duration)}
             />

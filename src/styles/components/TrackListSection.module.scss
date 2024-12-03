@@ -22,8 +22,16 @@
         height: 16px;
     }
 
+    &.three-cols {
+        @include index.dynamic-grid(three-cols);
+    }
+
     &.four-cols {
         @include index.dynamic-grid(four-cols);
+    }
+
+    &.six-cols {
+        @include index.dynamic-grid(six-cols);
     }
 
     span {

@@ -14,7 +14,11 @@ import TrackListSection from '~/components/TrackListSection/TrackListSection';
 
 // const cx = classNames.bind(styles);
 
-function Playlist() {
+function Playlist(props) {
+    const {
+        viewAs = 'list',
+    } = props;
+
     const dispatch = useDispatch(); 
     const { accessToken } = useSelector((state) => state.auth);
     const playlistData = useSelector(selectPlaylistData);
@@ -27,8 +31,6 @@ function Playlist() {
             }));
         }
     }, [accessToken, dispatch]);
-  
-    // console.log(playlistData);
 
     return (
         <MediaDetailLayout
@@ -46,6 +48,8 @@ function Playlist() {
         >
             <TrackListSection 
                 data={playlistData}
+                viewAs={viewAs}
+                initialColumns={viewAs === 'list' ? 5 : 6}
             />
         </MediaDetailLayout>
     );

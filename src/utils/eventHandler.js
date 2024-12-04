@@ -9,7 +9,7 @@ export const contentScrollHandler = (scrollY, parentRef, childRef, setIsFixed, s
         setIsFixed(false);
     }
 
-    if (childRect.bottom < scrollY) {
+    if (childRect.bottom - 228 < scrollY) {
         setIsVisible(false);
     } else {
         setIsVisible(true);

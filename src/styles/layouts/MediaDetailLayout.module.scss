@@ -125,6 +125,10 @@ $primary-back-ground-color: rgb(83, 83, 83);;
     opacity: 0;
 }
 
+.cover-circle {
+    border-radius: 50%;
+}
+
 .media-information-container {
     @include index.flex-center(column, flex-end, flex-start);
     height: auto;

@@ -31,24 +31,25 @@ const MediaDetailLayout = React.forwardRef((props, ref) => {
     const {
         coverUrl = '',
         coverFallback = '',
-        type = 'playlist',
-        title = 'Playlist 2024',
+        type = '',
+        title = '',
         description = '',
         authorImgUrl,
-        authorName = 'linyao926',
-        albumName = 'GNZ48',
-        releaseDate = '2024',
-        duration = '3:19',
-        trackCount = '13',
-        totalDuration = '49 min 16 sec',
-        followerCount = '7,239,676',
+        authorName = '',
+        albumName = '',
+        releaseDate = '',
+        duration = '',
+        trackCount = '',
+        totalDuration = '',
+        followerCount = '',
         isEditable = false,
         canPlay = true,
         canFollow = false,
-        canAddToLibrary = true,
-        canShowOptions = true,
+        canAddToLibrary = false,
+        canShowOptions = false,
         canViewAs = false,
         contentScrollHandler,
+        coverIsCircle,
         children,
     } = props;
 
@@ -114,12 +115,12 @@ const MediaDetailLayout = React.forwardRef((props, ref) => {
             >
                 <div className={cx('header-background')}></div>
                 <div className={cx('gradient-overlay')}></div>
-                <div className={cx('cover-img-container')}>
+                <div className={cx('cover-img-container', coverIsCircle && 'cover-circle')}>
                     {coverUrl 
-                    ? <img className={cx('cover-img')} alt='cover' src={coverUrl} />
-                    : <span className={cx('cover-img-fallback')}>{coverFallback}</span>
+                    ? <img className={cx('cover-img', coverIsCircle && 'cover-circle')} alt='cover' src={coverUrl} />
+                    : <span className={cx('cover-img-fallback', coverIsCircle && 'cover-circle')}>{coverFallback}</span>
                     }
-                    {isEditable && <div className={cx('photo-edit-section')} 
+                    {isEditable && <div className={cx('photo-edit-section', coverIsCircle && 'cover-circle')} 
                         onClick={() => dispatch(openModal({id: 'edit-playlist'}))}
                     >
                         <EditIcon />
@@ -145,7 +146,8 @@ const MediaDetailLayout = React.forwardRef((props, ref) => {
                             className={cx('media-information-author-img')}
                         />}
                         {authorName && <span className={cx('media-information-author')}>{authorName}</span>}
-                        {followerCount && <span>{followerCount}</span>}
+                        {followerCount && <span style={{fontSize: '1rem', color: 'var(--text-base)'}}
+                        >{followerCount} followers</span>}
                         {albumName && <span className={cx('media-information-album')}>{albumName}</span>}
                         {releaseDate && <span>{releaseDate}</span>}
                         {duration && <span>{duration}</span>}

@@ -2,7 +2,9 @@ import React, { useRef, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'; 
 import { 
     fetchPlaylistData, 
-    selectPlaylistItems
+    selectPlaylistInfo,
+    selectPlaylistItems,
+    selectRelatedTrack,
 } from '~/redux/slices/playlistDataSlice';
 import { 
     PlaylistFallbackIcon,
@@ -10,10 +12,6 @@ import {
 import MediaDetailLayout from '~/layouts/MediaDetailLayout';
 import TrackListSection from '~/components/TrackListSection/TrackListSection';
 import { contentScrollHandler } from '~/utils/eventHandler';
-// import classNames from 'classnames/bind';
-// import styles from '~/styles/pages/Search.module.scss';
-
-// const cx = classNames.bind(styles);
 
 function Playlist(props) {
     const {
@@ -25,7 +23,9 @@ function Playlist(props) {
 
     const dispatch = useDispatch(); 
     const { accessToken } = useSelector((state) => state.auth);
+    const playlistInfo = useSelector(selectPlaylistInfo);
     const playlistItems = useSelector(selectPlaylistItems);
+    const relatedTrack = useSelector(selectRelatedTrack);
 
     const mediaLayoutRef = useRef(null);
     const childRef = useRef(null);
@@ -41,19 +41,21 @@ function Playlist(props) {
     
     const handleScroll = (scrollY) => contentScrollHandler(scrollY, mediaLayoutRef, childRef, setIsFixed, setIsVisible);
 
+    // console.log(relatedTrack)
+
     return (
         <MediaDetailLayout
-            coverUrl = ''
+            coverUrl = {playlistInfo?.images && playlistInfo?.images[0].url}
             coverFallback = {<PlaylistFallbackIcon />}
             type = 'playlist'
-            title = 'Playlist 2024'
-            authorImgUrl='https://i.scdn.co/image/ab67757000003b82f452de5a7f6223f17ae26f6b'
-            authorName = 'linyao926'
-            trackCount = '13'
+            title = {playlistInfo?.name}
+            authorImgUrl={playlistInfo?.owner && playlistInfo.owner.images[0].url}
+            authorName = {playlistInfo?.owner && playlistInfo.owner['display_name']}
+            trackCount = {playlistInfo && playlistInfo['track_total']}
             totalDuration = '49 min 16 sec'
             canAddToLibrary
+            canShowOptions
             canViewAs
-            isEditable
             ref={mediaLayoutRef}
             contentScrollHandler={handleScroll}
         >
@@ -65,6 +67,15 @@ function Playlist(props) {
                 isFixed={isFixed}
                 isVisible={isVisible}
             />
+            {relatedTrack.length > 0 && <TrackListSection 
+                data={relatedTrack}
+                initialColumns={3}
+                title='Recommended'
+                headerType='title'
+                nonIndex
+                showAlbum
+                related
+            />}
         </MediaDetailLayout>
     );
 }

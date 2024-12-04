@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import useDynamicColumns from '~/hooks/useDynamicColumns';
 import { PlayLargeIcon } from '~/assets/icons';
 import { formatDate, formatMillisecondsToMinutes } from '~/utils/timeUtils';
-import Button from '~/components/Button/Button';
 import TrackItemCardInfo from './TrackItemCardInfo';
 import TrackItemCardActions from './TrackItemCardActions';
 import classNames from 'classnames/bind';
@@ -59,7 +58,7 @@ const TrackItemCard = (props) => {
                     {currentColumns >= 4 && <span className={cx('track-item-card-author-wrapper')}>{authorList}</span>}
                 </>
             }
-            {(currentColumns >= 5 || (viewAs === 'list' && currentColumns >= 4)) && showAlbum && <span className={cx('track-item-album')}>{album}</span>}
+            {(currentColumns >= 5 || (viewAs === 'list' && currentColumns >= 4)) || initialColumns >= 3 && showAlbum && <span className={cx('track-item-album')}>{album}</span>}
             {(currentColumns >= 6 || (viewAs === 'list' && currentColumns >= 5)) && showAddedDate && <span className={cx('track-item-added-date')}>{formatDate(addedDate)}</span>}
             <TrackItemCardActions 
                 duration={formatMillisecondsToMinutes(duration)}

@@ -10,14 +10,16 @@ const cx = classNames.bind(styles);
 const TrackListSection = React.forwardRef((props, ref) => {
     const {
         headerType = 'bar',
-        title = 'Popular',
+        title = '',
         data,
         viewAs = 'list',
         showAlbum = true,
-        showAddedDate = true,
+        showAddedDate = false,
         initialColumns = 5,
         isFixed = false,
         isVisible = true,
+        nonIndex = false,
+        related = false,
     } = props;
 
     const headerRef = useRef(null);
@@ -25,20 +27,30 @@ const TrackListSection = React.forwardRef((props, ref) => {
     const { currentColumns, templateColumns } = useDynamicColumns(headerRef, initialColumns, true);
 
     const trackListItems = data.map((item, index) => {
-        const authors = item.track.artists.map(artist => artist.name);
+        let element;
+        if (item.track) {
+            element = item.track;
+        } else {
+            element = item;
+        }
+        const authors = element.artists.map(artist => artist.name);
+
+        if (related) {
+            if ((index > 4 && index < 10) || (index > 14 && index < 19)) return;
+        }
 
         return (
             <TrackItemCard 
-                key={item.track.id}
-                routeLink = {`/track/${item.track.id}`}
+                key={element.id}
+                routeLink = {`/track/${element.id}`}
                 trackIndex = {index + 1}
-                imgUrl = {item.track.album.images[0].url}
-                title = {item.track.name}
+                imgUrl = {element.album.images[0].url}
+                title = {element.name}
                 authors = {authors}
-                album = {item.track.album.name}
+                album = {element.album.name}
                 addedDate = {item['added_at']}
-                duration = {item.track['duration_ms']}
-                showIndex
+                duration = {element['duration_ms']}
+                showIndex={!nonIndex}
                 showAlbum = {showAlbum}
                 showAddedDate = {showAddedDate}
                 initialColumns = {initialColumns}
@@ -55,7 +67,7 @@ const TrackListSection = React.forwardRef((props, ref) => {
                 className={cx('header-bar', templateColumns, isFixed && 'fixed', !isVisible && 'hidden')}
                 ref={headerRef}            
             >
-                <span className={cx('header-index')}>#</span>
+                {!nonIndex && <span className={cx('header-index')}>#</span>}
                 <span>Title</span>
                 {viewAs === 'compact' && currentColumns >= 4 && <span>Artist</span>}
                 {(currentColumns >= 5 || (viewAs === 'list' && currentColumns >= 4)) && showAlbum && <span>Album</span>}

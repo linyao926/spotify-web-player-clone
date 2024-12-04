@@ -1,0 +1,64 @@
+@use '../index.scss';
+
+.artists-wrapper {
+    padding: 0 var(--content-spacing);
+    @include index.flex-center(column, flex-start, flex-start);
+    width: 100%;
+}
+
+.artist {
+    height: 96px;
+    width: 100%;
+    border-radius: 8px;
+    @include index.flex-center($justify: flex-start);
+    gap: index.$spacing-medium;
+
+    &:hover {
+        background-color: hsla(0, 0%, 100%, .1);
+    }
+}
+
+.artist-cover-wrapper {
+    width: 80px;
+    height: auto;
+    aspect-ratio: 1;
+    box-shadow: 0 4px 60px rgba(0, 0, 0, .5);
+    position: relative;
+    @include index.flex-center;
+    background-color: #282828;
+    color: var(--essential-subdued);
+    flex-shrink: 0;
+    border-radius: 50%;
+    margin-left: index.$spacing-base;
+
+    svg {
+        width: 48px;
+        height: 48px;
+    }
+}
+
+.artist-cover {
+    display: block;
+    object-fit: cover;
+    object-position: center center;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.artist-cover-fallback {
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+}
+
+.artist-info-text {
+    font-weight: bold;
+    font-size: index.$font-size-base;
+    color: var(--text-base);
+    @include index.flex-center(column, flex-start, flex-start);
+}
+
+.artist-subtitle {
+    font-size: index.$font-size-small;
+}

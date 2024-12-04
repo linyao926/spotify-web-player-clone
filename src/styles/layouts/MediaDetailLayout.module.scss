@@ -4,6 +4,7 @@ $primary-back-ground-color: rgb(83, 83, 83);;
 
 .media-detail-layout {
     @include index.pageContentBase;
+    position: relative;
 }
 
 .media-detail-header {
@@ -31,6 +32,43 @@ $primary-back-ground-color: rgb(83, 83, 83);;
 
 .gradient-overlay {
     background: linear-gradient(transparent 0, rgba(0, 0, 0, .5) 100%), var(--background-noise);
+}
+
+.layout-header-fixed {
+    position: fixed;
+    top: var(--main-app-header-height);
+    left: calc(var(--left-sidebar-width) * 1px + 8px * 2);
+    right: 8px;
+    height: var(--content-top-bar-height);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-top-left-radius: index.$border-radius-base;
+    border-top-right-radius: index.$border-radius-base;
+    padding: 0 index.$spacing-medium;
+    @include index.flex-center($justify: flex-start);
+    gap: index.$spacing-base;
+    transform: translateY(0);
+    background-color: $primary-back-ground-color;
+    z-index: 3;
+}
+
+.layout-header-fixed-background {
+    background-color: $primary-back-ground-color;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    overflow: hidden;
+    pointer-events: none;
+    position: absolute;
+    -webkit-transition: background-color .25s, ease-out;
+    transition: background-color .25s, ease-out;
+    z-index: -1;
+}
+
+.layout-header-fixed-title {
+    font-size: 1.5rem;
 }
 
 .cover-img-container {

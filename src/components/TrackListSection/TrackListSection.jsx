@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import useDynamicColumns from '~/hooks/useDynamicColumns';
 import { DurationRepresentIcon } from '~/assets/icons';
 import TrackItemCard from '~/components/Card/TrackItemCard/TrackItemCard';
@@ -7,7 +7,7 @@ import styles from '~/styles/components/TrackListSection.module.scss';
 
 const cx = classNames.bind(styles);
 
-const TrackListSection = (props) => {
+const TrackListSection = React.forwardRef((props, ref) => {
     const {
         headerType = 'bar',
         title = 'Popular',
@@ -16,10 +16,13 @@ const TrackListSection = (props) => {
         showAlbum = true,
         showAddedDate = true,
         initialColumns = 5,
+        isFixed = false,
+        isVisible = true,
     } = props;
 
-    const containerRef = useRef(null);
-    const { currentColumns, templateColumns } = useDynamicColumns(containerRef, initialColumns, true);
+    const headerRef = useRef(null);
+
+    const { currentColumns, templateColumns } = useDynamicColumns(headerRef, initialColumns, true);
 
     const trackListItems = data.map((item, index) => {
         const authors = item.track.artists.map(artist => artist.name);
@@ -45,9 +48,12 @@ const TrackListSection = (props) => {
     });
 
     return (
-        <section className={cx('track-list')}>
-            {headerType === 'bar' && <header className={cx('header-bar', templateColumns)}
-                ref={containerRef}            
+        <section className={cx('track-list')} 
+            ref={ref} 
+        >
+            {headerType === 'bar' && <header 
+                className={cx('header-bar', templateColumns, isFixed && 'fixed', !isVisible && 'hidden')}
+                ref={headerRef}            
             >
                 <span className={cx('header-index')}>#</span>
                 <span>Title</span>
@@ -64,6 +70,6 @@ const TrackListSection = (props) => {
             </div>
         </section>
     );
-};
+});
 
 export default TrackListSection;

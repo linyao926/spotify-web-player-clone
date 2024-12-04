@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux'; 
 import { 
   fetchBrowseData, 
@@ -7,11 +7,11 @@ import {
 import { openModal } from '~/redux/slices/uiSlice';
 import { 
     PlayIcon, 
+    PlayLargeIcon,
     AddToLibraryIcon, 
     RemoveLibraryIcon, 
     OptionIcon, 
     ItemActiveIcon, 
-    PlaylistFallbackIcon,
     EditIcon,
 } from '~/assets/icons';
 import ScrollWrapper from '~/components/ScrollWrapper/ScrollWrapper';
@@ -27,7 +27,7 @@ import styles from '~/styles/layouts/MediaDetailLayout.module.scss';
 
 const cx = classNames.bind(styles);
 
-function MediaDetailLayout(props) {
+const MediaDetailLayout = React.forwardRef((props, ref) => {
     const {
         coverUrl = '',
         coverFallback = '',
@@ -42,13 +42,13 @@ function MediaDetailLayout(props) {
         trackCount = '13',
         totalDuration = '49 min 16 sec',
         followerCount = '7,239,676',
-        isLikedSongs = false,
         isEditable = false,
         canPlay = true,
         canFollow = false,
         canAddToLibrary = true,
         canShowOptions = true,
         canViewAs = false,
+        contentScrollHandler,
         children,
     } = props;
 
@@ -62,8 +62,9 @@ function MediaDetailLayout(props) {
 
     const [isInLibrary, setIsInLibrary] = useState(true);
     const [trackListSubContext, setTrackListSubContext] = useState(trackListViewAsSubContext);
+    const [isFixed, setIsFixed] = useState(false);
 
-    const contentRef = useRef(null);
+    const headerRef = useRef(null);
 
     useEffect(() => {
         const updatedTrackListSubContext = trackListSubContext.map((item) => {
@@ -85,15 +86,32 @@ function MediaDetailLayout(props) {
         setTrackListSubContext(updatedTrackListSubContext);
     }, [viewMode]);
 
+    const layoutScrollHandler = (scrollY) => {
+        if (!ref.current || !headerRef.current) return;
+
+        const headerRect = headerRef.current.getBoundingClientRect();
+
+        if (scrollY > headerRect.bottom) {
+            setIsFixed(true);
+        } else {
+            setIsFixed(false);
+        }
+    };
+
     const currentView = trackListViewAsSubContext.find(
         (item) => item.value === viewMode
     );
 
     return (
       <>
-        <ScrollWrapper target={contentRef} />
-        <div className={cx('media-detail-layout')} ref={contentRef}>
-            <header className={cx('media-detail-header')}>
+        <ScrollWrapper target={ref} 
+            contentScrollHandler={contentScrollHandler} 
+            layoutScrollHandler={layoutScrollHandler}
+        />
+        <div className={cx('media-detail-layout')} ref={ref}>
+            <header className={cx('media-detail-header')}
+                ref={headerRef}
+            >
                 <div className={cx('header-background')}></div>
                 <div className={cx('gradient-overlay')}></div>
                 <div className={cx('cover-img-container')}>
@@ -204,6 +222,21 @@ function MediaDetailLayout(props) {
                 {children}
             </div>
             <ContentFooter />
+            {isFixed && <div className={cx('layout-header-fixed')}>
+                <div className={cx('layout-header-fixed-background')}></div>
+                {canPlay && <div className={cx('btn-wrapper')}>
+                    <Button 
+                        hasIcon 
+                        icon={<PlayLargeIcon />} 
+                        borderRadius="circle" 
+                        variant="primary" 
+                        size="size-base"
+                        iconSize="medium-icon" 
+                        padding="0px" 
+                    />    
+                </div>}
+                <h3 className={cx('layout-header-fixed-title')}>{title}</h3>
+            </div>}
             {isEditOpen && <EditPlaylistModal 
                 coverUrl = {coverUrl}
                 coverFallback = {coverFallback}
@@ -213,6 +246,6 @@ function MediaDetailLayout(props) {
         </div>
       </>
     );
-}
-  
+});
+
 export default MediaDetailLayout;

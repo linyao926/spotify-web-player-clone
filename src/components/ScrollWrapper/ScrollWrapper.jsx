@@ -3,13 +3,11 @@ import { OverlayScrollbars } from 'overlayscrollbars';
 import 'overlayscrollbars/overlayscrollbars.css';
 
 
-const ScrollWrapper = ({ target }) => {
+const ScrollWrapper = ({ target, contentScrollHandler = null, layoutScrollHandler = null }) => {
     const osInstance = useRef(null);
 
     useEffect(() => {
-        // Kiểm tra nếu target hợp lệ
         if (target && target.current) {
-            // Khởi tạo OverlayScrollbars trên target
             osInstance.current = OverlayScrollbars(target.current, {
                 elements: {
                     viewport: target.current,
@@ -24,9 +22,23 @@ const ScrollWrapper = ({ target }) => {
                     y: 'scroll',
                 },
             });
+            if (osInstance.current) {
+                osInstance.current.on("scroll", (event) => {
+                    const scrollInfo = osInstance.current.elements().target.scrollTop;
+                    const scrollY = scrollInfo; // Vertical scroll position
+    
+                    if (typeof contentScrollHandler === "function") {
+                        contentScrollHandler(scrollY);
+                    }
+
+                    if (typeof layoutScrollHandler === "function") {
+                        layoutScrollHandler(scrollY);
+                    }
+                });
+            }
         }
 
-        // Cleanup khi component bị unmount
+
         return () => {
             if (osInstance.current) {
                 osInstance.current.destroy();
@@ -34,7 +46,7 @@ const ScrollWrapper = ({ target }) => {
         };
     }, [target]);
 
-    return null; // Component này chỉ dùng để quản lý scroll nên không render nội dung
+    return null; 
 };
 
 export default ScrollWrapper;

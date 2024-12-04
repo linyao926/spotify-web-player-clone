@@ -10,12 +10,14 @@
     gap: index.$spacing-medium;
     @include index.dynamic-grid;
     height: 36px;
-    width: 100%;
+    // width: 100%;
     margin: 0 0 calc(var(--content-spacing) - 8px);
     padding: 0 index.$spacing-medium;
     color: var(--text-subdued);
     font-size: index.$font-size-small;
     border-bottom: 1px solid hsla(0, 0%, 100%, .1);
+    transition: transform 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
 
     svg {
         width: 16px;
@@ -42,6 +44,23 @@
     .header-duration {
         justify-content: center;
     }
+
+    &.fixed {
+        position: fixed;
+        top: calc(var(--content-top-bar-height) + var(--main-app-header-height));
+        left: calc(var(--left-sidebar-width) * 1px + 8px * 2);
+        right: 8px;
+        box-shadow: 0 -1px 0 0 #181818;
+        padding: 0 calc(index.$spacing-medium + var(--content-spacing));
+        transform: translateY(0);
+        background: var(--background-highlight);
+        z-index: 3;
+    }
+
+    &.hidden {
+        opacity: 0;
+        pointer-events: none;
+    }    
 }
 
 .header-title {

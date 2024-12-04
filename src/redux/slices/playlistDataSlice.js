@@ -16,7 +16,7 @@ export const fetchPlaylistData = createAsyncThunk(
 const playlistDataSlice = createSlice({
     name: 'playlist',
     initialState: {
-      playlistData: [],
+      playlistItems: [],
       loading: false,
       error: null,
     },
@@ -29,7 +29,7 @@ const playlistDataSlice = createSlice({
         })
         .addCase(fetchPlaylistData.fulfilled, (state, action) => {
           state.loading = false;
-          state.playlistData = action.payload.playlistItems;
+          state.playlistItems = action.payload.playlistItems;
         })
         .addCase(fetchPlaylistData.rejected, (state, action) => {
           state.loading = false;
@@ -38,6 +38,6 @@ const playlistDataSlice = createSlice({
     },
   });
   
-export const selectPlaylistData = (state) => state.playlistData.playlistData;
+export const selectPlaylistItems = (state) => state.playlistData.playlistItems;
 
 export default playlistDataSlice.reducer;

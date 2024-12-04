@@ -1,14 +1,15 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'; 
 import { 
     fetchPlaylistData, 
-    selectPlaylistData
+    selectPlaylistItems
 } from '~/redux/slices/playlistDataSlice';
 import { 
     PlaylistFallbackIcon,
 } from '~/assets/icons';
 import MediaDetailLayout from '~/layouts/MediaDetailLayout';
 import TrackListSection from '~/components/TrackListSection/TrackListSection';
+import { contentScrollHandler } from '~/utils/eventHandler';
 // import classNames from 'classnames/bind';
 // import styles from '~/styles/pages/Search.module.scss';
 
@@ -19,9 +20,15 @@ function Playlist(props) {
         viewAs = 'list',
     } = props;
 
+    const [isFixed, setIsFixed] = useState(false);
+    const [isVisible, setIsVisible] = useState(true);
+
     const dispatch = useDispatch(); 
     const { accessToken } = useSelector((state) => state.auth);
-    const playlistData = useSelector(selectPlaylistData);
+    const playlistItems = useSelector(selectPlaylistItems);
+
+    const mediaLayoutRef = useRef(null);
+    const childRef = useRef(null);
 
     useEffect(() => {
         if (accessToken) {
@@ -31,6 +38,8 @@ function Playlist(props) {
             }));
         }
     }, [accessToken, dispatch]);
+    
+    const handleScroll = (scrollY) => contentScrollHandler(scrollY, mediaLayoutRef, childRef, setIsFixed, setIsVisible);
 
     return (
         <MediaDetailLayout
@@ -45,11 +54,16 @@ function Playlist(props) {
             canAddToLibrary
             canViewAs
             isEditable
+            ref={mediaLayoutRef}
+            contentScrollHandler={handleScroll}
         >
             <TrackListSection 
-                data={playlistData}
+                data={playlistItems}
                 viewAs={viewAs}
                 initialColumns={viewAs === 'list' ? 5 : 6}
+                ref={childRef}
+                isFixed={isFixed}
+                isVisible={isVisible}
             />
         </MediaDetailLayout>
     );

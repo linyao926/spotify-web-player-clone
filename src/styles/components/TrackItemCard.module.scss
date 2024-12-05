@@ -224,3 +224,7 @@ $track-item-img-height: 40px;
     font-variant-numeric: tabular-nums;
     font-family: "Montserrat", sans-serif;
 }
+
+.add-btn-wrapper {
+    @include index.flex-center;
+}

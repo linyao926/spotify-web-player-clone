@@ -5,6 +5,7 @@ import { PlayLargeIcon } from '~/assets/icons';
 import { formatDate, formatMillisecondsToMinutes } from '~/utils/timeUtils';
 import TrackItemCardInfo from './TrackItemCardInfo';
 import TrackItemCardActions from './TrackItemCardActions';
+import Button from '~/components/Button/Button';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/TrackItemCard.module.scss';
 
@@ -26,6 +27,8 @@ const TrackItemCard = (props) => {
         showArtist = true,
         showAlbum = false,
         showAddedDate = false,
+        showAddToLibrary = false,
+        showExpand = false,
     } = props;
 
     const containerRef = useRef(null);
@@ -62,9 +65,20 @@ const TrackItemCard = (props) => {
             }
             {((currentColumns >= 5 || (viewAs === 'list' && currentColumns >= 4)) || initialColumns >= 3) && showAlbum && <span className={cx('track-item-album')}>{album}</span>}
             {(currentColumns >= 6 || (viewAs === 'list' && currentColumns >= 5)) && showAddedDate && <span className={cx('track-item-added-date')}>{formatDate(addedDate)}</span>}
-            <TrackItemCardActions 
+            {!showAddToLibrary 
+                ? <TrackItemCardActions 
                 duration={formatMillisecondsToMinutes(duration)}
-            />
+                />
+                : <span className={cx('add-btn-wrapper')}>
+                    <Button
+                        size="size-small"
+                        variant="transparent"
+                        borderRadius="rounded"
+                        withBorder
+                        padding='3px 15px'
+                    >Add</Button>
+                </span>
+            }
         </Link>
     );
 };

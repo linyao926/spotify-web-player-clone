@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectUserInfo, fetchUserData } from '~/redux/slices/userSlice';
+import { selectProfileInfo, fetchProfileData } from '~/redux/slices/profileSlice';
 import { useSubContext } from '~/hooks/useSubContext';
 import { 
     SpotifyLogoIcon, 
@@ -23,8 +23,8 @@ const cx = classNames.bind(styles);
 function MainAppHeader () {
     const dispatch = useDispatch();
     const { accessToken } = useSelector((state) => state.auth);
-    const userData = useSelector(selectUserInfo);
-    const userStatus = useSelector((state) => state.user.status);
+    const profileInfo = useSelector(selectProfileInfo);
+    const profileStatus = useSelector((state) => state.profile.status);
 
     const isSubContextOpen = useSelector((state) => state.ui.subContext.contexts['profile'].isOpen);
     const position = useSelector((state) => state.position);
@@ -34,10 +34,10 @@ function MainAppHeader () {
     const isHomePage = location.pathname === '/';
 
     useEffect(() => {
-        if (accessToken && userStatus === 'idle') {
-          dispatch(fetchUserData({accessToken}));
+        if (accessToken && profileStatus === 'idle') {
+          dispatch(fetchProfileData({accessToken}));
         }
-    }, [accessToken, userStatus, dispatch]);
+    }, [accessToken, profileStatus, dispatch]);
 
     const guestActions = (
         <>
@@ -57,7 +57,7 @@ function MainAppHeader () {
         </>
     );
 
-    const userActions = (
+    const profileActions = (
         <>
             <Button
                 hasIcon
@@ -88,10 +88,10 @@ function MainAppHeader () {
                     : (event) => handleOpenSubContext(event, 'profile', 'bottom-right')
                 }
             >
-                {userData
+                {profileInfo
                 ?   <img 
-                        src={userData.userInfo.images[0]?.url} 
-                        alt="User Avatar" 
+                        src={profileInfo.images[0]?.url} 
+                        alt="Profile Avatar" 
                         className={cx('user-avatar')}
                     /> 
                 : <div className={cx('user-avatar')}></div>}
@@ -106,6 +106,11 @@ function MainAppHeader () {
 
     const handleSearch = (query) => {
         console.log("Searching for:", query);
+    };
+
+    const handleSearchClick = (inputRef) => {
+        accessToken ? navigate("/search") : dispatch(openModal({id: 'login-prompt'}));
+        inputRef.current.focus();
     };
     
     return (
@@ -126,10 +131,17 @@ function MainAppHeader () {
                     padding="12px"
                     routeLink={config.routes.home}
                 />
-                <SearchBox size="large" borderRadius="rounded" onSearch={handleSearch} />
+                <SearchBox 
+                    size="large" 
+                    borderRadius="rounded" 
+                    onSearch={handleSearch} 
+                    placeholder="What do you want to play?"
+                    showBrowse
+                    clickFunction={handleSearchClick}
+                />
             </div>
             <div className={cx('header-user-actions')}>
-                {accessToken ? userActions : guestActions}
+                {accessToken ? profileActions : guestActions}
             </div>
         </header>
     )

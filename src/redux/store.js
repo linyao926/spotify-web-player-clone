@@ -6,8 +6,9 @@ import albumReducer from './slices/albumSlice';
 import artistReducer from './slices/artistSlice';
 import playlistDataReducer from './slices/playlistDataSlice';
 import trackSliceReducer from './slices/trackSlice';
-
+import profileReducer from './slices/profileSlice';
 import userReducer from './slices/userSlice';
+
 import authReducer from './slices/authSlice';
 import uiReducer from './slices/uiSlice';
 import positionReducer from './slices/positionSlice';
@@ -24,6 +25,7 @@ export const store = configureStore({
     artist: artistReducer,
     playlistData: playlistDataReducer,
     track: trackSliceReducer,
+    profile: profileReducer,
     user: userReducer,
     auth: authReducer,
     ui: uiReducer,

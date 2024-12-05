@@ -11,7 +11,10 @@ const cx = classNames.bind(styles);
 function SearchBox (props) {
     const {
         size = 'medium',  // small | medium | large
+        placeholder = '',
+        showBrowse = false,
         onSearch = () => {},
+        clickFunction,
     } = props;
 
     const [inputValue, setInputValue] = useState('');
@@ -25,11 +28,6 @@ function SearchBox (props) {
     const dispatch = useDispatch();
     const inputRef = useRef(null);
     const navigate = useNavigate();
-
-    const handleSearchIconClick = () => {
-        accessToken ? navigate("/search") : dispatch(openModal({id: 'login-prompt'}));
-        inputRef.current.focus();
-    };
 
     const handleChange = (e) => {
         setInputValue(e.target.value);
@@ -47,8 +45,10 @@ function SearchBox (props) {
     };
 
     return (
-        <div className={cx('search-box', size)}>
-            <div className={cx("search-icon")} onClick={handleSearchIconClick}>
+        <div className={cx('search-box', size)}
+            onClick={() => clickFunction && clickFunction(inputRef)}
+        >
+            <div className={cx("search-icon")}>
                 <SearchIcon />
             </div>
             
@@ -57,13 +57,12 @@ function SearchBox (props) {
                 type="text"
                 value={inputValue}
                 onFocus={() => {
-                    accessToken ? navigate("/search") : dispatch(openModal({id: 'login-prompt'}));
                     setInputIsFocus(true);
                 }}
                 onBlur={() => setInputIsFocus(false)}
                 onChange={handleChange}
                 onKeyDown={handleKeyDown}
-                placeholder="What do you want to play?"
+                placeholder={placeholder}
             />
             
             {inputValue && (
@@ -72,13 +71,13 @@ function SearchBox (props) {
                 </div>
             )}
             
-            <div className={cx("browse-icon", inputValue ? 'hidden' : '', isSearchPage && 'active')}
+            {showBrowse && <div className={cx("browse-icon", inputValue ? 'hidden' : '', isSearchPage && 'active')}
                 onClick={() => {
                     accessToken ? navigate("/search") : dispatch(openModal({id: 'login-prompt'}))
                 }}
             >
                 {isSearchPage ? <FillBrowseIcon /> : <BrowseIcon />}
-            </div>
+            </div>}
         </div>
     )
 };

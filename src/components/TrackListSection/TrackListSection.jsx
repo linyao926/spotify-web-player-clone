@@ -24,6 +24,8 @@ const TrackListSection = React.forwardRef((props, ref) => {
         nonIndex = false,
         related = false,
         seeMore = false,
+        showAddToLibrary,
+        showExpand,
     } = props;
 
     const headerRef = useRef(null);
@@ -62,6 +64,8 @@ const TrackListSection = React.forwardRef((props, ref) => {
                 showAddedDate = {showAddedDate}
                 initialColumns = {initialColumns}
                 viewAs = {viewAs}
+                showAddToLibrary={showAddToLibrary}
+                showExpand={showExpand}
             />
         )
     });

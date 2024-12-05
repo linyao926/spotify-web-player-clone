@@ -1,9 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'; 
 import { 
-    fetchUserData, 
-    selectUserInfo,
-} from '~/redux/slices/userSlice';
+    selectProfileInfo,
+} from '~/redux/slices/profileSlice';
 import { 
     PlaylistFallbackIcon,
     LikedPlaceholderIcon,
@@ -26,22 +25,13 @@ function CollectionTracks(props) {
     const [isVisible, setIsVisible] = useState(true);
 
     const dispatch = useDispatch(); 
-    const { accessToken } = useSelector((state) => state.auth);
-    const userData = useSelector(selectUserInfo);
-    const userStatus = useSelector((state) => state.user.status);
+    const profileInfo = useSelector(selectProfileInfo);
+    const profileStatus = useSelector((state) => state.profile.status);
 
     const mediaLayoutRef = useRef(null);
     const childRef = useRef(null);
-
-    useEffect(() => {
-        if (accessToken && userStatus === 'idle') {
-          dispatch(fetchUserData({accessToken}));
-        }
-    }, [accessToken, userStatus, dispatch]);
     
     const handleScroll = (scrollY) => contentScrollHandler(scrollY, mediaLayoutRef, childRef, setIsFixed, setIsVisible);
-
-    console.log(userData)
 
     return (
         <MediaDetailLayout
@@ -49,8 +39,8 @@ function CollectionTracks(props) {
             coverFallback = {<PlaylistFallbackIcon />}
             type = 'playlist'
             title = 'Liked Songs'
-            authorImgUrl={userData?.userInfo?.images[0]?.url}
-            authorName = {userData?.userInfo && userData?.userInfo['display_name']}
+            authorImgUrl={profileInfo?.images[0]?.url}
+            authorName = {profileInfo && profileInfo['display_name']}
             trackCount = {0}
             canViewAs
             ref={mediaLayoutRef}

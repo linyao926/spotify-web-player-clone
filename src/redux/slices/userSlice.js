@@ -3,21 +3,12 @@ import { fetchData } from '~/services/api';
 
 export const fetchUserData = createAsyncThunk(
   'user/fetchUserData',
-  async ({accessToken, endpoint = ''}, { rejectWithValue }) => {
+  async ({accessToken, id}, { rejectWithValue }) => {
     try {
-      const userInfo = await fetchData('/me', accessToken);
-      
-      // const userPlaylists = await fetchData('/me/playlists', accessToken);
-      
-      // const savedTracks = await fetchData('/me/tracks', accessToken);
-      
-      // const savedAlbums = await fetchData('/me/albums', accessToken);
+      const userInfo = await fetchData(`/users/${id}`, accessToken);
 
       return {
         userInfo,
-        // userPlaylists,
-        // savedTracks,
-        // savedAlbums,
       };
     } catch (error) {
       return rejectWithValue(error.message);
@@ -27,9 +18,6 @@ export const fetchUserData = createAsyncThunk(
 
 const initialState = {
   userInfo: null,
-  userPlaylists: [],
-  savedTracks: [],
-  savedAlbums: [],
   status: 'idle', // idle | loading | succeeded | failed
   error: null,
 };
@@ -45,7 +33,7 @@ const userSlice = createSlice({
       })
       .addCase(fetchUserData.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.userInfo = action.payload;
+        state.userInfo = action.payload.userInfo;
       })
       .addCase(fetchUserData.rejected, (state, action) => {
         state.status = 'failed';
@@ -55,7 +43,5 @@ const userSlice = createSlice({
 });
 
 export const selectUserInfo = (state) => state.user.userInfo;
-// export const selectUserPlaylists = (state) => state.user.userPlaylists;
-// export const selectSavedTracks = (state) => state.user.savedTracks;
-// export const selectSavedAlbums = (state) => state.user.savedAlbums;
+
 export default userSlice.reducer;

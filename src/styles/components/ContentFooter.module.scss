@@ -3,7 +3,7 @@
 .content-footer {
     @include index.flex-center(column, flex-end, flex-start);
     padding: index.$spacing-base index.$spacing-large 40px;
-    margin-top: 32px;
+    margin-top: 40px;
     width: 100%;
 }
 

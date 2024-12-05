@@ -211,6 +211,7 @@ $primary-back-ground-color: rgb(83, 83, 83);;
 .view-as-dropdown {
     position: relative;
     padding: index.$spacing-base;
+    padding-right: 0;
 }
 
 .view-as-dropdown-btn {

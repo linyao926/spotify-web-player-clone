@@ -11,7 +11,7 @@ $avatar-size: 32px;
     padding: index.$spacing-base;
     position: relative;
     flex-shrink: 0;
-    z-index: 0;
+    z-index: 4;
 }
 
 .header,
@@ -52,7 +52,7 @@ $avatar-size: 32px;
     @include index.flex-center;
     cursor: pointer;
     position: relative;
-    z-index: 2;
+    z-index: 4;
 }
 
 .user-avatar {

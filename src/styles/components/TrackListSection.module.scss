@@ -63,13 +63,25 @@
     }    
 }
 
-.header-title {
+.header-title-wrapper {
     height: fit-content;
     font-size: 24px;
-    margin-bottom: index.$spacing-medium;
+    margin-bottom: 20px;
     border: none;
     color: var(--text-base);
     font-weight: bold;
+    @include index.flex-center(column, flex-start, flex-start);
+
+    &.top {
+        flex-direction: column-reverse;
+    }
+}
+
+.header-subtitle {
+    font-size: index.$font-size-small;
+    color: var(--text-subdued);
+    font-weight: 500;
+    margin-bottom: index.$spacing-base;
 }
 
 .track-list-content {

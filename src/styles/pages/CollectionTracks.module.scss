@@ -1,0 +1,37 @@
+@use '../index.scss';
+
+.liked-placeholder {
+    @include index.flex-center(column);
+    gap: index.$spacing-medium;
+    width: 100%;
+    height: 40vh;
+    padding: var(--content-spacing);
+
+    .icon-wrapper {
+        flex-shrink: 0;
+        display: block;
+        width: 32px;
+        height: 32px;
+    }
+
+    svg {
+        width: 32px;
+        height: 32px;
+    }
+
+    h3 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin: 20px 0 8px;
+    }
+}
+
+.description {
+    font-size: index.$font-size-small;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.btn-wrapper {
+    flex-shrink: 0;
+}

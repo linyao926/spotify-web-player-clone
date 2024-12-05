@@ -4,6 +4,7 @@
     padding: 0 var(--content-spacing);
     @include index.flex-center(column, flex-start, flex-start);
     width: 100%;
+    margin-bottom: 40px;
 }
 
 .artist {
@@ -60,5 +61,45 @@
 }
 
 .artist-subtitle {
+    font-size: index.$font-size-small;
+}
+
+.track-album-display {
+    margin-bottom: 32px;
+    padding: var(--content-spacing);
+}
+
+.track-album-display-header {
+    background-color: hsla(0, 0%, 100%, .1);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    display: flex;
+    position: relative;
+    width: auto;
+    gap: index.$spacing-medium;
+    margin-bottom: 1px;
+
+    &:hover {
+        background-color: hsla(0, 0%, 100%, .3);
+    }
+}
+
+.header-cover {
+    @include index.imgBase;
+    width: 80px;
+    border-radius: 0;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.header-text {
+    font-weight: bold;
+    font-size: index.$font-size-base;
+    color: var(--text-base);
+    @include index.flex-center(column, center, flex-start);
+}
+
+.header-text-subtitle {
     font-size: index.$font-size-small;
 }

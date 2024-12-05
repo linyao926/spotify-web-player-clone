@@ -10,6 +10,7 @@ import Album from '~/pages/Album/Album';
 import Artist from '~/pages/Artist/Artist';
 import Playlist from '~/pages/Playlist/Playlist';
 import Track from '~/pages/Track/Track';
+import CollectionTracks from '~/pages/CollectionTracks/CollectionTracks';
 import NotFound from './NotFound'; 
 
 import MainAppLayout from '~/layouts/MainAppLayout';
@@ -41,6 +42,10 @@ const routes = [{
         {
           path: '/track',
           element: <Track />,
+        },
+        {
+          path: '/collection/tracks',
+          element: <CollectionTracks />,
         },
         {
             path: '*', // Catch-all route for undefined paths

@@ -1,9 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux'; 
-import { 
-  fetchBrowseData, 
-  selectBrowseData
-} from '~/redux/slices/browseDataSlice';
 import { openModal } from '~/redux/slices/uiSlice';
 import { 
     PlayIcon, 
@@ -14,13 +10,14 @@ import {
     ItemActiveIcon, 
     EditIcon,
 } from '~/assets/icons';
+import { useSubContext } from '~/hooks/useSubContext';
+import { trackListViewAsSubContext } from '~/constants/subContextItems';
+import { formatMillisecondsToMinutes, formatToYear } from '~/utils/timeUtils';
 import ScrollWrapper from '~/components/ScrollWrapper/ScrollWrapper';
 import ResponsiveTitle from '~/components/ResponsiveTitle/ResponsiveTitle';
 import ContentFooter from '~/components/ContentFooter/ContentFooter';
 import Button from '~/components/Button/Button';
 import EditPlaylistModal from '~/components/EditPlaylistModal/EditPlaylistModal';
-import { useSubContext } from '~/hooks/useSubContext';
-import { trackListViewAsSubContext } from '~/constants/subContextItems';
 import SubContextMenu from '~/components/SubContextMenu/SubContextMenu';
 import classNames from 'classnames/bind';
 import styles from '~/styles/layouts/MediaDetailLayout.module.scss';
@@ -103,6 +100,8 @@ const MediaDetailLayout = React.forwardRef((props, ref) => {
         (item) => item.value === viewMode
     );
 
+    // console.log(trackCount > 0)
+
     return (
       <>
         <ScrollWrapper target={ref} 
@@ -149,11 +148,11 @@ const MediaDetailLayout = React.forwardRef((props, ref) => {
                         {followerCount && <span style={{fontSize: '1rem', color: 'var(--text-base)'}}
                         >{followerCount} followers</span>}
                         {albumName && <span className={cx('media-information-album')}>{albumName}</span>}
-                        {releaseDate && <span>{releaseDate}</span>}
-                        {duration && <span>{duration}</span>}
-                        {trackCount && totalDuration && <span className={cx('media-stats')}>
-                            <span>{trackCount} songs</span>
-                            <span>{totalDuration}</span>
+                        {releaseDate && <span>{formatToYear(releaseDate)}</span>}
+                        {duration && <span>{formatMillisecondsToMinutes(duration)}</span>}
+                        {trackCount > 0 && <span className={cx('media-stats')}>
+                            <span>{`${trackCount} songs`}</span>
+                            {totalDuration && <span>{totalDuration}</span>}
                         </span>}
                     </div>
                 </div>

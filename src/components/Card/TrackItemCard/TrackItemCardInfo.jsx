@@ -12,6 +12,7 @@ const TrackItemCardInfo = (props) => {
         title,
         authors,
         showIndex,
+        showArtist,
     } = props;
 
     return (
@@ -28,7 +29,7 @@ const TrackItemCardInfo = (props) => {
             </div>
             <div className={cx('track-item-card-info-text')}>
                 <span className={cx('track-item-card-title')}>{title}</span>
-                <span className={cx('track-item-card-author-wrapper')}>{authors}</span>
+                {showArtist && <span className={cx('track-item-card-author-wrapper')}>{authors}</span>}
             </div>
         </div>
     );

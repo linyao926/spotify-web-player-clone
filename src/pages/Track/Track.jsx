@@ -4,10 +4,15 @@ import {
     fetchTrackData, 
     selectTrackInfo,
     selectTrackArtist,
+    selectAlbum,
+    selectArtistAlbums,
+    selectArtistSingles,
+    selectArtistTopTracks,
 } from '~/redux/slices/trackSlice';
 import MediaDetailLayout from '~/layouts/MediaDetailLayout';
 import TrackListSection from '~/components/TrackListSection/TrackListSection';
 import MediaSection from '~/components/MediaSection/MediaSection';
+import AlbumDisplay from './AlbumDisplay';
 import classNames from 'classnames/bind';
 import styles from '~/styles/pages/Track.module.scss';
 
@@ -22,6 +27,10 @@ function Track(props) {
     const { accessToken } = useSelector((state) => state.auth);
     const trackInfo = useSelector(selectTrackInfo);
     const trackArtist = useSelector(selectTrackArtist);
+    const album = useSelector(selectAlbum)
+    const artistAlbums = useSelector(selectArtistAlbums)
+    const artistSingles = useSelector(selectArtistSingles)
+    const artistTopTracks = useSelector(selectArtistTopTracks)
 
     const mediaLayoutRef = useRef(null);
     const childRef = useRef(null);
@@ -34,6 +43,8 @@ function Track(props) {
             }));
         }
     }, [accessToken, dispatch]);
+
+    // console.log(artistTopTracks)
 
     return (
         <MediaDetailLayout
@@ -64,21 +75,33 @@ function Track(props) {
                     </div>
                 </div>  
             </div>
-            {/* {trackTopTracks.tracks && <TrackListSection 
-                data={trackTopTracks.tracks}
+            {artistTopTracks.tracks && <TrackListSection 
+                data={artistTopTracks.tracks}
                 initialColumns={4}
                 ref={childRef}
-                showAlbum
                 headerType="title"
-                title="Popular"
+                subtitle="Popular Tracks by"
+                title={trackArtist.name}
+                subtitlePosition="top"
+                seeMore
+                showAlbum
+                showArtist={false}
             />}
-            {trackAlbums.items && <MediaSection 
-                data={trackAlbums.items}
+            {artistAlbums.items && <MediaSection 
+                data={artistAlbums.items}
                 type="album"
-                title={`Discography`}
+                title={`Popular Releases by ${trackArtist.name}`}
                 showAll
-                routeLink = {`/track/${trackInfo.id}/discography/all`}
-            />} */}
+                routeLink = {`/track/${trackInfo.id}/discography/album`}
+            />}
+            {artistSingles.items && <MediaSection 
+                data={artistSingles.items}
+                type="album"
+                title={`Popular Singles and EPs by ${trackArtist.name}`}
+                showAll
+                routeLink = {`/track/${trackInfo.id}/discography/single`}
+            />}
+            {album.length !== 0 && <AlbumDisplay albumData={album} />}
         </MediaDetailLayout>
     );
 }

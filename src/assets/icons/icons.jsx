@@ -473,6 +473,19 @@ export const DurationRepresentIcon = ({ className, width = '1.6rem', height = '1
     </svg>
 );
 
+export const LikedPlaceholderIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+    <svg
+        className={className}
+        width={width}
+        height={height}
+        viewBox="0 0 24 24"
+        fill="currentcolor"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path d="M15 4v12.167a3.5 3.5 0 1 1-3.5-3.5H13V4h2zm-2 10.667h-1.5a1.5 1.5 0 1 0 1.5 1.5v-1.5z"></path>
+    </svg>
+);
+
 // Player controls
 export const ShuffleIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
     <svg

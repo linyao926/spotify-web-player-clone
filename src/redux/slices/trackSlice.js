@@ -41,6 +41,10 @@ const trackSlice = createSlice({
     initialState: {
       trackInfo: [],
       trackArtist: [],
+      album: [],
+      artistAlbums: [],
+      artistSingles: [],
+      artistTopTracks: [],
       loading: false,
       error: null,
     },
@@ -55,6 +59,10 @@ const trackSlice = createSlice({
           state.loading = false;
           state.trackInfo = action.payload.trackInfo;
           state.trackArtist = action.payload.trackArtist;
+          state.album = action.payload.album;
+          state.artistAlbums = action.payload.artistAlbums;
+          state.artistSingles = action.payload.artistSingles;
+          state.artistTopTracks = action.payload.artistTopTracks;
         })
         .addCase(fetchTrackData.rejected, (state, action) => {
           state.loading = false;
@@ -65,5 +73,9 @@ const trackSlice = createSlice({
 
 export const selectTrackInfo = (state) => state.track.trackInfo;
 export const selectTrackArtist = (state) => state.track.trackArtist;
+export const selectAlbum = (state) => state.track.album;
+export const selectArtistAlbums = (state) => state.track.artistAlbums;
+export const selectArtistSingles = (state) => state.track.artistSingles;
+export const selectArtistTopTracks = (state) => state.track.artistTopTracks;
 
 export default trackSlice.reducer;

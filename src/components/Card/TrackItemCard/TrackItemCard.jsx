@@ -23,6 +23,7 @@ const TrackItemCard = (props) => {
         addedDate = '',
         duration = '',
         showIndex = false,
+        showArtist = true,
         showAlbum = false,
         showAddedDate = false,
     } = props;
@@ -52,13 +53,14 @@ const TrackItemCard = (props) => {
                     title={title}
                     authors={authorList}
                     showIndex={showIndex}
+                    showArtist={showArtist}
                 /> 
                 : <>
                     <span className={cx('track-item-card-title')}>{title}</span>
-                    {currentColumns >= 4 && <span className={cx('track-item-card-author-wrapper')}>{authorList}</span>}
+                    {showArtist && currentColumns >= 4 && <span className={cx('track-item-card-author-wrapper')}>{authorList}</span>}
                 </>
             }
-            {(currentColumns >= 5 || (viewAs === 'list' && currentColumns >= 4)) || initialColumns >= 3 && showAlbum && <span className={cx('track-item-album')}>{album}</span>}
+            {((currentColumns >= 5 || (viewAs === 'list' && currentColumns >= 4)) || initialColumns >= 3) && showAlbum && <span className={cx('track-item-album')}>{album}</span>}
             {(currentColumns >= 6 || (viewAs === 'list' && currentColumns >= 5)) && showAddedDate && <span className={cx('track-item-added-date')}>{formatDate(addedDate)}</span>}
             <TrackItemCardActions 
                 duration={formatMillisecondsToMinutes(duration)}

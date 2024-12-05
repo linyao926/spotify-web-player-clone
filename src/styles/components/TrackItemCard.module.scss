@@ -145,16 +145,16 @@ $track-item-img-height: 40px;
 .track-item-card-info-text {
     @include index.flex-center(column, $align: flex-start);
     width: calc(100% - $track-item-img-height - 12px) ;
-
-    span:hover {
-        text-decoration: underline;
-        text-underline-offset: 3px
-    }
 }
 
 .track-item-card-title {
     color: var(--text-base);
     font-size: index.$font-size-base;
+
+    &:hover {
+        text-decoration: underline;
+        text-underline-offset: 3px
+    }
 }
 
 .track-item-card-title,
@@ -175,6 +175,13 @@ $track-item-img-height: 40px;
         &:hover {
             color: var(--text-subdued);
         }
+    }
+}
+
+.track-item-card-author {
+    &:hover {
+        text-decoration: underline;
+        text-underline-offset: 3px
     }
 }
 

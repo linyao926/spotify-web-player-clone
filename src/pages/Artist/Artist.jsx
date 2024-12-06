@@ -6,7 +6,7 @@ import {
     selectArtistAlbums,
     selectArtistTopTracks,
 } from '~/redux/slices/artistSlice';
-import MediaDetailLayout from '~/layouts/MediaDetailLayout';
+import MediaDetailLayout from '~/layouts/MediaDetailLayout/MediaDetailLayout';
 import TrackListSection from '~/components/TrackListSection/TrackListSection';
 import MediaSection from '~/components/MediaSection/MediaSection';
 
@@ -51,6 +51,7 @@ function Artist(props) {
                 showAlbum
                 headerType="title"
                 title="Popular"
+                seeMore
             />}
             {artistAlbums.items && <MediaSection 
                 data={artistAlbums.items}

@@ -6,7 +6,7 @@ import {
     selectAlbumItems,
     selectRelatedTrack,
 } from '~/redux/slices/albumSlice';
-import MediaDetailLayout from '~/layouts/MediaDetailLayout';
+import MediaDetailLayout from '~/layouts/MediaDetailLayout/MediaDetailLayout';
 import TrackListSection from '~/components/TrackListSection/TrackListSection';
 import MediaSection from '~/components/MediaSection/MediaSection';
 import { contentScrollHandler } from '~/utils/eventHandler';

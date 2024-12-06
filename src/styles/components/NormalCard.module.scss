@@ -1,16 +1,13 @@
 @use '../index.scss';
 
-$card-width: 184px;
-
 .normal-card {
     width: 100%;
     height: auto;
     border-radius: index.$border-radius-base;
     padding: var(--padding-normal-card);
-    @include index.flex-center(column, $align: flex-start);
+    @include index.flex-center(column, flex-start, flex-start);
     gap: index.$spacing-base;
-    min-width: 172px;
-    max-width: 320px;
+    min-width: var(--min-column-width);
 
     &:hover {
         background-color: var(--background-highlight);

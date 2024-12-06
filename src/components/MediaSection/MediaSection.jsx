@@ -1,8 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { PrevIcon, NextIcon } from '~/assets/icons';
-import CustomSwiper from './CustomSwiper';
 import NormalCard from '~/components/Card/NormalCard/NormalCard';
+import SwiperWrap from './SwiperWrap';
 import Button from '~/components/Button/Button';
 import { mapToNormalCardData } from '~/utils/dataMapper';
 import classNames from 'classnames/bind';
@@ -17,14 +16,54 @@ const MediaSection = (props) => {
         showAll = true,
         data = [],
         type = '',
+        isSwiper = false,
     } = props;
 
-    const slidesData = data.map((item) => {
+    const containerRef = useRef(null);
+
+    const [columnCount, setColumnCount] = useState(5);
+
+    useEffect(() => {
+        const container = containerRef.current;
+        if (!container) return;
+
+        const adjustColumns = (width) => {
+            let count;
+            if (width > 1063) {
+                count = 6
+            } else if (width > 907) {
+                count = 5;
+            } else if (width > 727) {
+                count = 4;
+            } else if (width > 549) {
+                count = 3;
+            } else {
+                count = 2;
+            }
+            setColumnCount(count);
+        };
+
+        const observer = new ResizeObserver((entries) => {
+            for (let entry of entries) {
+                adjustColumns(entry.contentRect.width);
+            }
+        });
+
+        observer.observe(container);
+
+        return () => observer.disconnect();
+    }, [containerRef, columnCount]);
+
+    const slidesData = data.map((item, index) => {
         let el;
         if (item[type]) {
             el = item[type];
         } else {
             el = item;
+        }
+
+        if (!isSwiper) {
+            if (index > columnCount - 1) return;
         }
 
         const mappedData = mapToNormalCardData(el, type);
@@ -40,115 +79,23 @@ const MediaSection = (props) => {
           />
         );
     });
-
-    const [isFirstSwiperSlide, setIsFirstSwiperSlide] = useState(true);
-    const [isLastSwiperSlide, setIsLastSwiperSlide] = useState(false);
-    const [slidesPerView, setSlidesPerView] = useState(5);
-    const [slidesOffsetBefore, setSlidesOffsetBefore] = useState(40);
-    const [swiperHeight, setSwiperHeight] = useState(null);
-    const [swiperBtnTop, setSwiperBtnTop] = useState(null);
-    const [slideWidth, setSlideWidth] = useState(200);
-    const [marginContent, setMarginContent] = useState(40);
-
-    const swiperRef = useRef(null);
-
-    useEffect(() => {
-        const rootStyles = getComputedStyle(document.documentElement);
-        const spacingValue = rootStyles.getPropertyValue('--padding-content').trim();
-        const spacingCardValue = rootStyles.getPropertyValue('--padding-normal-card').trim();
-        const result = parseInt(spacingValue, 10) + parseInt(spacingCardValue, 10);
-        setMarginContent(result);
-    }, []);
-
-    useEffect(() => {
-        if (!isFirstSwiperSlide) {
-            setSlidesOffsetBefore(0);
-        } else {
-            setSlidesOffsetBefore(40);
-        }
-    }, [isFirstSwiperSlide]);
-    
-    useEffect(() => {
-        if (swiperHeight) {
-            setSwiperBtnTop(swiperHeight / 2 + 32);
-        }
-    }, [swiperHeight]);
-
-    const handleNextClick = () => {
-        if (swiperRef.current) {
-            swiperRef.current.slideNext(); 
-        }
-    };
-
-    const handlePrevClick = () => {
-        if (swiperRef.current) {
-            swiperRef.current.slidePrev(); 
-        }
-    };
-
-    const swiperBtnStyle = {
-        transition: 'all 0.3s',
-        top: swiperBtnTop && `${swiperBtnTop}px`,
-    };
     
     return (
-        <section className={cx('media-section')}>
+        <section className={cx('media-section')} ref={containerRef}>
             <header className={cx('media-section-header')}>
                 <Link className={cx('media-section-header-title')}
                       to={routeLink}
                 >{title}</Link>
-                {showAll && <Link className={cx('media-section-header-sub-title')}
+                {showAll && slidesData.length > columnCount && <Link className={cx('media-section-header-sub-title')}
                       to={routeLink}
                 >Show all</Link>}
             </header>
-            <div className={cx('swiper-wrap')}
-                style={{
-                    marginLeft: !isFirstSwiperSlide ? `-${slideWidth - marginContent}px` : `-${marginContent}px`,
-                }}
-            >
-                <CustomSwiper 
-                    slidesData={slidesData}
-                    slidesPerView={slidesPerView}
-                    slidesOffsetBefore={slidesOffsetBefore}
-                    setIsFirstSwiperSlide={setIsFirstSwiperSlide}
-                    setIsLastSwiperSlide={setIsLastSwiperSlide}
-                    setSwiperHeight={setSwiperHeight}
-                    setSlideWidth={setSlideWidth}
-                    swiperRefFromParent={swiperRef}
-                />
-                <span className={cx('swiper-button-prev')}
-                    onClick={handlePrevClick}
-                    style={{
-                        ...swiperBtnStyle, 
-                        opacity: isFirstSwiperSlide ? 0 : 1,
-                    }}
-                >
-                    <Button 
-                        hasIcon
-                        icon={<PrevIcon />}
-                        size="size-small"
-                        variant="dark-background"
-                        borderRadius="circle"
-                        padding="0"
-                    />
-                </span>
-                <span className={cx('swiper-button-next')}
-                    onClick={handleNextClick}
-                    style={{
-                        ...swiperBtnStyle, 
-                        opacity: isLastSwiperSlide ? 0 : 1,
-                    }}
-                >
-                    <Button 
-                        hasIcon
-                        icon={<NextIcon />}
-                        size="size-small"
-                        variant="dark-background"
-                        borderRadius="circle"
-                        padding="0"
-                    />
-                </span>
+            {isSwiper 
+            ? <SwiperWrap data={slidesData} />
+            : <div className={cx('grid-wrapper')}>
+                {slidesData}
             </div>
+            }
         </section>
     );
 };

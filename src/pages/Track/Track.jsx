@@ -9,7 +9,7 @@ import {
     selectArtistSingles,
     selectArtistTopTracks,
 } from '~/redux/slices/trackSlice';
-import MediaDetailLayout from '~/layouts/MediaDetailLayout';
+import MediaDetailLayout from '~/layouts/MediaDetailLayout/MediaDetailLayout';
 import TrackListSection from '~/components/TrackListSection/TrackListSection';
 import MediaSection from '~/components/MediaSection/MediaSection';
 import AlbumDisplay from './AlbumDisplay';

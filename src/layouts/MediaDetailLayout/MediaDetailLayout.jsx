@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux'; 
 import { openModal } from '~/redux/slices/uiSlice';
+import useExtractColors from "~/hooks/useExtractColors";
 import { 
     PlayIcon, 
     PlayLargeIcon,
@@ -12,9 +13,8 @@ import {
 } from '~/assets/icons';
 import { useSubContext } from '~/hooks/useSubContext';
 import { trackListViewAsSubContext } from '~/constants/subContextItems';
-import { formatMillisecondsToMinutes, formatToYear } from '~/utils/timeUtils';
+import MediaInformation from './MediaInformation';
 import ScrollWrapper from '~/components/ScrollWrapper/ScrollWrapper';
-import ResponsiveTitle from '~/components/ResponsiveTitle/ResponsiveTitle';
 import ContentFooter from '~/components/ContentFooter/ContentFooter';
 import Button from '~/components/Button/Button';
 import EditPlaylistModal from '~/components/EditPlaylistModal/EditPlaylistModal';
@@ -58,6 +58,8 @@ const MediaDetailLayout = React.forwardRef((props, ref) => {
     const isSubContextOpen = useSelector((state) => state.ui.subContext.contexts['track-list-view-as'].isOpen);
     const isEditOpen = useSelector((state) => state.ui.modal['edit-playlist'].isOpen);
     const position = useSelector((state) => state.position);
+
+    const { backgroundBase } = useExtractColors(coverUrl);
     const { handleOpenSubContext, handleCloseSubContext } = useSubContext();
 
     const [isInLibrary, setIsInLibrary] = useState(true);
@@ -102,8 +104,6 @@ const MediaDetailLayout = React.forwardRef((props, ref) => {
         (item) => item.value === viewMode
     );
 
-    // console.log(trackCount > 0)
-
     return (
       <>
         <ScrollWrapper target={ref} 
@@ -114,7 +114,11 @@ const MediaDetailLayout = React.forwardRef((props, ref) => {
             <header className={cx('media-detail-header')}
                 ref={headerRef}
             >
-                <div className={cx('header-background')}></div>
+                <div className={cx('header-background')}
+                    style={{
+                        backgroundColor: backgroundBase,
+                    }}
+                ></div>
                 <div className={cx('gradient-overlay')}></div>
                 <div className={cx('cover-img-container', coverIsCircle && 'cover-circle')}>
                     {coverUrl 
@@ -128,64 +132,28 @@ const MediaDetailLayout = React.forwardRef((props, ref) => {
                         <span>Choose photo</span>
                     </div>}
                 </div>
-                <div className={cx('media-information-container')}>
-                    <span className={cx('media-information-type')}>{type}</span>
-                    <ResponsiveTitle 
-                        title={title}
-                        sidebarWidth={72} 
-                        extraComponentWidth={300} 
-                        isExtraComponentVisible={false} 
-                        clickFunction={() => {
-                            if (isEditable) {
-                                dispatch(openModal({id: 'edit-playlist'}))
-                            }
-                        }}
-                    />
-                    {description && <div>{description}</div>}
-                    <div className={cx('media-information-subtitles')}>
-                    {[
-                    authorImgUrl && (
-                        <img
-                            key={'author_img'}
-                            src={authorImgUrl}
-                            alt={`${authorName} avatar`}
-                            className={cx('media-information-author-img')}
-                        />
-                    ),
-                    authorName && (
-                        <span key={'author_name'} className={cx('media-information-author')}>{authorName}</span>
-                    ),
-                    publicPlaylists > 0 && (
-                        <span key={'public_playlists'} style={{ fontSize: '1rem', color: 'var(--text-base)' }}>
-                            {publicPlaylists} Public Playlists
-                        </span>
-                    ),
-                    followingCount > 0 && (
-                        <span key={'following'} style={{ fontSize: '1rem', color: 'var(--text-base)' }}>
-                            {followingCount} Following
-                        </span>
-                    ),
-                    followerCount && (
-                        <span key={'follower'} style={{ fontSize: '1rem', color: 'var(--text-base)' }}>
-                            {followerCount} followers
-                        </span>
-                    ),
-                    albumName && (
-                        <span key={'album_name'} className={cx('media-information-album')}>{albumName}</span>
-                    ),
-                    releaseDate && <span key={'release_date'}>{formatToYear(releaseDate)}</span>,
-                    duration && <span key={'duration'}>{formatMillisecondsToMinutes(duration)}</span>,
-                    trackCount > 0 && (
-                        <span key={'track_count'} className={cx('media-stats')}>
-                            <span>{`${trackCount} songs`}</span>
-                            {totalDuration && <span>{totalDuration}</span>}
-                        </span>
-                    ),].filter(Boolean)}
-                    </div>
-                </div>
+                <MediaInformation 
+                    type = {type}
+                    title = {title}
+                    description = {description}
+                    authorImgUrl = {authorImgUrl}
+                    authorName = {authorName}
+                    albumName = {albumName}
+                    releaseDate = {releaseDate}
+                    duration = {duration}
+                    trackCount = {trackCount}
+                    totalDuration = {totalDuration}
+                    publicPlaylists = {publicPlaylists}
+                    followingCount = {followingCount}
+                    followerCount = {followerCount}
+                />
             </header>
             <div className={cx('media-detail-content')}>
-                <div className={cx('media-detail-actions-background')}></div>
+                <div className={cx('media-detail-actions-background')}
+                    style={{
+                        backgroundColor: backgroundBase,
+                    }}
+                ></div>
                 <div className={cx('media-detail-actions')}>
                     <div className={cx('media-detail-actions-left')}>
                         {canPlay && <div className={cx('btn-wrapper')}>
@@ -250,8 +218,16 @@ const MediaDetailLayout = React.forwardRef((props, ref) => {
                 {children}
             </div>
             <ContentFooter />
-            {isFixed && <div className={cx('layout-header-fixed')}>
-                <div className={cx('layout-header-fixed-background')}></div>
+            {isFixed && <div className={cx('layout-header-fixed')}
+                style={{
+                    backgroundColor: backgroundBase,
+                }}
+            >
+                <div className={cx('layout-header-fixed-background')}
+                    style={{
+                        backgroundColor: backgroundBase,
+                    }}
+                ></div>
                 {canPlay && <div className={cx('btn-wrapper')}>
                     <Button 
                         hasIcon 

@@ -7,7 +7,7 @@ import {
     PlaylistFallbackIcon,
     LikedPlaceholderIcon,
 } from '~/assets/icons';
-import MediaDetailLayout from '~/layouts/MediaDetailLayout';
+import MediaDetailLayout from '~/layouts/MediaDetailLayout/MediaDetailLayout';
 import TrackListSection from '~/components/TrackListSection/TrackListSection';
 import Button from '~/components/Button/Button';
 import { contentScrollHandler } from '~/utils/eventHandler';

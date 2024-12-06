@@ -63,10 +63,19 @@
     }    
 }
 
+.header-title {
+    @include index.flex-center($justify: space-between);
+    margin-bottom: 20px;
+
+    .header-show-more-btn {
+        padding: 0;
+    }
+}
+
+
 .header-title-wrapper {
     height: fit-content;
     font-size: 24px;
-    margin-bottom: 20px;
     border: none;
     color: var(--text-base);
     font-weight: bold;
@@ -86,5 +95,17 @@
 
 .track-list-content {
     @include index.flex-center(column);
-   
+}
+
+.show-more-btn {
+    display: block;
+    font-size: index.$font-size-small;
+    font-weight: bold;
+    color: var(--text-subdued);
+    padding: index.$spacing-medium;
+    cursor: pointer;
+
+    &:hover {
+        color: var(--text-base);
+    }
 }

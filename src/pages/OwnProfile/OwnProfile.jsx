@@ -8,7 +8,7 @@ import {
 import { 
     UserFallbackIcon,
 } from '~/assets/icons';
-import MediaDetailLayout from '~/layouts/MediaDetailLayout';
+import MediaDetailLayout from '~/layouts/MediaDetailLayout/MediaDetailLayout';
 import MediaSection from '~/components/MediaSection/MediaSection';
 import TrackListSection from '~/components/TrackListSection/TrackListSection';
 import Button from '~/components/Button/Button';

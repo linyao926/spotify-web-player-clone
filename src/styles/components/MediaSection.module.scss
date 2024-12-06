@@ -49,9 +49,15 @@
 }
 
 .swiper-button-prev {
-    left: -24px;
+    left: 14px;
 }
 
 .swiper-button-next {
-    right: -24px;
+    right: 14px;
+}
+
+.grid-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--min-column-width), 1fr));
+    margin-inline: -12px;
 }

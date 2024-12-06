@@ -9,7 +9,7 @@ import {
 import { 
     PlaylistFallbackIcon,
 } from '~/assets/icons';
-import MediaDetailLayout from '~/layouts/MediaDetailLayout';
+import MediaDetailLayout from '~/layouts/MediaDetailLayout/MediaDetailLayout';
 import TrackListSection from '~/components/TrackListSection/TrackListSection';
 import { contentScrollHandler } from '~/utils/eventHandler';
 

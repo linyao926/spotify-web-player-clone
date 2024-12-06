@@ -7,7 +7,7 @@ import {
 import { 
     UserFallbackIcon,
 } from '~/assets/icons';
-import MediaDetailLayout from '~/layouts/MediaDetailLayout';
+import MediaDetailLayout from '~/layouts/MediaDetailLayout/MediaDetailLayout';
 
 function UserProfile(props) {
     const dispatch = useDispatch(); 

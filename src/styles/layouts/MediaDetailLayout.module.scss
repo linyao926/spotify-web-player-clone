@@ -1,6 +1,6 @@
 @use '../index';
 
-$primary-back-ground-color: rgb(83, 83, 83);;
+$primary-background-color: rgb(83, 83, 83);
 
 .media-detail-layout {
     @include index.pageContentBase;
@@ -27,7 +27,7 @@ $primary-back-ground-color: rgb(83, 83, 83);;
 }
 
 .header-background {
-    background-color: $primary-back-ground-color;
+    background-color: $primary-background-color;
 }
 
 .gradient-overlay {
@@ -47,12 +47,12 @@ $primary-back-ground-color: rgb(83, 83, 83);;
     @include index.flex-center($justify: flex-start);
     gap: index.$spacing-base;
     transform: translateY(0);
-    background-color: $primary-back-ground-color;
+    background-color: $primary-background-color;
     z-index: 3;
 }
 
 .layout-header-fixed-background {
-    background-color: $primary-back-ground-color;
+    background-color: $primary-background-color;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     bottom: 0;
@@ -187,7 +187,7 @@ $primary-back-ground-color: rgb(83, 83, 83);;
 }
 
 .media-detail-actions-background {
-    background-color: $primary-back-ground-color;
+    background-color: $primary-background-color;
     background-image: linear-gradient(rgba(0, 0, 0, .6) 0, var(--background-base) 100%), var(--background-noise);
     width: 100%;
     height: 232px;

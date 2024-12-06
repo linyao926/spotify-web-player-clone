@@ -24,11 +24,14 @@ const TrackListSection = React.forwardRef((props, ref) => {
         nonIndex = false,
         related = false,
         seeMore = false,
+        showAll = false,
         showAddToLibrary,
         showExpand,
     } = props;
 
     const headerRef = useRef(null);
+
+    const [isFullList, setIsFullList] = useState(false);
 
     const { currentColumns, templateColumns } = useDynamicColumns(headerRef, initialColumns, true);
 
@@ -45,7 +48,13 @@ const TrackListSection = React.forwardRef((props, ref) => {
             if ((index > 4 && index < 10) || (index > 14 && index < 19)) return;
         }
 
-        // console.log(element.album.name)
+        if (!isFullList) {
+            if (index > 4) return;
+        }
+
+        if (showAll) {
+            if (index > 3) return;
+        }
 
         return (
             <TrackItemCard 
@@ -85,13 +94,22 @@ const TrackListSection = React.forwardRef((props, ref) => {
                 {(currentColumns >= 6 || (viewAs === 'list' && currentColumns >= 5)) && showAddedDate && <span>Date added</span>}
                 <span className={cx('header-duration')}><DurationRepresentIcon /></span>
             </header>}
-            {headerType === 'title' && <header className={cx('header-title-wrapper', subtitlePosition)}>
-                <span>{title}</span>
-                <span className={cx('header-subtitle')}>{subtitle}</span>
+            {headerType === 'title' && <header className={cx('header-title')}>
+                <div className={cx('header-title-wrapper', subtitlePosition)}>
+                    <span>{title}</span>
+                    <span className={cx('header-subtitle')}>{subtitle}</span>
+                </div>
+                {showAll && <span className={cx('header-show-more-btn', 'show-more-btn')}>Show all</span>}
             </header>}
             <div className={cx('track-list-content')}>
                 {trackListItems}
             </div>
+            {seeMore && <span 
+                className={cx('show-more-btn')}
+                onClick={() => setIsFullList(!isFullList)}
+            >
+                {isFullList ? 'Show less' : 'See more'}
+            </span>}
         </section>
     );
 });

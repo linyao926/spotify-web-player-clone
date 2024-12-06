@@ -21,7 +21,7 @@ import Track from '~/pages/Track/Track';
 import CollectionTracks from '~/pages/CollectionTracks/CollectionTracks';
 import NotFound from './NotFound'; 
 
-import MainAppLayout from '~/layouts/MainAppLayout';
+import MainAppLayout from '~/layouts/MainAppLayout/MainAppLayout';
 
 const AppRoutes = () => {
   const profileInfo = useSelector(selectProfileInfo);

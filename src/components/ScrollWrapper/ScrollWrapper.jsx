@@ -23,10 +23,10 @@ const ScrollWrapper = ({ target, contentScrollHandler = null, layoutScrollHandle
                 },
             });
             if (osInstance.current) {
-                osInstance.current.on("scroll", (event) => {
-                    const scrollInfo = osInstance.current.elements().target.scrollTop;
-                    const scrollY = scrollInfo; // Vertical scroll position
-    
+                osInstance.current.on("scroll", () => {
+                    const scrollInfo = osInstance.current.elements();
+                    const scrollY = scrollInfo.target.scrollTop; 
+
                     if (typeof contentScrollHandler === "function") {
                         contentScrollHandler(scrollY);
                     }

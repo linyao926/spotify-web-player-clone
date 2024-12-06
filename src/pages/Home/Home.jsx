@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'; 
 import { 
   fetchHomeData, 
@@ -9,6 +9,7 @@ import {
   selectTopArtists,
   selectTopTracks,
 } from '~/redux/slices/homeDataSlice';
+import useExtractColors from "~/hooks/useExtractColors";
 import ScrollWrapper from '~/components/ScrollWrapper/ScrollWrapper';
 import { PlayIcon } from '~/assets/icons';
 import MediaSection from '~/components/MediaSection/MediaSection';
@@ -31,7 +32,14 @@ function Home() {
     const loading = useSelector((state) => state.home.loading);
     const error = useSelector((state) => state.home.error);
 
-    const contentRef = useRef(null);
+    const [isTransparent, setIsTransparent] = useState(true);
+    const [trigger, setTrigger] = useState(false);
+    const [currentUrl, setCurrentUrl] = useState(null);
+
+    const containerRef = useRef(null);
+    const headerBGRef = useRef(null);
+
+    const { backgroundBase } = useExtractColors(currentUrl);
 
     useEffect(() => {
       if (accessToken) {
@@ -39,7 +47,23 @@ function Home() {
       }
     }, [accessToken, dispatch]);
 
-    // console.log(popularplaylist)
+    const layoutScrollHandler = (scrollY) => {
+        if (!containerRef.current || !headerBGRef.current) return;
+
+        const headerBGRect = headerBGRef.current.getBoundingClientRect();
+
+        if (scrollY > headerBGRect.bottom - 120) {
+          setIsTransparent(false);
+          setTrigger(false);
+        } else if (scrollY > headerBGRect.bottom / 2 - 120) {
+          setTrigger(true);
+          setIsTransparent(true);
+        } 
+        
+        if (scrollY < headerBGRect.bottom - 120)  {
+          setIsTransparent(true);
+        }
+    };
 
     const getHeaderButton = (text, active = true) => {
         return (
@@ -55,7 +79,10 @@ function Home() {
 
     const getTopItem = (imgUrl, name) => {
         return (
-          <div className={cx("item-wrapper")}>
+          <div className={cx("item-wrapper")}
+            onMouseEnter={() => setCurrentUrl(imgUrl)}
+            onMouseLeave={() => setCurrentUrl(topTracks[0]?.album?.images[0]?.url)}
+          >
             <img 
               src={imgUrl} 
               alt={`${name} avatar`} 
@@ -81,14 +108,28 @@ function Home() {
     
     return (
         <>
-          <ScrollWrapper target={contentRef} />
-          <div className={cx('home-page')} ref={contentRef}>
+          <ScrollWrapper target={containerRef}
+            layoutScrollHandler={layoutScrollHandler}
+          />
+          <div className={cx('home-page')} ref={containerRef}>
+            <div className={cx('home-page-header-background')}
+              style={{
+                backgroundColor: backgroundBase,
+              }}
+              ref={headerBGRef}
+            ></div>
             <header className={cx("home-page-header-buttons")}>
+                <div className={cx("home-page-header-buttons-bg")}
+                  style={{
+                    backgroundColor: backgroundBase,
+                    opacity: isTransparent ? (trigger ? '0.5' : '0') : '1',
+                  }}
+                ></div>
                 {getHeaderButton('All')}
                 {getHeaderButton('Music', false)}
                 {getHeaderButton('Podcasts', false)}
             </header>
-            <div className={cx('home-page-content')}>
+            <div className={cx('home-page-content')} >
               <section className={cx("content-top-items")}>
                 {getTopItem(topArtists[0]?.images[0]?.url, topArtists[0]?.name)}
                 {getTopItem(topArtists[1]?.images[0]?.url, topArtists[1]?.name)}

@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { useGetId } from '~/hooks/useGetId';
 import { useDispatch, useSelector } from 'react-redux'; 
 import { 
     fetchArtistData, 
@@ -15,6 +16,8 @@ function Artist(props) {
         
     } = props;
 
+    const { id } = useGetId();
+
     const dispatch = useDispatch(); 
     const { accessToken } = useSelector((state) => state.auth);
     const artistInfo = useSelector(selectArtistInfo);
@@ -28,10 +31,11 @@ function Artist(props) {
         if (accessToken) {
             dispatch(fetchArtistData({
                 accessToken, 
-                id: '3DOEOdwUYFkuzw2fQV5TDi'
+                id: id
             }));
+             ;
         }
-    }, [accessToken, dispatch]);
+    }, [accessToken, dispatch, id]);
 
     return (
         <MediaDetailLayout

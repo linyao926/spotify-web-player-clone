@@ -1,4 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useGetId } from '~/hooks/useGetId';
 import { useDispatch, useSelector } from 'react-redux'; 
 import { 
     fetchTrackData, 
@@ -23,14 +25,16 @@ function Track(props) {
         
     } = props;
 
+    const { id } = useGetId();
+
     const dispatch = useDispatch(); 
     const { accessToken } = useSelector((state) => state.auth);
     const trackInfo = useSelector(selectTrackInfo);
     const trackArtist = useSelector(selectTrackArtist);
-    const album = useSelector(selectAlbum)
-    const artistAlbums = useSelector(selectArtistAlbums)
-    const artistSingles = useSelector(selectArtistSingles)
-    const artistTopTracks = useSelector(selectArtistTopTracks)
+    const album = useSelector(selectAlbum);
+    const artistAlbums = useSelector(selectArtistAlbums);
+    const artistSingles = useSelector(selectArtistSingles);
+    const artistTopTracks = useSelector(selectArtistTopTracks);
 
     const mediaLayoutRef = useRef(null);
     const childRef = useRef(null);
@@ -39,22 +43,26 @@ function Track(props) {
         if (accessToken) {
             dispatch(fetchTrackData({
                 accessToken, 
-                id: '1FSJO6ZysQq9R1b2owKcAf'
+                id: id
             }));
         }
-    }, [accessToken, dispatch]);
+    }, [accessToken, dispatch, id]);
 
     // console.log(artistTopTracks)
 
     return (
         <MediaDetailLayout
+            id={id}
             coverUrl = {trackInfo.album && trackInfo.album.images[0].url}
             // coverFallback = {<TrackFallbackIcon />}
+            type ={trackInfo?.type}
             title = {trackInfo?.name}
             followerCount={trackInfo?.followers && trackInfo?.followers.total}
             authorImgUrl = {trackArtist.images && trackArtist.images[0].url}
             authorName = {trackArtist.name && trackArtist.name}
+            authorId = {trackArtist.id && trackArtist.id}
             albumName = {trackInfo.album && trackInfo.album.name}
+            albumId = {trackInfo.album && trackInfo.album.id}
             releaseDate = {trackInfo.album && trackInfo.album["release_date"]}
             duration = {trackInfo["duration_ms"] && trackInfo["duration_ms"]}
             canAddToLibrary
@@ -62,7 +70,9 @@ function Track(props) {
             ref={mediaLayoutRef}
         >
             <div className={cx('artists-wrapper')}>
-                <div className={cx('artist')}>
+                <Link className={cx('artist')}
+                    to={`/artist/${trackArtist.id}`}
+                >
                     <div className={cx('artist-cover-wrapper')}>
                         {trackArtist.images 
                             ? <img className={cx('artist-cover')} src={trackArtist.images[0].url} alt='' />
@@ -73,7 +83,7 @@ function Track(props) {
                         <span className={cx('artist-subtitle')}>Artist</span>
                         <span className={cx('artist-title')}>{trackArtist.name && trackArtist.name}</span>
                     </div>
-                </div>  
+                </Link>  
             </div>
             {artistTopTracks.tracks && <TrackListSection 
                 data={artistTopTracks.tracks}
@@ -87,14 +97,14 @@ function Track(props) {
                 showAlbum
                 showArtist={false}
             />}
-            {artistAlbums.items && <MediaSection 
+            {artistAlbums.items && artistAlbums.items.length > 0 && <MediaSection 
                 data={artistAlbums.items}
                 type="album"
                 title={`Popular Releases by ${trackArtist.name}`}
                 showAll
                 routeLink = {`/track/${trackInfo.id}/discography/album`}
             />}
-            {artistSingles.items && <MediaSection 
+            {artistSingles.items && artistSingles.items.length > 0 && <MediaSection 
                 data={artistSingles.items}
                 type="album"
                 title={`Popular Singles and EPs by ${trackArtist.name}`}

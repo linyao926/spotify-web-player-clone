@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from "react-router";
 import { PlayLargeIcon } from '~/assets/icons';
 import Button from '~/components/Button/Button';
 import classNames from 'classnames/bind';

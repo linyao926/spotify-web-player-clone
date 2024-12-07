@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link } from "react-router";
 import { useDispatch, useSelector } from 'react-redux';
 import { selectProfileInfo, fetchProfileData } from '~/redux/slices/profileSlice';
 import { useSubContext } from '~/hooks/useSubContext';
@@ -51,7 +51,7 @@ function MainAppHeader () {
                 variant="background-base"
                 size="size-base"
                 borderRadius="rounded"
-                externalLink={config.routes.login}
+                externalLink={config.routes('').login}
                 disableBlank
             >Log in</Button>
         </>
@@ -96,7 +96,7 @@ function MainAppHeader () {
                     /> 
                 : <div className={cx('user-avatar')}></div>}
                 {isSubContextOpen && <SubContextMenu 
-                    items={profileSubContext} 
+                    items={profileSubContext(profileInfo.id)} 
                     position={position} 
                     alignRight
                 />}

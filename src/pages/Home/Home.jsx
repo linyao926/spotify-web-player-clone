@@ -9,6 +9,7 @@ import {
   selectTopArtists,
   selectTopTracks,
 } from '~/redux/slices/homeDataSlice';
+import { useNavigate } from "react-router";
 import useExtractColors from "~/hooks/useExtractColors";
 import ScrollWrapper from '~/components/ScrollWrapper/ScrollWrapper';
 import { PlayIcon } from '~/assets/icons';
@@ -40,6 +41,7 @@ function Home() {
     const headerBGRef = useRef(null);
 
     const { backgroundBase } = useExtractColors(currentUrl);
+    let navigate = useNavigate();
 
     useEffect(() => {
       if (accessToken) {
@@ -77,20 +79,23 @@ function Home() {
         )
     };
 
-    const getTopItem = (imgUrl, name) => {
+    const getTopItem = (item) => {
         return (
           <div className={cx("item-wrapper")}
-            onMouseEnter={() => setCurrentUrl(imgUrl)}
+            onMouseEnter={() => setCurrentUrl(item?.images ? item?.images[0].url : item?.album.images[0]?.url)}
             onMouseLeave={() => setCurrentUrl(topTracks[0]?.album?.images[0]?.url)}
+            onClick={() => {
+              navigate(`/${item?.type}/${item?.id}`);
+            }}
           >
             <img 
-              src={imgUrl} 
-              alt={`${name} avatar`} 
+              src={item?.images ? item?.images[0].url : item?.album.images[0]?.url} 
+              alt={`${item?.name} avatar`} 
               className={cx("item-img")} 
               loading='lazy'
             />
             <div className={cx("item-details")}>
-              <span className={cx("item-name")}>{name}</span>
+              <span className={cx("item-name")}>{item?.name}</span>
               <span className={cx("item-btn-wrapper")}>
                 <Button 
                   hasIcon 
@@ -130,12 +135,12 @@ function Home() {
                 {getHeaderButton('Podcasts', false)}
             </header>
             <div className={cx('home-page-content')} >
-              <section className={cx("content-top-items")}>
-                {getTopItem(topArtists[0]?.images[0]?.url, topArtists[0]?.name)}
-                {getTopItem(topArtists[1]?.images[0]?.url, topArtists[1]?.name)}
-                {getTopItem(topTracks[0]?.album?.images[0]?.url, topTracks[0]?.name)}
-                {getTopItem(topTracks[1]?.album?.images[0]?.url, topTracks[1]?.name)}
-              </section>
+              {<section className={cx("content-top-items")}>
+                {getTopItem(topArtists[0])}
+                {getTopItem(topArtists[1])}
+                {getTopItem(topTracks[0])}
+                {getTopItem(topTracks[1])}
+              </section>}
 
               {recentlyPlayed.length > 0 && <MediaSection 
                   data={recentlyPlayed}

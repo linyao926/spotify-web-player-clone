@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import { formatMillisecondsToMinutes, formatToYear } from '~/utils/timeUtils';
 import ResponsiveTitle from '~/components/ResponsiveTitle/ResponsiveTitle';
 import classNames from 'classnames/bind';
@@ -12,7 +13,9 @@ const MediaInformation = (props) => {
         description = '',
         authorImgUrl,
         authorName = '',
+        authorId = '',
         albumName = '',
+        albumId = '',
         releaseDate = '',
         duration = '',
         trackCount = '',
@@ -24,7 +27,7 @@ const MediaInformation = (props) => {
 
     return (
         <div className={cx('media-information-container')}>
-            <span className={cx('media-information-type')}>{type}</span>
+            <span className={cx('media-information-type')}>{type === 'track' ? 'song' : type}</span>
             <ResponsiveTitle 
                 title={title}
                 sidebarWidth={72} 
@@ -48,7 +51,11 @@ const MediaInformation = (props) => {
                 />
             ),
             authorName && (
-                <span key={'author_name'} className={cx('media-information-author')}>{authorName}</span>
+                <Link 
+                    to={type === 'playlist' ? `/user/${authorId}` : `/artist/${authorId}`}
+                    key={'author_name'} 
+                    className={cx('media-information-author')}
+                >{authorName}</Link>
             ),
             publicPlaylists > 0 && (
                 <span key={'public_playlists'} style={{ fontSize: '1rem', color: 'var(--text-base)' }}>
@@ -66,7 +73,11 @@ const MediaInformation = (props) => {
                 </span>
             ),
             albumName && (
-                <span key={'album_name'} className={cx('media-information-album')}>{albumName}</span>
+                <Link 
+                    to={`/album/${albumId}`}
+                    key={'album_name'} 
+                    className={cx('media-information-album')}
+                >{albumName}</Link>
             ),
             releaseDate && <span key={'release_date'}>{formatToYear(releaseDate)}</span>,
             duration && <span key={'duration'}>{formatMillisecondsToMinutes(duration)}</span>,

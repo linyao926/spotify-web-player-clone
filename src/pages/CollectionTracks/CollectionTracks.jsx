@@ -41,6 +41,7 @@ function CollectionTracks(props) {
             title = 'Liked Songs'
             authorImgUrl={profileInfo?.images[0]?.url}
             authorName = {profileInfo && profileInfo['display_name']}
+            authorId = {profileInfo && profileInfo.id}
             trackCount = {0}
             canViewAs
             ref={mediaLayoutRef}

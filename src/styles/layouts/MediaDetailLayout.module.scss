@@ -145,7 +145,8 @@ $primary-background-color: rgb(83, 83, 83);
     @include index.flex-center($justify: flex-start);
     flex-wrap: wrap;
 
-    span:not(:last-child):after {
+    span:not(:last-child):after,
+    a::after {
         content: index.$not-last-child-after-content;
         margin: 0 4px;
     }

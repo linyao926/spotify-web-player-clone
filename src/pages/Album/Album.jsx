@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { useGetId } from '~/hooks/useGetId';
 import { useDispatch, useSelector } from 'react-redux'; 
 import { 
     fetchAlbumData, 
@@ -16,6 +17,8 @@ function Album(props) {
         viewAs = 'list',
     } = props;
 
+    const { id } = useGetId();
+
     const [isFixed, setIsFixed] = useState(false);
     const [isVisible, setIsVisible] = useState(true);
 
@@ -32,10 +35,11 @@ function Album(props) {
         if (accessToken) {
             dispatch(fetchAlbumData({
                 accessToken, 
-                id: '58BHwOjoBwnjnkehMXG61A'
+                id: id
             }));
+             ;
         }
-    }, [accessToken, dispatch]);
+    }, [accessToken, dispatch, id]);
     
     const handleScroll = (scrollY) => contentScrollHandler(scrollY, mediaLayoutRef, childRef, setIsFixed, setIsVisible);
 
@@ -47,6 +51,7 @@ function Album(props) {
             title = {albumInfo?.name}
             authorImgUrl={albumInfo?.artists && albumInfo.artists.images[0].url}
             authorName = {albumInfo?.artists && albumInfo.artists.name}
+            authorId = {albumInfo?.artists && albumInfo?.artists.id}
             trackCount = {albumInfo && albumInfo['track_total']}
             totalDuration = '49 min 16 sec'
             canAddToLibrary

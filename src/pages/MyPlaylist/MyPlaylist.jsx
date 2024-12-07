@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { useGetId } from '~/hooks/useGetId';
 import { useDispatch, useSelector } from 'react-redux'; 
 import { 
     selectProfileInfo,
@@ -50,6 +51,7 @@ function MyPlaylist(props) {
             title = {'My Playlist #1'}
             authorImgUrl={profileInfo?.images[0]?.url}
             authorName = {profileInfo && profileInfo['display_name']}
+            authorId = {profileInfo && profileInfo.id}
             trackCount = {0}
             totalDuration = {0}
             canPlay={false}

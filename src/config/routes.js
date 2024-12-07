@@ -1,17 +1,18 @@
-const routes = {
+const routes = (id = '') => ({
     home: `/`,
     search: `/search`,
-    album: `/album/:albumId/`,
-    playlist: `/playlist/:playlistId/`,
-    track: `/track/:trackId/`,
-    artist: `/artist/:artistId/`,
-    ownProfile: `/user/:userId/`,
-    userProfile: `/user/:userId/`,
-    genre: `/genre/:genreId`,
+    album: `/album/${id}`,
+    playlist: `/playlist/${id}`,
+    collectionTracks: '/collection/tracks',
+    'my_playlist': `/my_playlist/${id}`,
+    track: `/track/${id}`,
+    artist: `/artist/${id}`,
+    ownProfile: `/user/${id}`,
+    userProfile: `/user/${id}`,
+    genre: `/genre/${id}`,
     download: `/download`,
     settings: '/settings',
-    collectionTracks: '/collection/tracks',
     login: '/auth/login',
-};
+});
 
 export default routes;

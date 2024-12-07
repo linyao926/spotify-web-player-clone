@@ -26,6 +26,7 @@ const cx = classNames.bind(styles);
 
 const MediaDetailLayout = React.forwardRef((props, ref) => {
     const {
+        id = '',
         coverUrl = '',
         coverFallback = '',
         type = '',
@@ -33,7 +34,9 @@ const MediaDetailLayout = React.forwardRef((props, ref) => {
         description = '',
         authorImgUrl,
         authorName = '',
+        authorId = '',
         albumName = '',
+        albumId = '',
         releaseDate = '',
         duration = '',
         trackCount = '',
@@ -138,7 +141,9 @@ const MediaDetailLayout = React.forwardRef((props, ref) => {
                     description = {description}
                     authorImgUrl = {authorImgUrl}
                     authorName = {authorName}
+                    authorId = {authorId}
                     albumName = {albumName}
+                    albumId = {albumId}
                     releaseDate = {releaseDate}
                     duration = {duration}
                     trackCount = {trackCount}

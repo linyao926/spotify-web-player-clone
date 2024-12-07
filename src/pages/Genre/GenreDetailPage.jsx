@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect, useRef } from 'react';
 import { AppContext } from '~/context/AppContext';
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router";
 import Segment from '~/components/Containers/Segment';
 import Loading from '~/components/Blocks/Loading';
 import MainFooter from '~/components/Blocks/MainFooter';

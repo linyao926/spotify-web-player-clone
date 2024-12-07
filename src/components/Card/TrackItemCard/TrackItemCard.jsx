@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from "react-router";
 import useDynamicColumns from '~/hooks/useDynamicColumns';
 import { PlayLargeIcon } from '~/assets/icons';
 import { formatDate, formatMillisecondsToMinutes } from '~/utils/timeUtils';

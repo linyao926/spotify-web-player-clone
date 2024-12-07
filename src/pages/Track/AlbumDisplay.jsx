@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 import TrackItemCard from '~/components/Card/TrackItemCard/TrackItemCard';
 import classNames from 'classnames/bind';
 import styles from '~/styles/pages/Track.module.scss';
@@ -38,13 +39,15 @@ function AlbumDisplay({ albumData }) {
 
     return (
         <section className={cx('track-album-display')}>
-            <div className={cx('track-album-display-header')}>
+            <Link className={cx('track-album-display-header')}
+                to={`/album/${albumData.id}`}
+            >
                 <img className={cx('header-cover')} src={albumData.images[0].url} />
                 <div className={cx('header-text')}>
                     <span className={cx('header-text-subtitle')}>From the {albumData['album_type']}</span>
                     <span>{albumData.name}</span>
                 </div>
-            </div>
+            </Link>
             <div className={cx('track-album-display-content')}>
                 {trackListItems}
             </div>

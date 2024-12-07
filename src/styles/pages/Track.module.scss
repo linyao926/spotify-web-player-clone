@@ -13,6 +13,7 @@
     border-radius: 8px;
     @include index.flex-center($justify: flex-start);
     gap: index.$spacing-medium;
+    text-decoration: none;
 
     &:hover {
         background-color: hsla(0, 0%, 100%, .1);
@@ -64,6 +65,11 @@
     font-size: index.$font-size-small;
 }
 
+.artist-title:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
 .track-album-display {
     margin-bottom: 32px;
     padding: var(--content-spacing);
@@ -78,7 +84,8 @@
     position: relative;
     width: auto;
     gap: index.$spacing-medium;
-    margin-bottom: 1px;
+    cursor: pointer;
+    text-decoration: none;
 
     &:hover {
         background-color: hsla(0, 0%, 100%, .3);
@@ -102,4 +109,8 @@
 
 .header-text-subtitle {
     font-size: index.$font-size-small;
+}
+
+.track-album-display-content {
+    margin-top: 2px;
 }

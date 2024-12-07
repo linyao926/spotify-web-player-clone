@@ -2,7 +2,7 @@ import React from 'react';
 import {
   createBrowserRouter,
   RouterProvider,
-} from 'react-router-dom';
+} from "react-router";
 import { useDispatch, useSelector } from 'react-redux'; 
 import { 
     fetchProfileData, 
@@ -23,6 +23,8 @@ import NotFound from './NotFound';
 
 import MainAppLayout from '~/layouts/MainAppLayout/MainAppLayout';
 
+import config from '~/config';
+
 const AppRoutes = () => {
   const profileInfo = useSelector(selectProfileInfo);
   const userId = profileInfo?.id;
@@ -40,7 +42,7 @@ const AppRoutes = () => {
           element: <OwnProfile />,
         },
         {
-          path: `/user`,
+          path: `/user/:id`,
           element: <UserProfile />,
         },
         {
@@ -49,19 +51,19 @@ const AppRoutes = () => {
           children: [],
         },
         {
-          path: '/album',
+          path: '/album/:id',
           element: <Album />,
         },
         {
-          path: '/artist',
+          path: '/artist/:id',
           element: <Artist />,
         },
         {
-          path: '/playlist',
+          path: '/playlist/:id',
           element: <Playlist />,
         },
         {
-          path: '/my_playlist',
+          path: '/my_playlist/:id',
           element: <MyPlaylist />,
         },
         {
@@ -69,7 +71,7 @@ const AppRoutes = () => {
           element: <CollectionTracks />,
         },
         {
-          path: '/track',
+          path: '/track/:id',
           element: <Track />,
         },
         {

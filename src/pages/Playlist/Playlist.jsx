@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { useGetId } from '~/hooks/useGetId';
 import { useDispatch, useSelector } from 'react-redux'; 
 import { 
     fetchPlaylistData, 
@@ -18,6 +19,8 @@ function Playlist(props) {
         viewAs = 'list',
     } = props;
 
+    const { id } = useGetId();
+
     const [isFixed, setIsFixed] = useState(false);
     const [isVisible, setIsVisible] = useState(true);
 
@@ -34,10 +37,11 @@ function Playlist(props) {
         if (accessToken) {
             dispatch(fetchPlaylistData({
                 accessToken, 
-                id: '6AtpvRxDKuY1TzM5P2dXFG'
+                id: id
             }));
+             ;
         }
-    }, [accessToken, dispatch]);
+    }, [accessToken, dispatch, id]);
     
     const handleScroll = (scrollY) => contentScrollHandler(scrollY, mediaLayoutRef, childRef, setIsFixed, setIsVisible);
 
@@ -51,6 +55,7 @@ function Playlist(props) {
             title = {playlistInfo?.name}
             authorImgUrl={playlistInfo?.owner && playlistInfo.owner.images[0].url}
             authorName = {playlistInfo?.owner && playlistInfo.owner['display_name']}
+            authorId = {playlistInfo?.owner && playlistInfo.owner.id}
             trackCount = {playlistInfo && playlistInfo['track_total']}
             totalDuration = '49 min 16 sec'
             canAddToLibrary

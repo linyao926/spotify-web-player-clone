@@ -2,7 +2,7 @@ import React from 'react';
 import { ExternalIcon, CompactIcon, ListIcon, ItemActiveIcon } from "~/assets/icons/icons";
 import config from "~/config";
 
-export const profileSubContext = [
+export const profileSubContext = (id) => [
     {
       name: "Account",
       iconRight: <ExternalIcon/>,
@@ -10,18 +10,21 @@ export const profileSubContext = [
     },
     {
       name: "Profile",
-      routeLink: config.routes.ownProfile,
+      routeLink: config.routes(id).ownProfile,
       textUnderline: true,
     },
     {
       name: "Settings",
-      routeLink: config.routes.settings,
+      routeLink: config.routes('').settings,
       textUnderline: true,
       borderBottom: true,
     },
     {
       name: "Log out",
-    //   onClick: () => {}
+      onClick: () => {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+      }
     },
 ];
 

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setTokens } from '~/redux/slices/authSlice'; 
 import AppRoutes from '~/routes/AppRoutes';
-import './styles/global.scss';
+import '~/styles/global.css';
 
 function App() {
   const dispatch = useDispatch();

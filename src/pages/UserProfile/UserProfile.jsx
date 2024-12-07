@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { useGetId } from '~/hooks/useGetId';
 import { useDispatch, useSelector } from 'react-redux'; 
 import { 
     fetchUserData,
@@ -15,16 +16,19 @@ function UserProfile(props) {
     const userInfo = useSelector(selectUserInfo);
     const userStatus = useSelector((state) => state.user.status);
 
+    const { id } = useGetId();
+
     const mediaLayoutRef = useRef(null);
 
     useEffect(() => {
         if (accessToken) {
             dispatch(fetchUserData({
                 accessToken, 
-                id: '31qnwmvydqwk5azyt2wb5t6ywbwi'
+                id: id
             }));
+             ;
         }
-    }, [accessToken, dispatch]);
+    }, [accessToken, dispatch, id]);
 
     return (
         <MediaDetailLayout

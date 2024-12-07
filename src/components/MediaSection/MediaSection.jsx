@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from "react-router";
 import NormalCard from '~/components/Card/NormalCard/NormalCard';
 import SwiperWrap from './SwiperWrap';
 import Button from '~/components/Button/Button';
@@ -75,7 +75,7 @@ const MediaSection = (props) => {
             imgUrl={mappedData.imgUrl}
             title={mappedData.title}
             subtitle={mappedData.subtitle}
-            routeLink={mappedData.routeLink}
+            routeLink={`/${type}/${el.id}`}
           />
         );
     });

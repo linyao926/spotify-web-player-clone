@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from "react-router";
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/SubContextMenu.module.scss';
 
@@ -14,6 +15,8 @@ const SubContextMenu = (props) => {
     const [activeItems, setActiveItems] = useState(items.map(item => item.active || false));
     const [disableItems, setDisableItems] = useState(items.map(item => item.disableItem || false));
     const [subMenu, setSubMenu] = useState(null);
+
+    const navigate = useNavigate();
 
     const handleMouseEnter = (item, event) => {
         if (item.subMenu) {
@@ -33,7 +36,16 @@ const SubContextMenu = (props) => {
                 return updated;
             });
         }
-        item.onClick();
+
+        if (item.routeLink) {
+            navigate(item.routeLink);
+        }
+
+        if (item.externalLink) {
+            window.open(item.externalLink, '_blank');
+        }
+
+        if (item.onClick) item.onClick();
     };
 
     return (

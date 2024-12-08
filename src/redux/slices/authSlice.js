@@ -1,5 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice } from '@reduxjs/toolkit';
 
 const getInitialState = () => {
   const accessToken = localStorage.getItem('accessToken');
@@ -8,7 +7,7 @@ const getInitialState = () => {
   const tokenFetchTime = localStorage.getItem('tokenFetchTime');
 
   return {
-    accessToken: accessToken || null,
+    accessToken: accessToken || '',
     refreshToken: refreshToken || null,
     tokenExpiresIn: tokenExpiresIn ? parseInt(tokenExpiresIn) : 0,
     tokenFetchTime: tokenFetchTime ? parseInt(tokenFetchTime) : 0,
@@ -40,7 +39,7 @@ const authSlice = createSlice({
     },
 
     logout: (state) => {
-      state.accessToken = null;
+      state.accessToken = '';
       state.refreshToken = null;
       state.tokenExpiresIn = 0;
       state.tokenFetchTime = 0;
@@ -51,11 +50,6 @@ const authSlice = createSlice({
       localStorage.removeItem('tokenFetchTime');
     },
   },
-  // extraReducers: (builder) => {
-  //   builder.addCase(refreshTokenFunction.fulfilled, (state, action) => {
-  //     state.accessToken = action.payload;
-  //   });
-  // },
 });
 
 export const { setTokens, updateTokenFetchTime, logout } = authSlice.actions;

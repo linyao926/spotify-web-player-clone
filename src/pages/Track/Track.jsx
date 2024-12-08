@@ -1,16 +1,6 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useRef } from 'react';
+import { Link, useLoaderData } from 'react-router';
 import { useGetId } from '~/hooks/useGetId';
-import { useDispatch, useSelector } from 'react-redux'; 
-import { 
-    fetchTrackData, 
-    selectTrackInfo,
-    selectTrackArtist,
-    selectAlbum,
-    selectArtistAlbums,
-    selectArtistSingles,
-    selectArtistTopTracks,
-} from '~/redux/slices/trackSlice';
 import MediaDetailLayout from '~/layouts/MediaDetailLayout/MediaDetailLayout';
 import TrackListSection from '~/components/TrackListSection/TrackListSection';
 import MediaSection from '~/components/MediaSection/MediaSection';
@@ -27,26 +17,17 @@ function Track(props) {
 
     const { id } = useGetId();
 
-    const dispatch = useDispatch(); 
-    const { accessToken } = useSelector((state) => state.auth);
-    const trackInfo = useSelector(selectTrackInfo);
-    const trackArtist = useSelector(selectTrackArtist);
-    const album = useSelector(selectAlbum);
-    const artistAlbums = useSelector(selectArtistAlbums);
-    const artistSingles = useSelector(selectArtistSingles);
-    const artistTopTracks = useSelector(selectArtistTopTracks);
+    const { 
+        trackInfo, 
+        trackArtist, 
+        album, 
+        artistAlbums, 
+        artistSingles,
+        artistTopTracks,
+      } = useLoaderData();
 
     const mediaLayoutRef = useRef(null);
     const childRef = useRef(null);
-
-    useEffect(() => {
-        if (accessToken) {
-            dispatch(fetchTrackData({
-                accessToken, 
-                id: id
-            }));
-        }
-    }, [accessToken, dispatch, id]);
 
     // console.log(artistTopTracks)
 

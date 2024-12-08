@@ -1,10 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { useLoaderData } from 'react-router';
 import { useGetId } from '~/hooks/useGetId';
-import { useDispatch, useSelector } from 'react-redux'; 
-import { 
-    selectProfileInfo,
-    selectProfileTopTracks,
-} from '~/redux/slices/profileSlice';
 import { 
     PlaylistFallbackIcon,
 } from '~/assets/icons';
@@ -22,26 +18,12 @@ function MyPlaylist(props) {
     const [isVisible, setIsVisible] = useState(true);
     const [findMoreVisible, setFindMoreVisible] = useState(true);
 
-    const dispatch = useDispatch(); 
-    const { accessToken } = useSelector((state) => state.auth);
-    const profileInfo = useSelector(selectProfileInfo);
-    const profileTopTracks = useSelector(selectProfileTopTracks);
+    const { profileInfo, profileTopTracks } = useLoaderData();
 
     const mediaLayoutRef = useRef(null);
     const childRef = useRef(null);
-
-    // useEffect(() => {
-    //     if (accessToken) {
-    //         dispatch(fetchPlaylistData({
-    //             accessToken, 
-    //             id: '6AtpvRxDKuY1TzM5P2dXFG'
-    //         }));
-    //     }
-    // }, [accessToken, dispatch]);
     
     const handleScroll = (scrollY) => contentScrollHandler(scrollY, mediaLayoutRef, childRef, setIsFixed, setIsVisible);
-
-    // console.log(profileTopTracks.items)
 
     return (
         <MediaDetailLayout

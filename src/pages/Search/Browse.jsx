@@ -1,9 +1,5 @@
-import React, { useRef, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux'; 
-import { 
-  fetchBrowseData, 
-  selectBrowseData
-} from '~/redux/slices/browseDataSlice';
+import React, { useRef } from 'react';
+import { useLoaderData } from "react-router";
 import ScrollWrapper from '~/components/ScrollWrapper/ScrollWrapper';
 import BrowseCard from '~/components/Card/BrowseCard/BrowseCard';
 import classNames from 'classnames/bind';
@@ -12,17 +8,9 @@ import styles from '~/styles/pages/Search.module.scss';
 const cx = classNames.bind(styles);
 
 function Browse() {
-    const dispatch = useDispatch(); 
-    const { accessToken } = useSelector((state) => state.auth);
-    const browseData = useSelector(selectBrowseData);
+    const { browseData } = useLoaderData();
 
     const contentRef = useRef(null);
-
-    useEffect(() => {
-      if (accessToken) {
-        dispatch(fetchBrowseData(accessToken));
-      }
-    }, [accessToken, dispatch]);
 
     // console.log(browseData);
 

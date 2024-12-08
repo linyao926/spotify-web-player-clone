@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router";
+import { useDispatch } from 'react-redux';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/SubContextMenu.module.scss';
 
@@ -11,6 +12,8 @@ const SubContextMenu = (props) => {
         position,
         alignRight = false, 
     } = props;
+
+    const dispatch = useDispatch();
 
     const [activeItems, setActiveItems] = useState(items.map(item => item.active || false));
     const [disableItems, setDisableItems] = useState(items.map(item => item.disableItem || false));
@@ -45,7 +48,7 @@ const SubContextMenu = (props) => {
             window.open(item.externalLink, '_blank');
         }
 
-        if (item.onClick) item.onClick();
+        if (item.onClick) item.onClick(dispatch);
     };
 
     return (

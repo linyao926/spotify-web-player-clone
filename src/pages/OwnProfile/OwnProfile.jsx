@@ -1,29 +1,14 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux'; 
-import { 
-    selectProfileInfo,
-    selectProfileTopTracks,
-    selectProfileTopArtists,
-} from '~/redux/slices/profileSlice';
+import React, { useRef } from 'react';
+import { useLoaderData } from "react-router";
 import { 
     UserFallbackIcon,
 } from '~/assets/icons';
 import MediaDetailLayout from '~/layouts/MediaDetailLayout/MediaDetailLayout';
 import MediaSection from '~/components/MediaSection/MediaSection';
 import TrackListSection from '~/components/TrackListSection/TrackListSection';
-import Button from '~/components/Button/Button';
-// import classNames from 'classnames/bind';
-// import styles from '~/styles/pages/CollectionTracks.module.scss';
 
-// const cx = classNames.bind(styles);
-
-function OwnProfile(props) {
-    const dispatch = useDispatch(); 
-    const { accessToken } = useSelector((state) => state.auth);
-    const profileInfo = useSelector(selectProfileInfo);
-    const profileTopArtists = useSelector(selectProfileTopArtists);
-    const profileTopTracks = useSelector(selectProfileTopTracks);
-    const profileStatus = useSelector((state) => state.profile.status);
+function OwnProfile() {
+    const { profileInfo, profileTopArtists, profileTopTracks } = useLoaderData();
 
     const mediaLayoutRef = useRef(null);
     const childRef = useRef(null);

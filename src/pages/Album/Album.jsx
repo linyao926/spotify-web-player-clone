@@ -1,12 +1,6 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
+import { useLoaderData } from "react-router";
 import { useGetId } from '~/hooks/useGetId';
-import { useDispatch, useSelector } from 'react-redux'; 
-import { 
-    fetchAlbumData, 
-    selectAlbumInfo,
-    selectAlbumItems,
-    selectRelatedTrack,
-} from '~/redux/slices/albumSlice';
 import MediaDetailLayout from '~/layouts/MediaDetailLayout/MediaDetailLayout';
 import TrackListSection from '~/components/TrackListSection/TrackListSection';
 import MediaSection from '~/components/MediaSection/MediaSection';
@@ -22,29 +16,16 @@ function Album(props) {
     const [isFixed, setIsFixed] = useState(false);
     const [isVisible, setIsVisible] = useState(true);
 
-    const dispatch = useDispatch(); 
-    const { accessToken } = useSelector((state) => state.auth);
-    const albumInfo = useSelector(selectAlbumInfo);
-    const albumItems = useSelector(selectAlbumItems);
-    const relatedTrack = useSelector(selectRelatedTrack);
+    const { albumInfo, albumItems, relatedTrack } = useLoaderData();
 
     const mediaLayoutRef = useRef(null);
     const childRef = useRef(null);
-
-    useEffect(() => {
-        if (accessToken) {
-            dispatch(fetchAlbumData({
-                accessToken, 
-                id: id
-            }));
-             ;
-        }
-    }, [accessToken, dispatch, id]);
     
     const handleScroll = (scrollY) => contentScrollHandler(scrollY, mediaLayoutRef, childRef, setIsFixed, setIsVisible);
 
     return (
         <MediaDetailLayout
+            id={id}
             coverUrl = {albumInfo?.images && albumInfo?.images[0].url}
             // coverFallback = {<AlbumFallbackIcon />}
             type = {albumInfo["album_type"]}

@@ -1,12 +1,6 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef } from 'react';
+import { useLoaderData } from "react-router";
 import { useGetId } from '~/hooks/useGetId';
-import { useDispatch, useSelector } from 'react-redux'; 
-import { 
-    fetchArtistData, 
-    selectArtistInfo,
-    selectArtistAlbums,
-    selectArtistTopTracks,
-} from '~/redux/slices/artistSlice';
 import MediaDetailLayout from '~/layouts/MediaDetailLayout/MediaDetailLayout';
 import TrackListSection from '~/components/TrackListSection/TrackListSection';
 import MediaSection from '~/components/MediaSection/MediaSection';
@@ -18,27 +12,14 @@ function Artist(props) {
 
     const { id } = useGetId();
 
-    const dispatch = useDispatch(); 
-    const { accessToken } = useSelector((state) => state.auth);
-    const artistInfo = useSelector(selectArtistInfo);
-    const artistAlbums = useSelector(selectArtistAlbums);
-    const artistTopTracks = useSelector(selectArtistTopTracks);
+    const { artistInfo, artistAlbums, artistTopTracks } = useLoaderData();
 
     const mediaLayoutRef = useRef(null);
     const childRef = useRef(null);
 
-    useEffect(() => {
-        if (accessToken) {
-            dispatch(fetchArtistData({
-                accessToken, 
-                id: id
-            }));
-             ;
-        }
-    }, [accessToken, dispatch, id]);
-
     return (
         <MediaDetailLayout
+            id={id}
             coverUrl = {artistInfo?.images && artistInfo?.images[0].url}
             // coverFallback = {<ArtistFallbackIcon />}
             title = {artistInfo?.name}

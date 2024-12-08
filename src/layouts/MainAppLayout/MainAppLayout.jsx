@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { closeSubContext } from '~/redux/slices/uiSlice';
 import MainAppHeader from '~/components/MainAppHeader/MainAppHeader';
 import Sidebar from '~/components/Sidebar/Sidebar';
-import GuestContent from '~/components/Guest/GuestContent/GuestContent';
 import GuestFooter from '~/components/Guest/GuestFooter/GuestFooter';
 import PlayingBar from '~/components/PlayingBar/PlayingBar';
 import LoginPrompt from '~/components/LoginPrompt/LoginPrompt';
@@ -27,10 +26,7 @@ function MainAppLayout () {
             <MainAppHeader />
             <div className={cx('body-section')}>
                 <Sidebar />
-                {accessToken 
-                    ? <Outlet /> 
-                    : <GuestContent />
-                }
+                <Outlet /> 
                 {accessToken && isDialogOpen && <div className={cx('overview')}>listening panel</div>}
             </div>
             {accessToken ? <PlayingBar/> : <GuestFooter />}

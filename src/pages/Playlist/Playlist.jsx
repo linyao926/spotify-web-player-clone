@@ -1,12 +1,6 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
+import { useLoaderData } from "react-router";
 import { useGetId } from '~/hooks/useGetId';
-import { useDispatch, useSelector } from 'react-redux'; 
-import { 
-    fetchPlaylistData, 
-    selectPlaylistInfo,
-    selectPlaylistItems,
-    selectRelatedTrack,
-} from '~/redux/slices/playlistDataSlice';
 import { 
     PlaylistFallbackIcon,
 } from '~/assets/icons';
@@ -24,31 +18,16 @@ function Playlist(props) {
     const [isFixed, setIsFixed] = useState(false);
     const [isVisible, setIsVisible] = useState(true);
 
-    const dispatch = useDispatch(); 
-    const { accessToken } = useSelector((state) => state.auth);
-    const playlistInfo = useSelector(selectPlaylistInfo);
-    const playlistItems = useSelector(selectPlaylistItems);
-    const relatedTrack = useSelector(selectRelatedTrack);
+    const { playlistInfo, playlistItems, relatedTrack } = useLoaderData();
 
     const mediaLayoutRef = useRef(null);
     const childRef = useRef(null);
-
-    useEffect(() => {
-        if (accessToken) {
-            dispatch(fetchPlaylistData({
-                accessToken, 
-                id: id
-            }));
-             ;
-        }
-    }, [accessToken, dispatch, id]);
     
     const handleScroll = (scrollY) => contentScrollHandler(scrollY, mediaLayoutRef, childRef, setIsFixed, setIsVisible);
 
-    // console.log(relatedTrack)
-
     return (
         <MediaDetailLayout
+            id={id}
             coverUrl = {playlistInfo?.images && playlistInfo?.images[0].url}
             coverFallback = {<PlaylistFallbackIcon />}
             type = 'playlist'

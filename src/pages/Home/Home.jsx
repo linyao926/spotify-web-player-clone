@@ -1,15 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux'; 
-import { 
-  fetchHomeData, 
-  selectRecentlyPlayed, 
-  selectRecommendedToday, 
-  selectPopularPlaylist, 
-  selectNewReleases,
-  selectTopArtists,
-  selectTopTracks,
-} from '~/redux/slices/homeDataSlice';
-import { useNavigate } from "react-router";
+import React, { useRef, useState } from 'react';
+import { useNavigate, useLoaderData } from "react-router";
 import useExtractColors from "~/hooks/useExtractColors";
 import ScrollWrapper from '~/components/ScrollWrapper/ScrollWrapper';
 import { PlayIcon } from '~/assets/icons';
@@ -22,16 +12,14 @@ import styles from '~/styles/pages/Home.module.scss';
 const cx = classNames.bind(styles);
 
 function Home() {
-    const dispatch = useDispatch(); 
-    const { accessToken } = useSelector((state) => state.auth);
-    const recentlyPlayed = useSelector(selectRecentlyPlayed);
-    const recommendedToday = useSelector(selectRecommendedToday);
-    const popularplaylist = useSelector(selectPopularPlaylist);
-    const newReleases = useSelector(selectNewReleases);
-    const topArtists = useSelector(selectTopArtists);
-    const topTracks = useSelector(selectTopTracks);
-    const loading = useSelector((state) => state.home.loading);
-    const error = useSelector((state) => state.home.error);
+    const { 
+      recentlyPlayed, 
+      newReleases, 
+      topArtists, 
+      topTracks, 
+      recommendedToday, 
+      popularplaylist 
+    } = useLoaderData();
 
     const [isTransparent, setIsTransparent] = useState(true);
     const [trigger, setTrigger] = useState(false);
@@ -42,12 +30,6 @@ function Home() {
 
     const { backgroundBase } = useExtractColors(currentUrl);
     let navigate = useNavigate();
-
-    useEffect(() => {
-      if (accessToken) {
-        dispatch(fetchHomeData(accessToken));
-      }
-    }, [accessToken, dispatch]);
 
     const layoutScrollHandler = (scrollY) => {
         if (!containerRef.current || !headerBGRef.current) return;
@@ -142,12 +124,12 @@ function Home() {
                 {getTopItem(topTracks[1])}
               </section>}
 
-              {recentlyPlayed.length > 0 && <MediaSection 
+              {/* {recentlyPlayed.length > 0 && <MediaSection 
                   data={recentlyPlayed}
                   type="track"
                   title='Recently played'
                   routeLink = '/genre/recently-played'
-              />}
+              />} */}
 
               {/* {recommendedToday.length > 0 && <MediaSection 
                   data={recommendedToday}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { logout } from '~/redux/slices/authSlice'; 
 import { ExternalIcon, CompactIcon, ListIcon, ItemActiveIcon } from "~/assets/icons/icons";
 import config from "~/config";
 
@@ -21,9 +22,8 @@ export const profileSubContext = (id) => [
     },
     {
       name: "Log out",
-      onClick: () => {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
+      onClick: (dispatch) => {
+        dispatch(logout());
       }
     },
 ];

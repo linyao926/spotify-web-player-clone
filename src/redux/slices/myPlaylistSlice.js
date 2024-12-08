@@ -1,50 +1,74 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchData } from '~/services/api';
+import { createSlice } from '@reduxjs/toolkit';
 
-export const fetchMyPlaylistData = createAsyncThunk(
-  'myplaylist/fetchMyPlaylistData',
-  async ({accessToken, endpoint = ''}, { rejectWithValue }) => {
-    try {
-    //   const myplaylistInfo = await fetchData('/me', accessToken);
-
-      return {
-        // myplaylistInfo,
-      };
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
+const loadState = () => {
+  try {
+    const serializedState = localStorage.getItem('my_playlists');
+    return serializedState ? JSON.parse(serializedState) : [];
+  } catch (e) {
+    console.error('Failed to load my playlists from localStorage:', e);
+    return [];
   }
-);
-
-const initialState = {
-  myPlaylistInfo: {
-    name: '',
-    id: ``
-  },
-  myPlaylistTracks: [], 
-  status: 'idle', // idle | loading | succeeded | failed
-  error: null,
 };
 
-const myplaylistSlice = createSlice({
+const saveState = (state) => {
+  try {
+    const serializedState = JSON.stringify(state);
+    localStorage.setItem('my_playlists', serializedState);
+  } catch (e) {
+    console.error('Failed to save my playlists to localStorage:', e);
+  }
+};
+
+const generateId = (index) => {
+  const randomPart = Math.random().toString(36).substring(2, 8).toUpperCase(); 
+  const orderPart = String(index).padStart(3, '0'); 
+  return `${randomPart}${orderPart}`;
+};
+
+const myPlaylistSlice = createSlice({
   name: 'my_playlist',
-  initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchMyPlaylistData.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(fetchMyPlaylistData.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-      })
-      .addCase(fetchMyPlaylistData.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.payload;
-      });
+  initialState: loadState(),
+  reducers: {
+    createPlaylist: (state) => {
+      const newPlaylist = {
+        id: generateId(state.length + 1),
+        name: `My Playlist #${state.length + 1}`,
+        type: 'playlist',
+        tracks: { items: [] },
+        description: '',
+        'track_total': 0,
+        images: {
+          fallbackUrl: '',
+          uploadUrl: ''
+        },
+      };
+      state.push(newPlaylist);
+      saveState(state); 
+    },
+
+    addTrackToPlaylist: (state, action) => {
+      const { playlistId, track } = action.payload;
+      const playlist = state.find((p) => p.id === playlistId);
+      if (playlist) {
+        playlist.tracks.items.push(track.id);
+        playlist.track_total += 1;
+        if (playlist.tracks.items.length === 1) {
+          playlist.images.fallbackUrl = track.images[0].url;
+        }
+        saveState(state);
+      }
+    },
+
+    uploadImageToPlaylist: (state, action) => {
+      const { playlistId, imageUrl } = action.payload;
+      const playlist = state.find((p) => p.id === playlistId);
+      if (playlist) {
+        playlist.images.uploadUrl = imageUrl;
+        saveState(state);
+      }
+    },
   },
 });
 
-export const selectMyPlaylistInfo = (state) => state.myplaylist.myPlaylistInfo;
-
-export default myplaylistSlice.reducer;
+export const { createPlaylist, addTrackToPlaylist, uploadImageToPlaylist } = myPlaylistSlice.actions;
+export default myPlaylistSlice.reducer;

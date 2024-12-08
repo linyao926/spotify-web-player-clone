@@ -1,6 +1,9 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useLoaderData } from 'react-router';
 import { useGetId } from '~/hooks/useGetId';
+import { useDispatch, useSelector } from 'react-redux';
+import { addTrackToPlaylist } from '~/redux/slices/myPlaylistSlice';
+import { selectProfileInfo, selectProfileTopTracks } from '~/redux/slices/profileSlice';
 import { 
     PlaylistFallbackIcon,
 } from '~/assets/icons';
@@ -14,11 +17,21 @@ function MyPlaylist(props) {
         viewAs = 'list',
     } = props;
 
+    const { id } = useGetId();
+    const playlist = useSelector((state) =>
+        state['my_playlist'].find((playlist) => playlist.id === id)
+    );
+
+    if (!playlist) {
+        return <div style={{flexGrow: '1', height: '100%'}}>My Playlist not found</div>;
+    }
+
     const [isFixed, setIsFixed] = useState(false);
     const [isVisible, setIsVisible] = useState(true);
     const [findMoreVisible, setFindMoreVisible] = useState(true);
 
-    const { profileInfo, profileTopTracks } = useLoaderData();
+    const profileInfo = useSelector(selectProfileInfo);
+    const profileTopTracks = useSelector(selectProfileTopTracks);
 
     const mediaLayoutRef = useRef(null);
     const childRef = useRef(null);
@@ -27,18 +40,25 @@ function MyPlaylist(props) {
 
     return (
         <MediaDetailLayout
-            coverUrl = {''}
+            id={id}
+            coverUrl = {playlist.images.uploadUrl 
+                ? playlist.images.uploadUrl 
+                : (playlist.images.fallbackUrl 
+                    ? playlist.images.fallbackUrl 
+                    : null
+                )}
             coverFallback = {<PlaylistFallbackIcon />}
             type = 'playlist'
-            title = {'My Playlist #1'}
+            title = {playlist.name}
             authorImgUrl={profileInfo?.images[0]?.url}
             authorName = {profileInfo && profileInfo['display_name']}
             authorId = {profileInfo && profileInfo.id}
-            trackCount = {0}
+            trackCount = {playlist['track_total']}
             totalDuration = {0}
-            canPlay={false}
+            canPlay={playlist['track_total'] > 0}
             canShowOptions
             canViewAs
+            isEditable
             ref={mediaLayoutRef}
             contentScrollHandler={handleScroll}
         >

@@ -1,5 +1,10 @@
 import React, { useRef } from 'react';
-import { useLoaderData } from "react-router";
+import { useSelector } from 'react-redux'; 
+import { 
+    selectProfileInfo,
+    selectProfileTopTracks,
+    selectProfileTopArtists,
+} from '~/redux/slices/profileSlice';
 import { 
     UserFallbackIcon,
 } from '~/assets/icons';
@@ -8,7 +13,10 @@ import MediaSection from '~/components/MediaSection/MediaSection';
 import TrackListSection from '~/components/TrackListSection/TrackListSection';
 
 function OwnProfile() {
-    const { profileInfo, profileTopArtists, profileTopTracks } = useLoaderData();
+    const profileInfo = useSelector(selectProfileInfo);
+    const profileTopArtists = useSelector(selectProfileTopArtists);
+    const profileTopTracks = useSelector(selectProfileTopTracks);
+    const profileStatus = useSelector((state) => state.profile.status);
 
     const mediaLayoutRef = useRef(null);
     const childRef = useRef(null);

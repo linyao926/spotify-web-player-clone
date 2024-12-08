@@ -1,5 +1,7 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { createPlaylist } from '~/redux/slices/myPlaylistSlice';
 import { openModal } from '~/redux/slices/uiSlice';
 import Button from '../Button/Button';
 import classNames from 'classnames/bind';
@@ -9,6 +11,25 @@ const cx = classNames.bind(styles);
 
 function CreatePlaylistPrompt () {
     const dispatch = useDispatch();
+    const { accessToken } = useSelector((state) => state.auth);
+    const playlists = useSelector((state) => state['my_playlist']);
+
+    // console.log(playlists)
+
+    const navigate = useNavigate();
+
+    const [createNewPlaylist, setCreateNewPlaylist] = useState(false);
+
+    const handleCreatePlaylist = () => {
+        dispatch(createPlaylist());
+        setCreateNewPlaylist(true);
+    };
+
+    useEffect(() => {
+        if (createNewPlaylist) {
+            navigate(`/my_playlist/${playlists[playlists.length - 1].id}`);
+        }
+    }, [playlists]);
 
     return (
         <section className={cx('create-playlist-prompt')}>
@@ -25,7 +46,11 @@ function CreatePlaylistPrompt () {
                 size="size-small"
                 borderRadius="rounded"
                 padding="4px 16px"
-                clickFunction={() => dispatch(openModal({id: 'login-prompt'}))}
+                clickFunction={() => {
+                    accessToken 
+                    ? handleCreatePlaylist()
+                    : dispatch(openModal({id: 'login-prompt'}))}
+                }
             >Create playlist</Button>
         </section>
     )

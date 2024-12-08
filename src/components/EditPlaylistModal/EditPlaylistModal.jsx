@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '~/redux/slices/uiSlice';
-import { DismissIcon, InfoIcon, EditIcon } from '~/assets/icons/icons';
+import { uploadImageToPlaylist } from '~/redux/slices/myPlaylistSlice';
+import { DismissIcon, InfoIcon} from '~/assets/icons/icons';
+import CoverWrapper from './CoverWrapper';
+import FormWrapper from './FormWrapper';
 import Button from '../Button/Button';
 import AlertMessage from '../AlertMessage/AlertMessage';
 import classNames from 'classnames/bind';
@@ -14,8 +17,10 @@ const EditPlaylistModal = (props) => {
         coverUrl = '',
         coverFallback = '',
         title = '',
-        description = ''
+        description = '',
+        id = '',
     } = props;
+
     const dispatch = useDispatch();
 
     const [alertMessage, setAlertMessage] = useState({
@@ -28,27 +33,6 @@ const EditPlaylistModal = (props) => {
     });
     const [hasChanges, setHasChanges] = useState(false);
     const [openNotification, setOpenNotification] = useState(false);
-
-    useEffect(() => {
-        if (formData.playlistName.length === 0) {
-            setAlertMessage({
-                message: "Playlist name is required.",
-                type: 'error'
-            });
-            setOpenNotification(true);
-        } else {
-            setOpenNotification(false);
-        }
-    }, [formData]);
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
-        setHasChanges(true);
-    };
 
     const handleClose = () => {
         if (hasChanges) {
@@ -100,50 +84,19 @@ const EditPlaylistModal = (props) => {
                     />
                 </div>}
                 <div className={cx('edit-playlist-content')}>
-                    <div className={cx('cover-img-wrapper')}>
-                        {coverUrl 
-                        ? <img className={cx('cover-img')} alt='cover' src={coverUrl} />
-                        : <span className={cx('cover-img-fallback')}>{coverFallback}</span>
-                        }
-                        <div className={cx('photo-edit-section')} 
-                            onClick={() => dispatch(openModal({id: 'edit-playlist'}))}
-                        >
-                            <EditIcon />
-                            <span>Choose photo</span>
-                        </div>
-                    </div>
-                    <div className={cx('form-wrapper')}>
-                        <label htmlFor="playlist-name"
-                            className={cx('label-for-input')}
-                        >
-                            <span>Name</span>
-                            <input 
-                                id="playlits-name"
-                                type="text" 
-                                maxLength="100" 
-                                placeholder="Add a name"
-                                name="playlistName" 
-                                value={formData.playlistName}
-                                onChange={handleInputChange}
-                                required
-                                className={cx(formData.playlistName.length === 0 && 'error')}
-                            />
-                        </label>
-                        <label htmlFor="playlist-description"
-                            className={cx('label-for-textarea')}
-                        >
-                            <span>Description</span>
-                            <textarea 
-                                id="playlist-description"
-                                maxLength="300" 
-                                rows="3" 
-                                placeholder="Add an optional description"
-                                name="playlistDescription"
-                                value={formData.playlistDescription}
-                                onChange={handleInputChange}
-                            ></textarea>
-                        </label>
-                    </div>
+                    <CoverWrapper 
+                        dispatch={dispatch}
+                        coverUrl = {coverUrl}
+                        coverFallback = {coverFallback}
+                        id = {id}
+                    />
+                    <FormWrapper 
+                        formData={formData}
+                        setFormData={setFormData}
+                        setAlertMessage={setAlertMessage}
+                        setHasChanges={setHasChanges}
+                        setOpenNotification={setOpenNotification}
+                    />
                 </div>
                 <span className={cx("save-btn-wrapper")}>
                     <Button

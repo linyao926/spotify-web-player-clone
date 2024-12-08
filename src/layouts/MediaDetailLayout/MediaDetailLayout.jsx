@@ -126,7 +126,7 @@ const MediaDetailLayout = React.forwardRef((props, ref) => {
                 <div className={cx('cover-img-container', coverIsCircle && 'cover-circle')}>
                     {coverUrl 
                     ? <img className={cx('cover-img', coverIsCircle && 'cover-circle')} alt='cover' src={coverUrl} />
-                    : <span className={cx('cover-img-fallback', coverIsCircle && 'cover-circle')}>{coverFallback}</span>
+                    : <span className={cx('cover-img-fallback', isEditable && 'hide-cover', coverIsCircle && 'cover-circle')}>{coverFallback}</span>
                     }
                     {isEditable && <div className={cx('photo-edit-section', coverIsCircle && 'cover-circle')} 
                         onClick={() => dispatch(openModal({id: 'edit-playlist'}))}
@@ -251,6 +251,7 @@ const MediaDetailLayout = React.forwardRef((props, ref) => {
                 coverFallback = {coverFallback}
                 title = {title}
                 description = {description}
+                id={id}
             />}
         </div>
       </>

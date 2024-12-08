@@ -88,7 +88,7 @@ $primary-background-color: rgb(83, 83, 83);
         height: 48px;
     }
 
-    &:hover .cover-img-fallback {
+    &:hover .hide-cover {
         opacity: 0;
     }
 
@@ -123,6 +123,8 @@ $primary-background-color: rgb(83, 83, 83);
     font-size: index.$font-size-base;
     line-height: 1.5;
     opacity: 0;
+    z-index: 1;
+    cursor: pointer;
 }
 
 .cover-circle {

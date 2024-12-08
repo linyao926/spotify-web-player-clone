@@ -47,7 +47,6 @@ const AppRoutes = () => {
     {
       path: `/user/${userId}`,
       element: <OwnProfile />,
-      loader: loaders.ownProfileLoader,
       errorElement: <ErrorBoundary />, 
     },
     {

@@ -1,10 +1,14 @@
 import store from '~/redux/store';
-import { updateTokenFetchTime } from '~/redux/slices/authSlice';
-import axios from 'axios';
+import { 
+  updateTokenFetchTime, 
+  setTokens, 
+  logout 
+} from '~/redux/slices/authSlice';
 
 
 export const getRefreshToken = async () => {
     const spotify_client_id = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+    const spotify_client_secret = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET;
 
     const refreshToken = localStorage.getItem('refreshToken');
     const url = "https://accounts.spotify.com/api/token";
@@ -12,7 +16,7 @@ export const getRefreshToken = async () => {
     const payload = {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: new URLSearchParams({
         grant_type: 'refresh_token',
@@ -23,18 +27,13 @@ export const getRefreshToken = async () => {
     const body = await fetch(url, payload);
     const response = await body.json();
 
-    if (response.accessToken) {
-      localStorage.setItem('accessToken', response.accessToken);
-    } else {
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-      localStorage.removeItem('tokenExpiresIn');
-      localStorage.removeItem('tokenFetchTime');
-    }
+    console.log(response.access_token)
 
-    if (response.refreshToken) {
-      localStorage.setItem('refreshToken', response.refreshToken);
-    }
+    return {
+      accessToken: response.access_token || '',
+      refreshToken: response.refresh_token || refreshToken,
+      expiresIn: response.expires_in
+    };
 }
 
 export const checkTokenExpirationMiddleware = (store) => (next) => async (action) => {
@@ -46,17 +45,15 @@ export const checkTokenExpirationMiddleware = (store) => (next) => async (action
   if (tokenFetchTime > 0 && tokenExpiresIn > 0) {
     if (currentTime > (tokenFetchTime + tokenExpiresIn * 1000)) {
       try {
-        await getRefreshToken(); 
-        store.dispatch(updateTokenFetchTime(Date.now()));
+        const {accessToken, refreshToken, expiresIn} = await getRefreshToken();
+        
+        console.log(accessToken)
+        store.dispatch(setTokens({accessToken, refreshToken, expiresIn}));
       } catch (error) {
-        console.error('Error refreshing token:', error);
+        store.dispatch(logout());
       }
     }
   }
 
   return next(action);
-};
-
-export const setAuthHeaders = (token) => {
-  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 };

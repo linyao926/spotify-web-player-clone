@@ -6,10 +6,12 @@ const cx = classNames.bind(styles);
 
 const FormWrapper = (props) => {
     const {
-        formData, setFormData,
+        formData, 
+        setFormData,
         setAlertMessage,
         setHasChanges,
         setOpenNotification,
+        id,
     } = props;
 
     useEffect(() => {
@@ -26,11 +28,21 @@ const FormWrapper = (props) => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
-        setHasChanges(true);
+        const changeFormData = () => {
+            setFormData(prev => ({
+                ...prev,
+                [name]: value
+            }));
+            setHasChanges(true);
+        };
+
+        if (name === 'playlistName') {
+            if (value.length <= 100) {
+                changeFormData();
+            }
+        } else if (value.length <= 300) {
+            changeFormData();
+        }
     };
 
     return (
@@ -38,7 +50,10 @@ const FormWrapper = (props) => {
             <label htmlFor="playlist-name"
                 className={cx('label-for-input')}
             >
-                <span>Name</span>
+                <div>
+                    <span>Name</span>
+                    <span className={cx('word-count')}>{formData.playlistName.length}/100</span>
+                </div>
                 <input 
                     id="playlits-name"
                     type="text" 
@@ -54,7 +69,10 @@ const FormWrapper = (props) => {
             <label htmlFor="playlist-description"
                 className={cx('label-for-textarea')}
             >
-                <span>Description</span>
+                <div>
+                    <span>Description</span>
+                    <span className={cx('word-count')}>{formData.playlistDescription.length}/300</span>
+                </div>
                 <textarea 
                     id="playlist-description"
                     maxLength="300" 

@@ -132,11 +132,31 @@ label {
         font-weight: 700;
         font-size: index.$font-size-small;
         transition: index.$opacity-transition;
+        background-color: transparent;
+    }
+
+    span::before {
+        background: #282828;
+        content: "";
+        height: 2px;
+        position: absolute;
+        right: 50%;
+        top: 50%;
+        -webkit-transform: translate(50%, -50%);
+        transform: translate(50%, -50%);
+        width: 110%;
+        z-index: -1;
+    }
+
+    .word-count {
+        left: auto;
+        right: 10px;
     }
 
     input {
         height: 40px;
         padding: 0 12px;
+        z-index: 0;
     }
 
     input::-webkit-input-placeholder {

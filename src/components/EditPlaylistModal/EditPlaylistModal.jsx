@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '~/redux/slices/uiSlice';
-import { uploadImageToPlaylist } from '~/redux/slices/myPlaylistSlice';
+import { updatePlaylistDetails, uploadImageToPlaylist } from '~/redux/slices/myPlaylistSlice';
 import { DismissIcon, InfoIcon} from '~/assets/icons/icons';
 import CoverWrapper from './CoverWrapper';
 import FormWrapper from './FormWrapper';
+import SaveResult from './SaveResult';
 import Button from '../Button/Button';
 import AlertMessage from '../AlertMessage/AlertMessage';
 import classNames from 'classnames/bind';
@@ -23,6 +24,7 @@ const EditPlaylistModal = (props) => {
 
     const dispatch = useDispatch();
 
+    const [newCoverImage, setNewCoverImage] = useState(coverUrl);
     const [alertMessage, setAlertMessage] = useState({
         message: '',
         type: '',
@@ -33,6 +35,23 @@ const EditPlaylistModal = (props) => {
     });
     const [hasChanges, setHasChanges] = useState(false);
     const [openNotification, setOpenNotification] = useState(false);
+
+    const handleUpdatePlaylistDetails = (playlistId, name, description) => {
+        dispatch(updatePlaylistDetails({ playlistId, name, description }));
+    };
+
+    const handleUploadImage = (file) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            setNewCoverImage(reader.result)
+        };
+        reader.readAsDataURL(file);
+        setHasChanges(true);
+    };
+
+    const handleSaveImage = (playlistId, imageUrl) => {
+        dispatch(uploadImageToPlaylist({ playlistId, imageUrl }));
+    };
 
     const handleClose = () => {
         if (hasChanges) {
@@ -47,11 +66,13 @@ const EditPlaylistModal = (props) => {
         }
     };
 
-    const handleSave = (event) => {
+    const handleSave = () => {
         if (formData.playlistName.length > 0) {
-
+            handleUpdatePlaylistDetails(id, formData.playlistName, formData.playlistDescription);
+            handleSaveImage(id, newCoverImage);
+            dispatch(closeModal({ id: 'edit-playlist' }));
         }
-    }
+    };
 
     return (
         <div className={cx('edit-playlist')}
@@ -85,10 +106,9 @@ const EditPlaylistModal = (props) => {
                 </div>}
                 <div className={cx('edit-playlist-content')}>
                     <CoverWrapper 
-                        dispatch={dispatch}
-                        coverUrl = {coverUrl}
                         coverFallback = {coverFallback}
-                        id = {id}
+                        newCoverImage={newCoverImage}
+                        handleUploadImage={handleUploadImage}
                     />
                     <FormWrapper 
                         formData={formData}
@@ -98,14 +118,7 @@ const EditPlaylistModal = (props) => {
                         setOpenNotification={setOpenNotification}
                     />
                 </div>
-                <span className={cx("save-btn-wrapper")}>
-                    <Button
-                        size="size-base"
-                        variant="background-base"
-                        borderRadius="rounded"
-                        clickFunction={handleSave}
-                    >Save</Button>
-                </span>
+                <SaveResult handleSave={handleSave} />
                 
                 <span className={cx('upload-image-consent')}>By proceeding, you agree to give Spotify access to the image you choose to upload. Please make sure you have the right to upload the image.</span>
             </div>

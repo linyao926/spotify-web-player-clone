@@ -41,6 +41,7 @@ const myPlaylistSlice = createSlice({
           fallbackUrl: '',
           uploadUrl: ''
         },
+        isMyPlaylist: true,
       };
       state.push(newPlaylist);
       saveState(state); 
@@ -63,12 +64,23 @@ const myPlaylistSlice = createSlice({
       const { playlistId, imageUrl } = action.payload;
       const playlist = state.find((p) => p.id === playlistId);
       if (playlist) {
+        playlist.images.uploadUrl = '';
         playlist.images.uploadUrl = imageUrl;
         saveState(state);
+      }
+    },
+
+    updatePlaylistDetails: (state, action) => {
+      const { playlistId, name, description } = action.payload;
+      const playlist = state.find((pl) => pl.id === playlistId);
+
+      if (playlist) {
+        if (name !== undefined) playlist.name = name;
+        if (description !== undefined) playlist.description = description;
       }
     },
   },
 });
 
-export const { createPlaylist, addTrackToPlaylist, uploadImageToPlaylist } = myPlaylistSlice.actions;
+export const { createPlaylist, addTrackToPlaylist, uploadImageToPlaylist, updatePlaylistDetails } = myPlaylistSlice.actions;
 export default myPlaylistSlice.reducer;

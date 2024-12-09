@@ -1,5 +1,4 @@
 import React from 'react';
-import { uploadImageToPlaylist } from '~/redux/slices/myPlaylistSlice';
 import { EditIcon } from '~/assets/icons/icons';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/EditPlaylistModal.module.scss';
@@ -8,35 +7,24 @@ const cx = classNames.bind(styles);
 
 const CoverWrapper = (props) => {
     const {
-        dispatch,
-        coverUrl = '',
+        newCoverImage = '',
         coverFallback = '',
-        id = '',
+        handleUploadImage,
     } = props;
-
-    const handleUploadImage = (playlistId, file) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          dispatch(uploadImageToPlaylist({ playlistId, imageUrl: reader.result }));
-        };
-        reader.readAsDataURL(file);
-    };
 
     return (
         <div className={cx('cover-img-wrapper')}>
-            {coverUrl 
-            ? <img className={cx('cover-img')} alt='cover' src={coverUrl} />
+            {newCoverImage 
+            ? <img className={cx('cover-img')} alt='cover' src={newCoverImage} />
             : <span className={cx('cover-img-fallback')}>{coverFallback}</span>
             }
-            <div className={cx('photo-edit-section')} 
-                onClick={() => dispatch(openModal({id: 'edit-playlist'}))}
-            >
+            <div className={cx('photo-edit-section')}>
                 <EditIcon />
                 <span>Choose photo</span>
             </div>
             <input
                 type="file"
-                onChange={(e) => handleUploadImage(id, e.target.files[0])}
+                onChange={(e) => handleUploadImage(e.target.files[0])}
                 className={cx('input-upload-img')}
             />
         </div>

@@ -7,6 +7,7 @@ import {
 } from '~/assets/icons/icons';
 import SidebarHeader from './SidebarHeader';
 import CreatePlaylistPrompt from './CreatePlaylistPrompt';
+import Library from '../Library/Library';
 import SidebarFooter from './SidebarFooter';
 import ResizeBar from './ResizeBar';
 import Button from '../Button/Button';
@@ -24,6 +25,7 @@ function Sidebar (props) {
     const { accessToken } = useSelector((state) => state.auth);
     const isSubContextOpen = useSelector((state) => state.ui.subContext.contexts['create-playlist'].isOpen);
     const position = useSelector((state) => state.position);
+    const library = useSelector((state) => state['library']);
 
     const initialState = JSON.parse(localStorage.getItem(SIDEBAR_LOCAL_STORAGE_KEY)) || {
         sidebarWidth: 280,
@@ -34,6 +36,12 @@ function Sidebar (props) {
     const [sidebarWidth, setSidebarWidth] = useState(initialState.sidebarWidth);
     const [isCollapsed, setIsCollapsed] = useState(initialState.isCollapsed);
     const [isShowMore, setIsShowMore] = useState(initialState.isShowMore);
+    const [hasItems, setHasItems] = useState(false);
+
+    useEffect(() => {
+        const checkHasItems = Object.values(library).some(array => array.length > 0);
+        setHasItems(checkHasItems);
+    }, [library]);
 
     useEffect(() => {
         if (sidebarWidth >= 584) {
@@ -58,7 +66,6 @@ function Sidebar (props) {
         localStorage.setItem(SIDEBAR_LOCAL_STORAGE_KEY, JSON.stringify(sidebarState));
     }, [sidebarWidth, isCollapsed, isShowMore]);
 
-    
     const createPlaylistMenu = [{
         name: "Create a new playlist",
         iconLeft: <MusicalNotePlusIcon />,
@@ -105,7 +112,17 @@ function Sidebar (props) {
                 createPlaylistBtn={<CreatePlaylistBtn />}
             />
             <div className={cx('sidebar-content')}>
-                {isCollapsed ? <CreatePlaylistBtn /> : <CreatePlaylistPrompt />}
+                {isCollapsed 
+                    ? <CreatePlaylistBtn /> 
+                    : (hasItems 
+                        ? <Library 
+                            playlists={library.playlists}
+                            albums={library.albums}
+                            artists={library.artists}
+                            likedTracks={library.likedTracks}
+                        /> 
+                        : <CreatePlaylistPrompt />)
+                }
             </div>
             {!accessToken && <SidebarFooter />}
             <ResizeBar

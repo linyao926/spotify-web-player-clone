@@ -3,6 +3,7 @@ import { useNavigate, useLoaderData } from "react-router";
 import useExtractColors from "~/hooks/useExtractColors";
 import ScrollWrapper from '~/components/ScrollWrapper/ScrollWrapper';
 import { PlayIcon } from '~/assets/icons';
+import FilterBar from '~/components/FilterBar/FilterBar';
 import MediaSection from '~/components/MediaSection/MediaSection';
 import ContentFooter from '~/components/ContentFooter/ContentFooter';
 import Button from '~/components/Button/Button';
@@ -112,9 +113,15 @@ function Home() {
                     opacity: isTransparent ? (trigger ? '0.5' : '0') : '1',
                   }}
                 ></div>
-                {getHeaderButton('All')}
-                {getHeaderButton('Music', false)}
-                {getHeaderButton('Podcasts', false)}
+                <FilterBar
+                  filters={[
+                    { value: 'music', label: 'Music' },
+                    { value: 'podcast', label: 'Podcasts' }
+                  ]}
+                  onFilterChange={(filter) => console.log('Filter changed to:', filter)}
+                  hasAll
+                  isLibrary={false}
+                />
             </header>
             <div className={cx('home-page-content')} >
               {<section className={cx("content-top-items")}>

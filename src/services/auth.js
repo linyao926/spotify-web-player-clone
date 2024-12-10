@@ -1,4 +1,4 @@
-import store from '~/redux/store';
+import { store } from '~/redux/store';
 import { 
   updateTokenFetchTime, 
   setTokens, 
@@ -10,24 +10,30 @@ export const getRefreshToken = async () => {
     const spotify_client_id = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
     const spotify_client_secret = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET;
 
+    const basicAuth = btoa(`${spotify_client_id}:${spotify_client_secret}`);
+
     const refreshToken = localStorage.getItem('refreshToken');
     const url = "https://accounts.spotify.com/api/token";
 
     const payload = {
       method: 'POST',
       headers: {
+        'Authorization': `Basic ${basicAuth}`,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: new URLSearchParams({
         grant_type: 'refresh_token',
         refresh_token: refreshToken,
-        client_id: spotify_client_id
+        client_id: spotify_client_id,
       }),
     }
+
     const body = await fetch(url, payload);
     const response = await body.json();
 
-    console.log(response.access_token)
+    if (response.error) {
+      throw new Error(response.error_description || 'Error refreshing token');
+    }
 
     return {
       accessToken: response.access_token || '',
@@ -46,8 +52,6 @@ export const checkTokenExpirationMiddleware = (store) => (next) => async (action
     if (currentTime > (tokenFetchTime + tokenExpiresIn * 1000)) {
       try {
         const {accessToken, refreshToken, expiresIn} = await getRefreshToken();
-        
-        console.log(accessToken)
         store.dispatch(setTokens({accessToken, refreshToken, expiresIn}));
       } catch (error) {
         store.dispatch(logout());

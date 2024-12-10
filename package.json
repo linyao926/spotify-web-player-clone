@@ -18,6 +18,7 @@
     "extract-colors": "^4.0.6",
     "jwt-decode": "^4.0.0",
     "langs": "^2.0.0",
+    "localforage": "^1.10.0",
     "overlayscrollbars": "^2.10.0",
     "overlayscrollbars-react": "^0.5.6",
     "react": "^18.3.1",
@@ -27,6 +28,7 @@
     "react-router-dom": "^7.0.2",
     "react-use": "^17.5.0",
     "redux-persist": "^6.0.0",
+    "redux-persist-indexeddb-storage": "^1.0.4",
     "swiper": "^11.1.4",
     "vite-plugin-svgr": "^4.2.0"
   },

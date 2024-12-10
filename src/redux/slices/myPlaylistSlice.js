@@ -1,23 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const loadState = () => {
-  try {
-    const serializedState = localStorage.getItem('my_playlists');
-    return serializedState ? JSON.parse(serializedState) : [];
-  } catch (e) {
-    console.error('Failed to load my playlists from localStorage:', e);
-    return [];
-  }
-};
-
-const saveState = (state) => {
-  try {
-    const serializedState = JSON.stringify(state);
-    localStorage.setItem('my_playlists', serializedState);
-  } catch (e) {
-    console.error('Failed to save my playlists to localStorage:', e);
-  }
-};
+const initialState = [];
 
 const generateId = (index) => {
   const randomPart = Math.random().toString(36).substring(2, 8).toUpperCase(); 
@@ -27,7 +10,8 @@ const generateId = (index) => {
 
 const myPlaylistSlice = createSlice({
   name: 'my_playlist',
-  initialState: loadState(),
+  initialState: initialState, // Redux sẽ tự động phục hồi state từ storage
+
   reducers: {
     createPlaylist: (state) => {
       const newPlaylist = {
@@ -36,15 +20,16 @@ const myPlaylistSlice = createSlice({
         type: 'playlist',
         tracks: { items: [] },
         description: '',
-        'track_total': 0,
+        track_total: 0,
         images: {
           fallbackUrl: '',
           uploadUrl: ''
         },
+        time_added: new Date().toISOString(),
+        time_played: null,
         isMyPlaylist: true,
       };
-      state.push(newPlaylist);
-      saveState(state); 
+      state.push(newPlaylist); // Thêm playlist mới vào state
     },
 
     addTrackToPlaylist: (state, action) => {
@@ -56,7 +41,6 @@ const myPlaylistSlice = createSlice({
         if (playlist.tracks.items.length === 1) {
           playlist.images.fallbackUrl = track.images[0].url;
         }
-        saveState(state);
       }
     },
 
@@ -64,9 +48,7 @@ const myPlaylistSlice = createSlice({
       const { playlistId, imageUrl } = action.payload;
       const playlist = state.find((p) => p.id === playlistId);
       if (playlist) {
-        playlist.images.uploadUrl = '';
         playlist.images.uploadUrl = imageUrl;
-        saveState(state);
       }
     },
 
@@ -82,5 +64,11 @@ const myPlaylistSlice = createSlice({
   },
 });
 
-export const { createPlaylist, addTrackToPlaylist, uploadImageToPlaylist, updatePlaylistDetails } = myPlaylistSlice.actions;
+export const {
+  createPlaylist,
+  addTrackToPlaylist,
+  uploadImageToPlaylist,
+  updatePlaylistDetails
+} = myPlaylistSlice.actions;
+
 export default myPlaylistSlice.reducer;

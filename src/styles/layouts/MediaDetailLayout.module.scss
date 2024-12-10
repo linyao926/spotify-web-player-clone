@@ -205,6 +205,7 @@ $primary-background-color: rgb(83, 83, 83);
 
 .media-detail-actions-left {
     @include index.flex-center;
+    min-height: 48px;
 
     .btn-wrapper {
         margin-right: calc(var(--content-spacing) + 8px);

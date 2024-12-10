@@ -102,12 +102,10 @@ const AppRoutes = () => {
     },
   ];
 
-  console.log(accessToken)
-
   const routes = [{
     path: '/',
     element: <MainAppLayout />,
-    children: accessToken === '' || accessToken === null
+    children: accessToken === '' 
     ? [
       {
         path: '/',

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { createPlaylist } from '~/redux/slices/myPlaylistSlice';
+import { addToLibrary } from '~/redux/slices/librarySlice';
 import { openModal } from '~/redux/slices/uiSlice';
 import Button from '../Button/Button';
 import classNames from 'classnames/bind';
@@ -27,9 +28,11 @@ function CreatePlaylistPrompt () {
 
     useEffect(() => {
         if (createNewPlaylist) {
-            navigate(`/my_playlist/${playlists[playlists.length - 1].id}`);
+            const lastPlaylist = playlists[playlists.length - 1];
+            dispatch(addToLibrary({ type: 'playlists', item: lastPlaylist }));
+            navigate(`/my_playlist/${lastPlaylist.id}`);
         }
-    }, [playlists]);
+    }, [playlists, createNewPlaylist]);
 
     return (
         <section className={cx('create-playlist-prompt')}>

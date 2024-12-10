@@ -1,23 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const getInitialState = () => {
-  const accessToken = localStorage.getItem('accessToken');
-  const refreshToken = localStorage.getItem('refreshToken');
-  const tokenExpiresIn = localStorage.getItem('tokenExpiresIn');
-  const tokenFetchTime = localStorage.getItem('tokenFetchTime');
-
   return {
-    accessToken: accessToken || '',
-    refreshToken: refreshToken || null,
-    tokenExpiresIn: tokenExpiresIn ? parseInt(tokenExpiresIn) : 0,
-    tokenFetchTime: tokenFetchTime ? parseInt(tokenFetchTime) : 0,
+    accessToken: '',         
+    refreshToken: null,      
+    tokenExpiresIn: 0,       
+    tokenFetchTime: 0,       
   };
 };
 
 const authSlice = createSlice({
   name: 'auth',
 
-  initialState: getInitialState(),
+  initialState: getInitialState(), 
 
   reducers: {
     setTokens: (state, action) => {
@@ -25,17 +20,10 @@ const authSlice = createSlice({
       state.refreshToken = action.payload.refreshToken;
       state.tokenExpiresIn = action.payload.expiresIn;
       state.tokenFetchTime = Date.now();
-
-      localStorage.setItem('accessToken', action.payload.accessToken);
-      localStorage.setItem('refreshToken', action.payload.refreshToken);
-      localStorage.setItem('tokenExpiresIn', action.payload.expiresIn);
-      localStorage.setItem('tokenFetchTime', Date.now().toString());
     },
 
-    updateTokenFetchTime: (state, action) => {
+    updateTokenFetchTime: (state) => {
       state.tokenFetchTime = Date.now();
-
-      localStorage.setItem('tokenFetchTime', Date.now().toString());
     },
 
     logout: (state) => {
@@ -43,11 +31,6 @@ const authSlice = createSlice({
       state.refreshToken = null;
       state.tokenExpiresIn = 0;
       state.tokenFetchTime = 0;
-
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-      localStorage.removeItem('tokenExpiresIn');
-      localStorage.removeItem('tokenFetchTime');
     },
   },
 });

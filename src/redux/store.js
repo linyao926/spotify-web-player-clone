@@ -1,28 +1,40 @@
-import { configureStore } from '@reduxjs/toolkit';
-import profileReducer from './slices/profileSlice';
-import authReducer from './slices/authSlice';
-import uiReducer from './slices/uiSlice';
-import positionReducer from './slices/positionSlice';
-import libraryReducer from './slices/librarySlice';
-import myPlaylistReducer from './slices/myPlaylistSlice';
-// import nowPlayingReducer from './slices/nowPlayingSlice';
+import { configureStore, createListenerMiddleware } from '@reduxjs/toolkit';
+import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
+import localforage from 'localforage';
+import rootReducer from './reducers';
+// import myPlaylistReducer from './slices/myPlaylistSlice';
+// import libraryReducer from './slices/librarySlice';
+// import { updateLibrary } from './slices/librarySlice';
 import { checkTokenExpirationMiddleware } from '~/services/auth';
 
+const persistConfig = {
+  key: 'root',
+  storage: localforage,
+  whitelist: ['auth', 'library', 'my_playlist'], // Chỉ lưu 'library' và 'myPlaylist'
+  blacklist: ['someOtherReducer'],
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+// const listenerMiddleware = createListenerMiddleware();
+
+// listenerMiddleware.startListening({
+//   actionCreator: myPlaylistReducer.actions.updatePlaylist,
+//   effect: (action, listenerApi) => {
+//     const state = listenerApi.getState(); 
+//     listenerApi.dispatch(updateLibrary(state.myPlaylists)); 
+//   },
+// });
+
 export const store = configureStore({
-  reducer: {
-    profile: profileReducer,
-    auth: authReducer,
-    ui: uiReducer,
-    position: positionReducer,
-    library: libraryReducer,
-    'my_playlist': myPlaylistReducer,
-    // episodes: episodesReducer,
-    // track: trackReducer,
-    // nowPlaying: nowPlayingReducer,
-  },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(checkTokenExpirationMiddleware),
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: {
+      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+    },
+  })
+  // .prepend(listenerMiddleware.middleware)
+  .concat(checkTokenExpirationMiddleware),
 });
 
-export default store;
-export const getState = store.getState;
+export const persistor = persistStore(store);

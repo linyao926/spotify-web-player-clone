@@ -1,9 +1,9 @@
-import { getState } from "~/redux/store";
+import { store } from "~/redux/store";
 import { fetchData } from '~/services/api';
 
 const artistLoader = async ({ params }) => {
   try {
-    const state = getState();
+    const state = store.getState();
     const accessToken = state.auth.accessToken;
 
     if (!accessToken) {

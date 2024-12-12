@@ -8,6 +8,7 @@
   font-size: index.$font-size-base;
   font-weight: 700;
   text-decoration: none;
+  text-transform: capitalize;
   cursor: pointer;
   z-index: 1;
   transition: index.$transition;
@@ -184,6 +185,22 @@
 
 .hover-button-tinted-base:hover {
   background-color: var(--background-tinted-base);
+  
+  svg {
+    fill: var(--essential-base);
+  }
+}
+
+.hover-button-light-color-highlight:hover {
+  background-color: #f0f0f0;
+  
+  svg {
+    fill: var(--essential-base);
+  }
+}
+
+.hover-button-tinted-highlight:hover {
+  background-color: var(--background-tinted-highlight);
   
   svg {
     fill: var(--essential-base);

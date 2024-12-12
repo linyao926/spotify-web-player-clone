@@ -11,7 +11,7 @@ $box-shadow: 0 16px 24px rgba(0, 0, 0, .3), 0 6px 8px rgba(0, 0, 0, .2);
     box-shadow: $box-shadow;
     max-height: calc(100vh - 24px);
     max-width: 350px;
-    min-width: 188px;
+    min-width: 152px;
     width: max-content;
     z-index: 4;
     overflow-y: auto;
@@ -19,6 +19,10 @@ $box-shadow: 0 16px 24px rgba(0, 0, 0, .3), 0 6px 8px rgba(0, 0, 0, .2);
 
 .subcontext-menu.align-right {
     transform: translateX(-100%); 
+}
+
+.subcontext-menu.fixed {
+    position: fixed;
 }
   
 .subcontext-item {

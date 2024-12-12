@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useWindowSize } from 'react-use';
 import { useSubContext } from '~/hooks/useSubContext';
 import { useSelector } from 'react-redux';
-import {  
-    PlusIcon, 
-    MusicalNotePlusIcon, 
-} from '~/assets/icons/icons';
 import SidebarHeader from './SidebarHeader';
+import CreatePlaylistButton from './CreatePlaylistButton';
 import CreatePlaylistPrompt from './CreatePlaylistPrompt';
 import Library from '../Library/Library';
 import SidebarFooter from './SidebarFooter';
 import ResizeBar from './ResizeBar';
-import Button from '../Button/Button';
-import SubContextMenu from '../SubContextMenu/SubContextMenu';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/Sidebar.module.scss';
 
@@ -21,6 +17,7 @@ const SIDEBAR_LOCAL_STORAGE_KEY = 'sidebarWidthState';
 
 function Sidebar (props) {
     const { handleOpenSubContext, handleCloseSubContext } = useSubContext();
+    const { width } = useWindowSize();
 
     const { accessToken } = useSelector((state) => state.auth);
     const isSubContextOpen = useSelector((state) => state.ui.subContext.contexts['create-playlist'].isOpen);
@@ -54,7 +51,7 @@ function Sidebar (props) {
             setIsShowMore(false);
             setIsCollapsed(true);
         }
-    }, [sidebarWidth]);
+    }, [sidebarWidth, width]);
 
     useEffect(() => {
         const sidebarState = {
@@ -66,39 +63,7 @@ function Sidebar (props) {
         localStorage.setItem(SIDEBAR_LOCAL_STORAGE_KEY, JSON.stringify(sidebarState));
     }, [sidebarWidth, isCollapsed, isShowMore]);
 
-    const createPlaylistMenu = [{
-        name: "Create a new playlist",
-        iconLeft: <MusicalNotePlusIcon />,
-    }];
-
     document.documentElement.style.setProperty('--left-sidebar-width', sidebarWidth);
-
-    const CreatePlaylistBtn = () => {
-        let positionType = isCollapsed ? 'bottom-left' : 'bottom-right';
-        return (
-            <div className={cx('btn-wrapper')}>
-                <Button 
-                    hasIcon
-                    icon={<PlusIcon />}
-                    borderRadius="circle"
-                    variant="transparent"
-                    size="size-small"
-                    padding="8px"
-                    hoverEffect={["hover-none-scale", "hover-button-highlight"]}
-                    clickFunction={ 
-                        isSubContextOpen 
-                        ? () => handleCloseSubContext('create-playlist')
-                        : (event) => handleOpenSubContext(event, 'create-playlist', positionType)
-                    }
-                />
-                {isSubContextOpen && <SubContextMenu 
-                    items={createPlaylistMenu} 
-                    position={position} 
-                    alignRight={!isCollapsed}
-                />}
-            </div>
-        );
-    };
     
     return (
         <aside className={cx('sidebar', isCollapsed && 'collapsed')} style={{ width: sidebarWidth }}>
@@ -109,19 +74,35 @@ function Sidebar (props) {
                 setIsCollapsed={setIsCollapsed}
                 isShowMore={isShowMore}
                 setIsShowMore={setIsShowMore}
-                createPlaylistBtn={<CreatePlaylistBtn />}
+                createPlaylistBtn={<CreatePlaylistButton 
+                    isSubContextOpen={isSubContextOpen}
+                    isCollapsed={isCollapsed}
+                    position={position}
+                    handleCloseSubContext={handleCloseSubContext}
+                    handleOpenSubContext={handleOpenSubContext}
+                />}
             />
             <div className={cx('sidebar-content')}>
                 {isCollapsed 
-                    ? <CreatePlaylistBtn /> 
+                    ? <CreatePlaylistButton 
+                        isSubContextOpen={isSubContextOpen}
+                        isCollapsed={isCollapsed}
+                        position={position}
+                        handleCloseSubContext={handleCloseSubContext}
+                        handleOpenSubContext={handleOpenSubContext}
+                    /> 
                     : (hasItems 
                         ? <Library 
                             playlists={library.playlists}
                             albums={library.albums}
                             artists={library.artists}
                             likedTracks={library.likedTracks}
+                            isCollapsed={isCollapsed}
+                            isShowMore={isShowMore}
                         /> 
-                        : <CreatePlaylistPrompt />)
+                        : <div className={cx('create-playlist-prompt-wrapper')}>
+                            <CreatePlaylistPrompt />
+                        </div>)
                 }
             </div>
             {!accessToken && <SidebarFooter />}

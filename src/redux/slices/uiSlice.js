@@ -20,6 +20,11 @@ const closeFunction = (state, action) => {
     }
 };
 
+const initialLibraryOptions = JSON.parse(localStorage.getItem("libraryOptions")) || {
+    'view-mode': 'list',
+    'sort-by': 'recents',
+};
+
 const uiSlice = createSlice({
     name: 'ui',
     initialState: {
@@ -28,6 +33,7 @@ const uiSlice = createSlice({
                 profile: { isOpen: false },
                 'create-playlist': { isOpen: false },
                 'track-list-view-as': { isOpen: false },
+                'library-options': { isOpen: false },
             }  
         },
         dialog: { isOpen: false },
@@ -37,6 +43,7 @@ const uiSlice = createSlice({
         },
         notification: { isOpen: false },
         viewMode: 'compact',
+        'library-options': initialLibraryOptions,
     },
     reducers: {
         openSubContext: (state, action) => openFunction(state.subContext.contexts, action),
@@ -57,8 +64,13 @@ const uiSlice = createSlice({
             state.modal.isOpen = false;
         },
         setViewMode: (state, action) => {
-            state.viewMode = action.payload; // cập nhật viewMode
+            state.viewMode = action.payload; 
         },
+        setLibraryOptions: (state, action) => {
+            state['library-options']['view-mode'] = action.payload['view-mode'];
+            state['library-options']['sort-by'] = action.payload['sort-by'];
+            localStorage.setItem("libraryOptions", JSON.stringify(state['library-options']));
+        }
     }
 });
 
@@ -69,6 +81,6 @@ export const {
   openModal,
   closeModal,
   setViewMode,
-  
+  setLibraryOptions,
 } = uiSlice.actions;
 export default uiSlice.reducer;

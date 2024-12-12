@@ -1,6 +1,7 @@
 import React from 'react';
-import { Link } from "react-router";
+import { useNavigate } from "react-router";
 import { PlayLargeIcon } from '~/assets/icons';
+import { formatDate } from '~/utils/timeUtils';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/LibraryItemCard.module.scss';
 
@@ -8,26 +9,36 @@ const cx = classNames.bind(styles);
 
 const LibraryItemCard = (props) => {
     const {
-        imgUrl = 'https://i.scdn.co/image/ab67616d00001e0227c1a17d71ecaf008c1357e7',
-        title = 'Fake Love',
-        type = 'album',
-        author = 'BTS',
-        showMore = true,
-        addedDate = 'Sep 22, 2023',
-        played = 'Oct 14, 2023',
+        routeLink = '', 
+        imgUrl = '',
+        imgFallback = '',
+        imgCircle = false,
+        title = '',
+        type = '',
+        author = '',
+        showMore = false,
+        addedDate = '',
+        played = '',
     } = props;
 
+    const navigate = useNavigate();
+
     return (
-        <div className={cx('library-item-card')}>
+        <div className={cx('library-item-card')}
+            onClick={() => navigate(routeLink)}
+        >
             <div className={cx('library-item-card-info')}>
                 <div className={cx('library-item-img-wrapper')}>
-                    <img 
+                    {imgUrl 
+                    ? <img 
                         draggable="false" 
                         loading="lazy" 
                         src={imgUrl} 
                         alt="" 
-                        className={cx('library-item-img')} 
+                        className={cx('library-item-img', imgCircle && 'circle')} 
                     />
+                    : <span className={cx('library-item-img', 'fallback', imgCircle && 'circle', 'img-fallback')}>{imgFallback}</span>
+                    }
                     <span className={cx('play-icon-wrapper')}><PlayLargeIcon /></span>
                 </div>
                 <div className={cx('library-item-info-text')}>
@@ -39,8 +50,8 @@ const LibraryItemCard = (props) => {
                 </div>
             </div>
            {showMore && <>
-                <span className={cx('library-item-added-date')}>{addedDate}</span>
-                <span className={cx('library-item-played')}>{played}</span>
+                <span className={cx('library-item-added-date')}>{formatDate(addedDate)}</span>
+                <span className={cx('library-item-played')}>{played && formatDate(played)}</span>
            </>}
         </div>
     );

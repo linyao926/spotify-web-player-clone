@@ -23,6 +23,9 @@ const MediaInformation = (props) => {
         publicPlaylists = '',
         followingCount = '',
         followerCount = '',
+        isEditable = false,
+        dispatch,
+        openModal,
     } = props;
 
     return (

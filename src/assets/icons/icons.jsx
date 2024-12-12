@@ -92,7 +92,20 @@ export const SearchIcon = ({ className, width = '24px', height = '24px' }) => (
     </svg>
 );
 
-export const DismissIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const LibrarySearchIcon = ({ className, width = '16px', height = '16px' }) => (
+    <svg
+        className={className}
+        width={width}
+        height={height}
+        viewBox="0 0 16 16"
+        fill="currentColor"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path d="M7 1.75a5.25 5.25 0 1 0 0 10.5 5.25 5.25 0 0 0 0-10.5zM.25 7a6.75 6.75 0 1 1 12.096 4.12l3.184 3.185a.75.75 0 1 1-1.06 1.06L11.304 12.2A6.75 6.75 0 0 1 .25 7z"></path>
+    </svg>
+);
+
+export const DismissIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -105,7 +118,7 @@ export const DismissIcon = ({ className, width = '1.6rem', height = '1.6rem' }) 
     </svg>
 );
 
-export const InstallIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const InstallIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -118,7 +131,7 @@ export const InstallIcon = ({ className, width = '1.6rem', height = '1.6rem' }) 
     </svg>
 );
 
-export const NotificationIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const NotificationIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -131,7 +144,7 @@ export const NotificationIcon = ({ className, width = '1.6rem', height = '1.6rem
     </svg>
 );
 
-export const PersonIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const PersonIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -144,7 +157,7 @@ export const PersonIcon = ({ className, width = '1.6rem', height = '1.6rem' }) =
     </svg>
 );
 
-export const ExternalIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const ExternalIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -237,7 +250,7 @@ export const ShowLessIcon = ({ className, width = '16px', height = '16px' }) => 
     </svg>
 );
 
-export const LanguageIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const LanguageIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -252,7 +265,7 @@ export const LanguageIcon = ({ className, width = '1.6rem', height = '1.6rem' })
     </svg>
 );
 
-export const InstagramIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const InstagramIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -265,7 +278,7 @@ export const InstagramIcon = ({ className, width = '1.6rem', height = '1.6rem' }
     </svg>
 );
 
-export const TwitterIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const TwitterIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -278,7 +291,7 @@ export const TwitterIcon = ({ className, width = '1.6rem', height = '1.6rem' }) 
     </svg>
 );
 
-export const FacebookIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const FacebookIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -291,7 +304,7 @@ export const FacebookIcon = ({ className, width = '1.6rem', height = '1.6rem' })
     </svg>
 );
 
-export const PlaylistFallbackIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const PlaylistFallbackIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -304,7 +317,7 @@ export const PlaylistFallbackIcon = ({ className, width = '1.6rem', height = '1.
     </svg>
 );
 
-export const UserFallbackIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const UserFallbackIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -317,7 +330,7 @@ export const UserFallbackIcon = ({ className, width = '1.6rem', height = '1.6rem
     </svg>
 );
 
-export const EditIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const EditIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -330,7 +343,7 @@ export const EditIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => 
     </svg>
 );
 
-export const AddToLibraryIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const AddToLibraryIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -343,7 +356,7 @@ export const AddToLibraryIcon = ({ className, width = '1.6rem', height = '1.6rem
     </svg>
 );
 
-export const AddToLibrarySmallIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const AddToLibrarySmallIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -356,7 +369,7 @@ export const AddToLibrarySmallIcon = ({ className, width = '1.6rem', height = '1
     </svg>
 );
 
-export const RemoveLibraryIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const RemoveLibraryIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -369,7 +382,7 @@ export const RemoveLibraryIcon = ({ className, width = '1.6rem', height = '1.6re
     </svg>
 );
 
-export const OptionIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const OptionIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -382,7 +395,7 @@ export const OptionIcon = ({ className, width = '1.6rem', height = '1.6rem' }) =
     </svg>
 );
 
-export const OptionSmallIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const OptionSmallIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -395,7 +408,7 @@ export const OptionSmallIcon = ({ className, width = '1.6rem', height = '1.6rem'
     </svg>
 );
 
-export const CompactIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const CompactIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -408,7 +421,7 @@ export const CompactIcon = ({ className, width = '1.6rem', height = '1.6rem' }) 
     </svg>
 );
 
-export const ListIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const ListIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -421,7 +434,20 @@ export const ListIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => 
     </svg>
 );
 
-export const ItemActiveIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const GridIcon = ({ className, width = '1rem', height = '1rem' }) => (
+    <svg
+        className={className}
+        width={width}
+        height={height}
+        viewBox="0 0 16 16"
+        fill="currentcolor"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path d="M1 1h6v6H1V1zm1.5 1.5v3h3v-3h-3zM1 9h6v6H1V9zm1.5 1.5v3h3v-3h-3zM9 1h6v6H9V1zm1.5 1.5v3h3v-3h-3zM9 9h6v6H9V9zm1.5 1.5v3h3v-3h-3z"></path>
+    </svg>
+);
+
+export const ItemActiveIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -434,7 +460,7 @@ export const ItemActiveIcon = ({ className, width = '1.6rem', height = '1.6rem' 
     </svg>
 );
 
-export const PrevIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const PrevIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -447,7 +473,7 @@ export const PrevIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => 
     </svg>
 );
 
-export const NextIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const NextIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -460,7 +486,7 @@ export const NextIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => 
     </svg>
 );
 
-export const InfoIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const InfoIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -473,7 +499,7 @@ export const InfoIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => 
     </svg>
 );
 
-export const DurationRepresentIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const DurationRepresentIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -486,7 +512,7 @@ export const DurationRepresentIcon = ({ className, width = '1.6rem', height = '1
     </svg>
 );
 
-export const LikedPlaceholderIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const LikedPlaceholderIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -500,7 +526,7 @@ export const LikedPlaceholderIcon = ({ className, width = '1.6rem', height = '1.
 );
 
 // Player controls
-export const ShuffleIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const ShuffleIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -513,7 +539,7 @@ export const ShuffleIcon = ({ className, width = '1.6rem', height = '1.6rem' }) 
     </svg>
 );
 
-export const PreviousTrackIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const PreviousTrackIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -526,7 +552,7 @@ export const PreviousTrackIcon = ({ className, width = '1.6rem', height = '1.6re
     </svg>
 );
 
-export const PauseIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const PauseIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -539,7 +565,7 @@ export const PauseIcon = ({ className, width = '1.6rem', height = '1.6rem' }) =>
     </svg>
 );
 
-export const PlayIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const PlayIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -552,7 +578,7 @@ export const PlayIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => 
     </svg>
 );
 
-export const PlayLargeIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const PlayLargeIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -565,7 +591,7 @@ export const PlayLargeIcon = ({ className, width = '1.6rem', height = '1.6rem' }
     </svg>
 );
 
-export const NextTrackIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const NextTrackIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -578,7 +604,7 @@ export const NextTrackIcon = ({ className, width = '1.6rem', height = '1.6rem' }
     </svg>
 );
 
-export const RepeatIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const RepeatIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -591,7 +617,7 @@ export const RepeatIcon = ({ className, width = '1.6rem', height = '1.6rem' }) =
     </svg>
 );
 
-export const NowPlayingViewIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const NowPlayingViewIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -604,7 +630,7 @@ export const NowPlayingViewIcon = ({ className, width = '1.6rem', height = '1.6r
     </svg>
 );
 
-export const QueueIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const QueueIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -617,7 +643,7 @@ export const QueueIcon = ({ className, width = '1.6rem', height = '1.6rem' }) =>
     </svg>
 );
 
-export const VolumeLowIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const VolumeLowIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -630,7 +656,7 @@ export const VolumeLowIcon = ({ className, width = '1.6rem', height = '1.6rem' }
     </svg>
 );
 
-export const VolumeMediumIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const VolumeMediumIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -643,7 +669,7 @@ export const VolumeMediumIcon = ({ className, width = '1.6rem', height = '1.6rem
     </svg>
 );
 
-export const VolumeHighIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const VolumeHighIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}
@@ -656,7 +682,7 @@ export const VolumeHighIcon = ({ className, width = '1.6rem', height = '1.6rem' 
     </svg>
 );
 
-export const VolumeOffIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const VolumeOffIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}
         width={width}

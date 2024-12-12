@@ -2,29 +2,22 @@ import { configureStore, createListenerMiddleware } from '@reduxjs/toolkit';
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 import localforage from 'localforage';
 import rootReducer from './reducers';
-// import myPlaylistReducer from './slices/myPlaylistSlice';
-// import libraryReducer from './slices/librarySlice';
-// import { updateLibrary } from './slices/librarySlice';
 import { checkTokenExpirationMiddleware } from '~/services/auth';
 
 const persistConfig = {
   key: 'root',
   storage: localforage,
-  whitelist: ['auth', 'library', 'my_playlist'], // Chỉ lưu 'library' và 'myPlaylist'
+  whitelist: ['auth', 'library', 'my_playlist'],
   blacklist: ['someOtherReducer'],
 };
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
-// const listenerMiddleware = createListenerMiddleware();
-
-// listenerMiddleware.startListening({
-//   actionCreator: myPlaylistReducer.actions.updatePlaylist,
-//   effect: (action, listenerApi) => {
-//     const state = listenerApi.getState(); 
-//     listenerApi.dispatch(updateLibrary(state.myPlaylists)); 
-//   },
+// localforage.clear().then(() => {
+//   console.log('Đã xóa toàn bộ dữ liệu trong localforage.');
+// }).catch((err) => {
+//   console.error('Lỗi khi xóa dữ liệu localforage:', err);
 // });
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
@@ -33,7 +26,6 @@ export const store = configureStore({
       ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
     },
   })
-  // .prepend(listenerMiddleware.middleware)
   .concat(checkTokenExpirationMiddleware),
 });
 

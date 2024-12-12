@@ -24,7 +24,7 @@ const FilterBar = (props) => {
                 borderRadius="rounded"
                 size="size-small"
                 padding="4px 12px"
-                hoverEffect={["hover-none-scale"]} 
+                hoverEffect={["hover-none-scale", active ? "hover-button-light-color-highlight" : "hover-button-tinted-highlight"]} 
             >{text}</Button>
         )
     };

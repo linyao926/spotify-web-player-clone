@@ -3,13 +3,9 @@
 $library-item-height: 64px;
 $library-item-img-height: 48px;
 
-// grid-area: 1 / listRow / 1 / lastPlayedAt;
-
-// grid-template-areas: "listRow addedAt lastPlayedAt";
-//     grid-template-columns: 1fr var(--columnSize) var(--columnSize);
 .library-item-card {
-    display: grid;
     height: $library-item-height;
+    display: grid;
     gap: 24px;
     grid-template-areas: "listRow addedAt lastPlayedAt";
     grid-template-columns: 1fr var(--columnSize, 20%) var(--columnSize, 20%);
@@ -27,11 +23,7 @@ $library-item-img-height: 48px;
 
     &:hover .library-item-img-wrapper {
         span {
-            opacity: 0;
-        }
-
-        .track-item-card-img {
-            background-color: #282828;
+            opacity: 1;
         }
 
         .play-icon-wrapper {
@@ -61,6 +53,21 @@ $library-item-img-height: 48px;
     flex-shrink: 0;
     object-fit: cover;
     object-position: center center;
+    background-color: #282828;
+    box-shadow: 0 4px 60px rgba(0, 0, 0, .5);
+
+    &.fallback {
+        @include index.flex-center;
+    }
+
+    &.circle {
+        border-radius: 50%;
+    }
+
+    svg {
+        width: 24px;
+        height: 24px;
+    }
 }
 
 .play-icon-wrapper {
@@ -71,6 +78,11 @@ $library-item-img-height: 48px;
     height: 100%;
     transition: index.$opacity-transition;
     background: rgba(0, 0, 0, .5);
+
+    svg {
+        width: 24px;
+        height: 24px;
+    }
 }
 
 .library-item-info-text {
@@ -90,12 +102,15 @@ $library-item-img-height: 48px;
 }
 
 .library-item-sub-title {
-    text-transform: capitalize;
-
+    font-weight: 500;
     span:not(:last-child):after {
         content: index.$not-last-child-after-content;
         margin: 0 4px;
     }
+}
+
+.library-item-type {
+    text-transform: capitalize;
 }
 
 .library-item-added-date,

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from "react-router";
 import { useSelector, useDispatch } from 'react-redux';
 import { openModal } from '~/redux/slices/uiSlice';
-import { SearchIcon, BrowseIcon, FillBrowseIcon, DismissIcon } from '~/assets/icons/icons';
+import { SearchIcon, LibrarySearchIcon, BrowseIcon, FillBrowseIcon, DismissIcon } from '~/assets/icons/icons';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/SearchBox.module.scss';
 
@@ -14,6 +14,8 @@ function SearchBox (props) {
         placeholder = '',
         showBrowse = false,
         onSearch = () => {},
+        setIsBlur,
+        inputIsClickFocus,
         clickFunction,
     } = props;
 
@@ -28,6 +30,12 @@ function SearchBox (props) {
     const dispatch = useDispatch();
     const inputRef = useRef(null);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (inputIsClickFocus) {
+            inputRef.current.focus();
+        } 
+    }, [inputIsClickFocus])
 
     const handleChange = (e) => {
         setInputValue(e.target.value);
@@ -49,17 +57,17 @@ function SearchBox (props) {
             onClick={() => clickFunction && clickFunction(inputRef)}
         >
             <div className={cx("search-icon")}>
-                <SearchIcon />
+                {size === 'small' ? <LibrarySearchIcon /> : <SearchIcon />}
             </div>
             
             <input
                 ref={inputRef}
                 type="text"
                 value={inputValue}
-                onFocus={() => {
-                    setInputIsFocus(true);
-                }}
-                onBlur={() => setInputIsFocus(false)}
+                // onFocus={() => {
+                //     setInputIsFocus(true);
+                // }}
+                onBlur={() => setIsBlur(false)}
                 onChange={handleChange}
                 onKeyDown={handleKeyDown}
                 placeholder={placeholder}

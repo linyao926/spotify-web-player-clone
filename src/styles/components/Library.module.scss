@@ -1,0 +1,75 @@
+@use '../index.scss';
+
+.library {
+    width: 100%;
+    margin-top: -12px;
+}
+
+.library-header {
+    @include index.flex-center(column, flex-start, flex-start);
+    padding: 0 8px;
+}
+
+.filter-bar-wrapper {
+    margin: 4px 0 8px;
+}
+
+.library-toolbar {
+    padding: 2px 4px 0 8px;
+    @include index.flex-center($justify: space-between);
+    width: 100%;
+}
+
+.library-header.flex-row {
+    flex-direction: row;
+
+    .filter-bar-wrapper,
+    .library-toolbar {
+        width: 50%;
+    }
+}
+
+.library-search-wrapper {
+    position: relative;
+}
+
+.btn-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.search-box-wrapper {
+    width: 32px;
+    opacity: 0;
+}
+
+.library-options {
+    padding: 4px 12px 4px 16px;
+}
+
+.library-content-header {
+    display: grid;
+    gap: 24px;
+    grid-template-areas: "listRow addedAt lastPlayedAt";
+    grid-template-columns: 1fr var(--columnSize, 20%) var(--columnSize, 20%);
+    font-size: index.$font-size-small;
+    color: var(--text-subdued);
+    font-weight: bold;
+    border-bottom: 1px solid hsla(0, 0%, 100%, .1);
+    margin: 2px 16px;
+    height: 32px;
+    cursor: default;
+
+    span {
+        @include index.flex-center(row, flex-start, center);
+    }
+
+    span:last-child {
+        justify-content: flex-end;
+    }
+}
+
+.library-content {
+    padding: 0 index.$spacing-base;
+}

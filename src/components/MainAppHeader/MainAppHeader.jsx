@@ -96,7 +96,7 @@ function MainAppHeader () {
                     /> 
                 : <div className={cx('user-avatar')}></div>}
                 {isSubContextOpen && <SubContextMenu 
-                    items={profileSubContext(profileInfo.id)} 
+                    items={profileSubContext(profileInfo.id, dispatch)} 
                     position={position} 
                     alignRight
                 />}

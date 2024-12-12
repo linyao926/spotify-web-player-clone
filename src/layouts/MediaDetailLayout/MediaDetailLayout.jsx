@@ -151,6 +151,9 @@ const MediaDetailLayout = React.forwardRef((props, ref) => {
                     publicPlaylists = {publicPlaylists}
                     followingCount = {followingCount}
                     followerCount = {followerCount}
+                    isEditable={isEditable}
+                    dispatch={dispatch}
+                    openModal={openModal}
                 />
             </header>
             <div className={cx('media-detail-content')}>

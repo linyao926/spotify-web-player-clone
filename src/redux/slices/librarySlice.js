@@ -35,6 +35,28 @@ const librarySlice = createSlice({
       const trackId = action.payload;
       state.likedTracks = state.likedTracks.filter((t) => t.id !== trackId);
     },
+    updateLibraryItem: (state, action) => {
+      const { type, item } = action.payload;
+      console.log(item)
+      if (type === 'playlists') {
+        const index = state.playlists.findIndex((i) => i.id === item.id);
+        if (index !== -1) {
+          let result;
+          if (item.url) {
+            result = {
+              images: {
+                ...state.playlists[index].images,
+                uploadUrl: item.url,
+              }
+            }
+          } else {
+            result = {...item}
+          }
+          state.playlists[index] = { ...state.playlists[index], ...result }; 
+          console.log(state.playlists[index])
+        }
+      }
+    },
   },
 });
 
@@ -43,6 +65,7 @@ export const {
   removeFromLibrary,
   addToLikedTracks,
   removeFromLikedTracks,
+  updateLibraryItem,
 } = librarySlice.actions;
 
 export default librarySlice.reducer;

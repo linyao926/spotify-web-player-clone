@@ -10,13 +10,17 @@ const generateId = (index) => {
 
 const myPlaylistSlice = createSlice({
   name: 'my_playlist',
-  initialState: initialState, // Redux sẽ tự động phục hồi state từ storage
+  initialState, 
 
   reducers: {
-    createPlaylist: (state) => {
+    createPlaylist: (state, action) => {
+      const { profileInfo } = action.payload;
       const newPlaylist = {
         id: generateId(state.length + 1),
         name: `My Playlist #${state.length + 1}`,
+        authorImgUrl: profileInfo?.images[0]?.url,
+        authorName: profileInfo && profileInfo['display_name'],
+        authorId: profileInfo && profileInfo.id,
         type: 'playlist',
         tracks: { items: [] },
         description: '',
@@ -29,7 +33,7 @@ const myPlaylistSlice = createSlice({
         time_played: null,
         isMyPlaylist: true,
       };
-      state.push(newPlaylist); // Thêm playlist mới vào state
+      state.push(newPlaylist); 
     },
 
     addTrackToPlaylist: (state, action) => {

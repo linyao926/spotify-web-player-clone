@@ -3,7 +3,7 @@
 .sidebar {
     @include index.bodySectionBase;
     flex-shrink: 0;
-    z-index: 0;
+    z-index: 1;
 
     &.collapsed {
         align-items: center;
@@ -30,12 +30,12 @@
     }
 }
 
-.sidebar-content {
-    padding: index.$spacing-base;
+.create-playlist-prompt-wrapper {
+    padding: 0 index.$spacing-base;
 }
 
 .create-playlist-prompt {
-    margin: 8px 0;
+    margin: index.$spacing-base 0;
     padding: 16px 20px;
     background-color: var(--background-highlight);
     border-radius: index.$border-radius-base;

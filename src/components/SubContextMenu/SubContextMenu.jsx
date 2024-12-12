@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from "react-router";
 import { useDispatch } from 'react-redux';
 import classNames from 'classnames/bind';
@@ -11,6 +11,8 @@ const SubContextMenu = (props) => {
         items, 
         position,
         alignRight = false, 
+        isFixed = false,
+        setMenuWidth,
     } = props;
 
     const dispatch = useDispatch();
@@ -20,6 +22,14 @@ const SubContextMenu = (props) => {
     const [subMenu, setSubMenu] = useState(null);
 
     const navigate = useNavigate();
+
+    const menuRef = useRef(null);
+
+    useEffect(() => {
+        if (menuRef.current && setMenuWidth) {
+            setMenuWidth(menuRef.current.getBoundingClientRect().width);
+        }
+    }, [menuRef, position]);
 
     const handleMouseEnter = (item, event) => {
         if (item.subMenu) {
@@ -48,13 +58,14 @@ const SubContextMenu = (props) => {
             window.open(item.externalLink, '_blank');
         }
 
-        if (item.onClick) item.onClick(dispatch);
+        if (item.onClick) item.onClick();
     };
 
     return (
         <div 
-            className={cx("subcontext-menu", alignRight ? 'align-right' : '')} 
+            className={cx("subcontext-menu", alignRight ? 'align-right' : '', isFixed && 'fixed')} 
             style={{ top: position.top, left: position.left }}
+            ref={menuRef}
         >
             {items.map((item, index) => {
                 const itemClasses = cx(

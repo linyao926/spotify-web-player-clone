@@ -83,23 +83,23 @@ function Sidebar (props) {
                 />}
             />
             <div className={cx('sidebar-content')}>
-                {isCollapsed 
-                    ? <CreatePlaylistButton 
-                        isSubContextOpen={isSubContextOpen}
+                {hasItems 
+                    ? <Library 
+                        playlists={library.playlists}
+                        albums={library.albums}
+                        artists={library.artists}
+                        likedTracks={library.likedTracks}
                         isCollapsed={isCollapsed}
-                        position={position}
-                        handleCloseSubContext={handleCloseSubContext}
-                        handleOpenSubContext={handleOpenSubContext}
+                        isShowMore={isShowMore}
                     /> 
-                    : (hasItems 
-                        ? <Library 
-                            playlists={library.playlists}
-                            albums={library.albums}
-                            artists={library.artists}
-                            likedTracks={library.likedTracks}
+                    : (isCollapsed
+                        ? <CreatePlaylistButton 
+                            isSubContextOpen={isSubContextOpen}
                             isCollapsed={isCollapsed}
-                            isShowMore={isShowMore}
-                        /> 
+                            position={position}
+                            handleCloseSubContext={handleCloseSubContext}
+                            handleOpenSubContext={handleOpenSubContext}
+                        />  
                         : <div className={cx('create-playlist-prompt-wrapper')}>
                             <CreatePlaylistPrompt />
                         </div>)

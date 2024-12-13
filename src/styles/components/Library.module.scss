@@ -71,5 +71,9 @@
 }
 
 .library-content {
-    padding: 0 index.$spacing-base;
+    padding: index.$spacing-base index.$spacing-base 0;
+
+    &.collapse {
+        padding-top: index.$spacing-medium;
+    }
 }

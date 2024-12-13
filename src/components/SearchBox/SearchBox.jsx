@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router";
 import { useSelector, useDispatch } from 'react-redux';
 import { openModal } from '~/redux/slices/uiSlice';
 import { SearchIcon, LibrarySearchIcon, BrowseIcon, FillBrowseIcon, DismissIcon } from '~/assets/icons/icons';
+import Tooltip from '../Tooltip/Tooltip';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/SearchBox.module.scss';
 
@@ -56,9 +57,11 @@ function SearchBox (props) {
         <div className={cx('search-box', size)}
             onClick={() => clickFunction && clickFunction(inputRef)}
         >
-            <div className={cx("search-icon")}>
-                {size === 'small' ? <LibrarySearchIcon /> : <SearchIcon />}
-            </div>
+            <Tooltip content="Search" position="bottom">
+                <div className={cx("search-icon")}>
+                    {size === 'small' ? <LibrarySearchIcon /> : <SearchIcon />}
+                </div>
+            </Tooltip>
             
             <input
                 ref={inputRef}
@@ -79,13 +82,13 @@ function SearchBox (props) {
                 </div>
             )}
             
-            {showBrowse && <div className={cx("browse-icon", inputValue ? 'hidden' : '', isSearchPage && 'active')}
+            {showBrowse && <Tooltip content="Browse" position="bottom"><div className={cx("browse-icon", inputValue ? 'hidden' : '', isSearchPage && 'active')}
                 onClick={() => {
                     accessToken ? navigate("/search") : dispatch(openModal({id: 'login-prompt'}))
                 }}
             >
                 {isSearchPage ? <FillBrowseIcon /> : <BrowseIcon />}
-            </div>}
+            </div></Tooltip>}
         </div>
     )
 };

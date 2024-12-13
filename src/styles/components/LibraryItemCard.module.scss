@@ -17,6 +17,10 @@ $library-item-img-height: 48px;
     padding: 0 index.$spacing-base;
     cursor: pointer;
 
+    &.compact {
+        height: 32px;
+    }
+
     &:hover {
         background-color: var(--background-tinted-base);
     }
@@ -92,6 +96,11 @@ $library-item-img-height: 48px;
 .library-item-title {
     color: var(--text-base);
     font-size: index.$font-size-base;
+
+    &::after {
+        color: var(--text-subdued);
+        font-size: index.$font-size-small;
+    }
 }
 
 .library-item-title,

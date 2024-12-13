@@ -12,6 +12,7 @@ import {
 } from '~/assets/icons/icons';
 import Button from '../Button/Button';
 import SearchBox from '../SearchBox/SearchBox';
+import Tooltip from '../Tooltip/Tooltip';
 import { profileSubContext } from '~/constants/subContextItems';
 import SubContextMenu from '~/components/SubContextMenu/SubContextMenu';
 import config from '~/config';
@@ -70,37 +71,39 @@ function MainAppHeader () {
                 borderRadius="rounded"
                 routeLink={config.routes.home}
             >Install App</Button>
-
-            <Button 
-                hasIcon
-                icon={<NotificationIcon />}
-                borderRadius="circle"
-                variant="transparent"
-                size="size-small"
-                padding="16px"
-                routeLink={config.routes.home}
-            />
-            
-            <div className={cx("user-avatar-wrapper")}
-                onClick={
-                    isSubContextOpen 
-                    ? () => handleCloseSubContext('profile')
-                    : (event) => handleOpenSubContext(event, 'profile', 'bottom-right')
-                }
-            >
-                {profileInfo
-                ?   <img 
-                        src={profileInfo.images[0]?.url} 
-                        alt="Profile Avatar" 
-                        className={cx('user-avatar')}
-                    /> 
-                : <div className={cx('user-avatar')}></div>}
-                {isSubContextOpen && <SubContextMenu 
-                    items={profileSubContext(profileInfo.id, dispatch)} 
-                    position={position} 
-                    alignRight
-                />}
-            </div>
+            <Tooltip content="What's New" position="bottom">
+                <Button 
+                    hasIcon
+                    icon={<NotificationIcon />}
+                    borderRadius="circle"
+                    variant="transparent"
+                    size="size-small"
+                    padding="16px"
+                    routeLink={config.routes.home}
+                />
+            </Tooltip>
+            <Tooltip content={profileInfo['display_name']} position="bottom-right">
+                <div className={cx("user-avatar-wrapper")}
+                    onClick={
+                        isSubContextOpen 
+                        ? () => handleCloseSubContext('profile')
+                        : (event) => handleOpenSubContext(event, 'profile', 'bottom-right')
+                    }
+                >
+                        {profileInfo
+                        ?<img 
+                            src={profileInfo.images[0]?.url} 
+                            alt="Profile Avatar" 
+                            className={cx('user-avatar')}
+                        /> 
+                        : <div className={cx('user-avatar')}></div>}
+                    {isSubContextOpen && <SubContextMenu 
+                        items={profileSubContext(profileInfo.id, dispatch)} 
+                        position={position} 
+                        alignRight
+                    />}
+                </div>
+            </Tooltip>
         </>
     );
 
@@ -121,16 +124,18 @@ function MainAppHeader () {
                 <SpotifyLogoIcon />
             </Link>
             <div className={cx('header-navigation')}>
-                <Button 
-                    hasIcon
-                    icon={isHomePage ? <FillHomeIcon /> : <HomeIcon />}
-                    iconActive
-                    borderRadius="circle"
-                    variant="elevated-base"
-                    size="size-base"
-                    padding="12px"
-                    routeLink={config.routes.home}
-                />
+                <Tooltip content="Home" position="bottom">
+                    <Button 
+                        hasIcon
+                        icon={isHomePage ? <FillHomeIcon /> : <HomeIcon />}
+                        iconActive
+                        borderRadius="circle"
+                        variant="elevated-base"
+                        size="size-base"
+                        padding="12px"
+                        routeLink={config.routes('').home}
+                    />
+                </Tooltip>
                 <SearchBox 
                     size="large" 
                     borderRadius="rounded" 

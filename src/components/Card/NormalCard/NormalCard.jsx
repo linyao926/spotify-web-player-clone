@@ -11,9 +11,11 @@ const NormalCard = (props) => {
     const {
         imgCircle = false,
         imgUrl = '',
+        imgFallback = '',
         title,
         subtitle,
         routeLink = '/search',
+        disableTextHover = false,
     } = props;
 
     const navigate = useNavigate();
@@ -31,7 +33,7 @@ const NormalCard = (props) => {
                         alt="" 
                         className={cx('normal-card-img', imgCircle && 'circle')} 
                     />
-                    : <span className={cx('normal-card-img', imgCircle && 'circle', 'img-fallback')}></span>
+                    : <span className={cx('normal-card-img', imgCircle && 'circle', 'fallback')}>{imgFallback}</span>
                 }
                 <div className={cx('play-btn-wrapper')}>
                     <Button 
@@ -45,7 +47,7 @@ const NormalCard = (props) => {
                     />
                 </div>
             </div>
-            <div className={cx('normal-card-bottom')}>
+            <div className={cx('normal-card-bottom', disableTextHover && 'disable-hover')}>
                 <Link className={cx('normal-card-title')}
                     to="/"
                 >{title}</Link>

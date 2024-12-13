@@ -53,7 +53,6 @@ const librarySlice = createSlice({
             result = {...item}
           }
           state.playlists[index] = { ...state.playlists[index], ...result }; 
-          console.log(state.playlists[index])
         }
       }
     },

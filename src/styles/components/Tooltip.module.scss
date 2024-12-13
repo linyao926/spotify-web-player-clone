@@ -1,0 +1,21 @@
+.tooltip-content {
+    position: absolute;
+    background-color: #282828;
+    color: var(--text-base);
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    white-space: nowrap;
+    z-index: 3;
+    pointer-events: none; 
+    font-weight: 600;
+
+    &.subdued {
+        color: var(--text-subdued);
+    }
+}
+
+.tooltip-target {
+    display: inline-block;
+    cursor: pointer;
+}

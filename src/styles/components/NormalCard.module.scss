@@ -28,9 +28,21 @@
     width: 100%;
     height: auto;
     aspect-ratio: 1;
+    object-fit: cover;
+    object-position: center center;
     border-radius: index.$border-radius-img-base;
     box-shadow: index.$box-shadow-img-base;
     background-color: inherit;
+    background-color: #282828;
+
+    svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    &.fallback {
+        @include index.flex-center;
+    }
 
     &.circle {
         border-radius: 50%;
@@ -56,6 +68,12 @@
 
         &:hover {
             text-decoration: underline;
+        }
+    }
+
+    &.disable-hover a{
+        &:hover {
+            text-decoration: none;
         }
     }
 

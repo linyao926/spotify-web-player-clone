@@ -81,6 +81,7 @@ const Library = (props) => {
                 setLibraryItems={setLibraryItems}
                 options={options}
                 isShowMore={isShowMore}
+                isCollapsed={isCollapsed}
             />
         </section>
     )

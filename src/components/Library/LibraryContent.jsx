@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import LibraryItemCard from '~/components/Card/LibraryItemCard/LibraryItemCard';
+import NormalCard from '~/components/Card/NormalCard/NormalCard';
 import { 
     PlaylistFallbackIcon,
     UserFallbackIcon,
@@ -20,6 +21,7 @@ const LibraryContent = (props) => {
         libraryItems = [],
         setLibraryItems,
         isShowMore = false,
+        isCollapsed = false,
     } = props;
 
     useEffect(() => {
@@ -70,49 +72,72 @@ const LibraryContent = (props) => {
         });
     };
 
-    // console.log(libraryItems)
+    const getItem = (item) => {
+        let imgUrl, imgFallback = '', routeLink;
+
+        routeLink = `/${item.type}/${item.id}`;
+
+        if (item.isMyPlaylist) {
+            imgFallback = <PlaylistFallbackIcon />;
+            routeLink = `/my_playlist/${item.id}`;
+            if (item.images.uploadUrl) {
+                imgUrl = item.images.uploadUrl;
+            } else if (item.images.fallbackUrl) {
+                imgUrl = item.images.fallbackUrl;
+            } else {
+                imgUrl = '';
+            };
+        } else if (item.images.url) {
+            imgUrl = item.images.url;
+        } else imgUrl = '';
+
+        if (item.type === 'artist') {
+            imgFallback = <UserFallbackIcon />;
+        };
+
+        if (options['view-mode'] === 'grid' && !isCollapsed) {
+            let subtitle = item.type;
+            if (item.type !== 'artist') {
+                subtitle = `${item.type} • ${item.authorName}`
+            }
+
+            return (
+                <NormalCard
+                    key={item.id}
+                    imgCircle={item.type === 'artist'}
+                    imgUrl={imgUrl}
+                    imgFallback = {imgFallback}
+                    title={item.name}
+                    subtitle={subtitle}
+                    routeLink={routeLink}
+                    disableTextHover
+                />
+            )
+        } 
+        if (options['view-mode'] !== 'grid' || (options['view-mode'] === 'grid' && isCollapsed)) {
+            return (
+                <LibraryItemCard 
+                    key={item.id}
+                    routeLink={routeLink}
+                    imgUrl = {imgUrl}
+                    imgFallback = {imgFallback}
+                    title = {item.name}
+                    type = {item.type}
+                    author = {item.authorName}
+                    authorId = {item.authorId}
+                    showMore = {isShowMore}
+                    addedDate = {item['time_added']}
+                    played = {item['time_played']}
+                    viewAs = {options['view-mode']}
+                    collapse={isCollapsed}
+                />
+            )
+        }
+    };
 
     return (
-        <div className={cx('library-content')}>
-            {libraryItems.map(item => {
-                let imgUrl, imgFallback = '', routeLink;
-
-                routeLink = `/${item.type}/${item.id}`;
-
-                if (item.isMyPlaylist) {
-                    imgFallback = <PlaylistFallbackIcon />;
-                    routeLink = `/my_playlist/${item.id}`;
-                    if (item.images.uploadUrl) {
-                        imgUrl = item.images.uploadUrl;
-                    } else if (item.images.fallbackUrl) {
-                        imgUrl = item.images.fallbackUrl;
-                    } else {
-                        imgUrl = '';
-                    };
-                } else if (item.images.url) {
-                    imgUrl = item.images.url;
-                } else imgUrl = '';
-
-                if (item.type === 'artist') {
-                    imgFallback = <UserFallbackIcon />;
-                };
-
-                return (
-                    <LibraryItemCard 
-                        key={item.id}
-                        routeLink={routeLink}
-                        imgUrl = {imgUrl}
-                        imgFallback = {imgFallback}
-                        title = {item.name}
-                        type = {item.type}
-                        author = {item.authorName}
-                        authorId = {item.authorId}
-                        showMore = {isShowMore}
-                        addedDate = {item['time_added']}
-                        played = {item['time_played']}
-                    />
-                )
-            })}
+        <div className={cx('library-content', isCollapsed && 'collapse')}>
+            {libraryItems.map(item => getItem(item))}
         </div>
     )
 };

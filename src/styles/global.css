@@ -66,6 +66,10 @@
     font-family: "DM Sans", 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
 }
 
+body {
+    overflow: hidden;
+}
+
 .btn-wrapper {
     position: relative;
 }

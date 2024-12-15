@@ -82,7 +82,7 @@ function MainAppHeader () {
                     routeLink={config.routes.home}
                 />
             </Tooltip>
-            <Tooltip content={profileInfo['display_name']} position="bottom-right">
+            <Tooltip content={profileInfo && profileInfo['display_name']} position="bottom-right">
                 <div className={cx("user-avatar-wrapper")}
                     onClick={
                         isSubContextOpen 

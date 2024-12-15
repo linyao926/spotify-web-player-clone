@@ -20,24 +20,26 @@ const SubContextMenu = (props) => {
     const [activeItems, setActiveItems] = useState(items.map(item => item.active || false));
     const [disableItems, setDisableItems] = useState(items.map(item => item.disableItem || false));
     const [subMenu, setSubMenu] = useState(null);
+    const [subMenuPosition, setSubMenuPosition] = useState({top: 0, left: 0})
 
     const navigate = useNavigate();
 
     const menuRef = useRef(null);
 
     useEffect(() => {
-        if (menuRef.current && setMenuWidth) {
-            setMenuWidth(menuRef.current.getBoundingClientRect().width);
+        if (menuRef?.current && setMenuWidth) {
+            setMenuWidth(menuRef?.current.getBoundingClientRect().width);
         }
     }, [menuRef, position]);
 
     const handleMouseEnter = (item, event) => {
         if (item.subMenu) {
+            setSubMenu(true);
             const subMenuPosition = {
                 top: event.currentTarget.offsetTop,
                 left: event.currentTarget.offsetWidth + 10,
             };
-            setSubMenu({ items: item.subMenu, position: subMenuPosition });
+            setSubMenuPosition(subMenuPosition)
         }
     };
 
@@ -76,7 +78,7 @@ const SubContextMenu = (props) => {
                     disableItems[index] ? "disable" : ""
                 );
                 
-                return (
+                return (<>
                     <div 
                         key={index} 
                         className={itemClasses} 
@@ -87,15 +89,14 @@ const SubContextMenu = (props) => {
                         <span className={cx("subcontext-item-text")}>{item.name}</span>
                         {item.iconRight && <span className={cx('subcontext-icon')}>{item.iconRight}</span>}
                         {item.subMenu && <span className={cx("arrow")}>▶</span>}
+                        {/* {subMenu && (<SubContextMenu 
+                            items={item.subMenu} 
+                            position={subMenuPosition} 
+                            isFixed
+                        />)} */}
                     </div>
-                )
+                </>)
             })}
-            {subMenu && (
-                <SubContextMenu 
-                    items={subMenu.items} 
-                    position={subMenu.position} 
-                />
-            )}
         </div>
     );
 };

@@ -7,16 +7,21 @@ const openFunction = (state, action) => {
         });
     }
 
-    if (action.payload && action.payload.id) {
-        state[action.payload.id] = { isOpen: true };
+    if (action.payload && action.payload.name) {
+        state[action.payload.name].isOpen = true;
+
+        if (action.payload.id) {
+            state[action.payload.name].id = action.payload.id;
+        }
     }
 };
 
 const closeFunction = (state, action) => {
-    const { id } = action.payload;
+    const { name } = action.payload;
     
-    if (state[id]) {
-        state[id].isOpen = false;
+    if (state[name]) {
+        state[name].isOpen = false;
+        state[name].id = '';
     }
 };
 
@@ -34,6 +39,10 @@ const uiSlice = createSlice({
                 'create-playlist': { isOpen: false },
                 'track-list-view-as': { isOpen: false },
                 'library-options': { isOpen: false },
+                'library-item-menu': {
+                    isOpen: false,
+                    id: '',
+                }
             }  
         },
         dialog: { isOpen: false },

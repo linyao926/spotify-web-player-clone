@@ -1,10 +1,17 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import LibraryItemCard from '~/components/Card/LibraryItemCard/LibraryItemCard';
 import NormalCard from '~/components/Card/NormalCard/NormalCard';
 import { 
     PlaylistFallbackIcon,
     UserFallbackIcon,
 } from '~/assets/icons';
+import {
+    libraryPlaylistContextMenu,
+    myPlaylistContextMenu,
+    libraryAlbumContextMenu,
+    libraryArtistContextMenu,
+} from '~/constants/subContextItems';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/Library.module.scss';
 
@@ -23,6 +30,10 @@ const LibraryContent = (props) => {
         isShowMore = false,
         isCollapsed = false,
     } = props;
+
+    const dispatch = useDispatch();
+
+    const [pinnedItems, setPinnedItems] = useState([]);
 
     useEffect(() => {
         const sortBy = options['sort-by'];
@@ -47,6 +58,15 @@ const LibraryContent = (props) => {
         }
         setLibraryItems(result);
     }, [playlists, artists, albums, likedTracks]);
+
+    const handlePinItem = (item) => {
+        setPinnedItems((prevPinned) => {
+            if (prevPinned.find((p) => p.id === item.id)) {
+                return prevPinned.filter((p) => p.id !== item.id);
+            }
+            return [...prevPinned, { ...item, isPinned: true }];
+        });
+    };
 
     const sortItems = (items, sortBy) => {
         return items.sort((a, b) => {
@@ -73,7 +93,9 @@ const LibraryContent = (props) => {
     };
 
     const getItem = (item) => {
-        let imgUrl, imgFallback = '', routeLink;
+        let imgUrl, imgFallback = '', routeLink, contextMenu;
+
+        contextMenu = libraryPlaylistContextMenu(item.id, 'ADD', dispatch);
 
         routeLink = `/${item.type}/${item.id}`;
 
@@ -87,12 +109,18 @@ const LibraryContent = (props) => {
             } else {
                 imgUrl = '';
             };
+            contextMenu = myPlaylistContextMenu(item.id, 'REMOVE', dispatch);
         } else if (item.images.url) {
             imgUrl = item.images.url;
         } else imgUrl = '';
 
         if (item.type === 'artist') {
             imgFallback = <UserFallbackIcon />;
+            contextMenu = libraryArtistContextMenu(item.id, dispatch);
+        };
+
+        if (item.type === 'album') {
+            contextMenu = libraryAlbumContextMenu(item.id, dispatch);
         };
 
         if (options['view-mode'] === 'grid' && !isCollapsed) {
@@ -104,6 +132,7 @@ const LibraryContent = (props) => {
             return (
                 <NormalCard
                     key={item.id}
+                    id={item.id}
                     imgCircle={item.type === 'artist'}
                     imgUrl={imgUrl}
                     imgFallback = {imgFallback}
@@ -111,6 +140,7 @@ const LibraryContent = (props) => {
                     subtitle={subtitle}
                     routeLink={routeLink}
                     disableTextHover
+                    contextMenu={contextMenu}
                 />
             )
         } 
@@ -118,6 +148,7 @@ const LibraryContent = (props) => {
             return (
                 <LibraryItemCard 
                     key={item.id}
+                    id={item.id}
                     routeLink={routeLink}
                     imgUrl = {imgUrl}
                     imgFallback = {imgFallback}
@@ -130,6 +161,7 @@ const LibraryContent = (props) => {
                     played = {item['time_played']}
                     viewAs = {options['view-mode']}
                     collapse={isCollapsed}
+                    contextMenu={contextMenu}
                 />
             )
         }

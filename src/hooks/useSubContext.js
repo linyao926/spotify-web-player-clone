@@ -60,7 +60,7 @@ export const useSubContext = () => {
   const dispatch = useDispatch();
 
   // Hàm mở subcontext
-  const handleOpenSubContext = (event, id, position) => {
+  const handleOpenSubContext = (event, name, position, id = '') => {
     event.stopPropagation();
     const boundingRect = event.currentTarget.getBoundingClientRect();
     const { clientX, clientY } = event;
@@ -76,10 +76,14 @@ export const useSubContext = () => {
         },
       })
     );
-    dispatch(openSubContext({ id }));
+    if (id.length > 0) {
+      dispatch(openSubContext({ name, id }));
+    } else {
+      dispatch(openSubContext({ name }));
+    }
   };
 
-  const handleCloseSubContext = (id) => dispatch(closeSpecificSubContext({ id }));
+  const handleCloseSubContext = (name) => dispatch(closeSpecificSubContext({ name }));
 
   return { handleOpenSubContext, handleCloseSubContext };
 };

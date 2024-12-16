@@ -12,6 +12,7 @@ import {
     libraryAlbumContextMenu,
     libraryArtistContextMenu,
 } from '~/constants/subContextItems';
+import ScrollWrapper from '~/components/ScrollWrapper/ScrollWrapper';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/Library.module.scss';
 
@@ -29,9 +30,11 @@ const LibraryContent = (props) => {
         setLibraryItems,
         isShowMore = false,
         isCollapsed = false,
+        maxHeight = 0,
     } = props;
 
     const dispatch = useDispatch();
+    const containerRef = useRef(null);
 
     const [pinnedItems, setPinnedItems] = useState([]);
 
@@ -168,9 +171,17 @@ const LibraryContent = (props) => {
     };
 
     return (
-        <div className={cx('library-content', isCollapsed && 'collapse')}>
-            {libraryItems.map(item => getItem(item))}
-        </div>
+        <>
+            <ScrollWrapper target={containerRef} />
+            <div className={cx('library-container')}
+                ref={containerRef}
+                style={{maxHeight: maxHeight + 12}}
+            >
+                <div className={cx('library-content', isCollapsed && 'collapse', options['view-mode'] === 'grid' && 'grid')}>
+                    {libraryItems.map(item => getItem(item))}
+                </div>
+            </div>
+        </>
     )
 };
 

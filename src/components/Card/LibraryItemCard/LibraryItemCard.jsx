@@ -141,12 +141,12 @@ const LibraryItemCard = (props) => {
                 <span className={cx('library-item-played')}>{played && formatDate(played)}</span>
            </>}
            {isSubContextOpen && contextMenuId === id &&  (
-            <SubContextMenu 
-                items={contextMenu} 
-                position={position} 
-                isFixed
-            />
-           )}
+                <SubContextMenu 
+                    items={contextMenu} 
+                    position={position} 
+                    isFixed
+                />
+            )}
         </div>
     );
 };

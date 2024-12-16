@@ -1,8 +1,14 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Link } from "react-router";
+import { useDispatch } from 'react-redux';
 import NormalCard from '~/components/Card/NormalCard/NormalCard';
 import SwiperWrap from './SwiperWrap';
-import Button from '~/components/Button/Button';
+import {
+    playlistContextMenu,
+    myPlaylistContextMenu,
+    albumContextMenu,
+    artistContextMenu,
+} from '~/constants/subContextItems';
 import { mapToNormalCardData } from '~/utils/dataMapper';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/MediaSection.module.scss';
@@ -17,8 +23,10 @@ const MediaSection = (props) => {
         data = [],
         type = '',
         isSwiper = false,
+        
     } = props;
 
+    const dispatch = useDispatch();
     const containerRef = useRef(null);
 
     const [columnCount, setColumnCount] = useState(5);
@@ -62,8 +70,16 @@ const MediaSection = (props) => {
             el = item;
         }
 
+        let contextMenu = playlistContextMenu(item.id, 'ADD', dispatch);
+
+        if (item.type === 'album') {
+            contextMenu = albumContextMenu(item.id, 'ADD', dispatch);
+        } else if (item.type === 'artist') {
+            contextMenu = artistContextMenu(item.id, 'ADD', dispatch);
+        }
+
         if (!isSwiper) {
-            if (index > columnCount - 1) return;
+            if (index > columnCount) return;
         }
 
         const mappedData = mapToNormalCardData(el, type);
@@ -71,11 +87,13 @@ const MediaSection = (props) => {
         return (
           <NormalCard
             key={el.id}
+            id={el.id}
             imgCircle={mappedData.imgCircle}
             imgUrl={mappedData.imgUrl}
             title={mappedData.title}
             subtitle={mappedData.subtitle}
             routeLink={`/${type}/${el.id}`}
+            contextMenu = {contextMenu}
           />
         );
     });

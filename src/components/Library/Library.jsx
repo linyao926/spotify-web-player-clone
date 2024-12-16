@@ -22,9 +22,22 @@ const Library = (props) => {
 
     const options = useSelector((state) => state.ui['library-options']);
 
+    const libraryRef = useRef(null);
+    const headerRef = useRef(null);
+
     const [filters, setFilters] = useState([]);
     const [searchBoxVisible, setSearchBoxVisible] = useState(false);
     const [libraryItems, setLibraryItems] = useState([]);
+    const [maxHeight, setMaxHeight] = useState(0);
+
+    useEffect(() => {
+        const sidebarHeight = libraryRef.current?.parentElement?.offsetHeight || 0;
+        const headerHeight = headerRef.current?.offsetHeight || 0;
+
+        console.log(maxHeight)
+
+        setMaxHeight(sidebarHeight - headerHeight);
+    }, [libraryRef, headerRef, maxHeight]);
 
     useEffect(() => {
         const result = [];
@@ -45,8 +58,8 @@ const Library = (props) => {
     }, [playlists, artists, albums, likedTracks]);
 
     return (
-        <section className={cx('library')}>
-            {!isCollapsed && <header className={cx('library-header', isShowMore && 'flex-row')}>
+        <section className={cx('library')} ref={libraryRef}>
+            {!isCollapsed && <header className={cx('library-header', isShowMore && 'flex-row')} ref={headerRef}>
                 <div className={cx('filter-bar-wrapper')}>
                     <FilterBar
                         filters={filters}
@@ -82,6 +95,7 @@ const Library = (props) => {
                 options={options}
                 isShowMore={isShowMore}
                 isCollapsed={isCollapsed}
+                maxHeight={maxHeight}
             />
         </section>
     )

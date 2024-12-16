@@ -2,12 +2,13 @@
 
 .library {
     width: 100%;
-    margin-top: -12px;
+    flex-grow: 1;
 }
 
 .library-header {
     @include index.flex-center(column, flex-start, flex-start);
     padding: 0 8px;
+    margin-top: -12px;
 }
 
 .filter-bar-wrapper {
@@ -70,10 +71,21 @@
     }
 }
 
+.library-container {
+    height: 100%;
+}
+
 .library-content {
-    padding: index.$spacing-base index.$spacing-base 0;
+    padding: index.$spacing-base;
 
     &.collapse {
         padding-top: index.$spacing-medium;
+    }
+
+    &.grid {
+        padding: 0 index.$spacing-base index.$spacing-base;
+        display: grid;
+        grid-auto-rows: 1fr;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     }
 }

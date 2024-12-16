@@ -267,8 +267,7 @@ export const albumContextMenu = (id, action, dispatch) => [
   {
     name: 'Add to playlist',
     iconLeft: <PlusIcon />,
-    iconRight: <ExpandIcon />,
-    onClick: () => {return}
+    subMenu: [],
   },
   shareLink,
 ];
@@ -283,8 +282,7 @@ export const libraryAlbumContextMenu = (id,dispatch) => [
   {
     name: 'Add to playlist',
     iconLeft: <PlusIcon />,
-    iconRight: <ExpandIcon />,
-    onClick: () => {return}
+    subMenu: [],
   },
   shareLink,
 ];
@@ -308,11 +306,10 @@ export const libraryArtistContextMenu = (id, dispatch) => [
   shareLink,
 ];
 
-export const trackContextMenu = (id, action, inAlbum = false, inArtist = false, dispatch, artists = []) => [
+export const trackContextMenu = (id, action, dispatch, inAlbum = false, inArtist = false, artists = []) => [
   {
     name: 'Add to playlist',
     iconLeft: <PlusIcon />,
-    iconRight: <ExpandIcon />,
     subMenu: [],
   },
   {
@@ -325,7 +322,7 @@ export const trackContextMenu = (id, action, inAlbum = false, inArtist = false, 
     borderBottom: true,
   },
   {
-    name: inArtist ? '' : 'Go to artist',
+    name: 'Go to artist',
     iconLeft: <ArtistFallbackIcon />,
     subMenu: artists.length > 1 ? artists.map(item => ({
       name: item.name,
@@ -335,12 +332,14 @@ export const trackContextMenu = (id, action, inAlbum = false, inArtist = false, 
       if (artists.length === 1) {
         return;
       }
-    }
+    },
+    hidden: inArtist,
   },
   {
-    name: inAlbum ? '' : 'Go to album',
+    name: 'Go to album',
     iconLeft: <AlbumFallbackIcon />,
-    onClick: () => {return}
+    onClick: () => {return},
+    hidden: inAlbum,
   },
   {
     name: 'View credits',

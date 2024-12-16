@@ -43,6 +43,9 @@ const ScrollWrapper = ({ target, contentScrollHandler = null, layoutScrollHandle
             if (osInstance.current) {
                 osInstance.current.destroy();
             }
+            if (target && target.current && contentScrollHandler) {
+                target.current.removeEventListener('scroll', contentScrollHandler);
+            }
         };
     }, [target]);
 

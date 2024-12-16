@@ -34,10 +34,11 @@
     box-shadow: index.$box-shadow-img-base;
     background-color: inherit;
     background-color: #282828;
+    color: var(--text-subdued);
 
     svg {
-        width: 24px;
-        height: 24px;
+        width: 50%;
+        height: 50%;
     }
 
     &.fallback {

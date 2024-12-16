@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from "react-router";
 import { useDispatch } from 'react-redux';
+import { ExpandIcon } from '~/assets/icons/icons';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/SubContextMenu.module.scss';
 
@@ -14,8 +15,6 @@ const SubContextMenu = (props) => {
         isFixed = false,
         setMenuWidth,
     } = props;
-
-    const dispatch = useDispatch();
 
     const [activeItems, setActiveItems] = useState(items.map(item => item.active || false));
     const [disableItems, setDisableItems] = useState(items.map(item => item.disableItem || false));
@@ -75,10 +74,11 @@ const SubContextMenu = (props) => {
                     activeItems[index] ? "active" : "", 
                     item.textUnderline && "text-underline", 
                     item.borderBottom && 'border-bottom',
-                    disableItems[index] ? "disable" : ""
+                    disableItems[index] ? "disable" : "",
+                    item.hidden && 'hidden',
                 );
                 
-                return (<>
+                return (
                     <div 
                         key={index} 
                         className={itemClasses} 
@@ -88,14 +88,14 @@ const SubContextMenu = (props) => {
                         {item.iconLeft && <span className={cx('subcontext-icon')}>{item.iconLeft}</span>}
                         <span className={cx("subcontext-item-text")}>{item.name}</span>
                         {item.iconRight && <span className={cx('subcontext-icon')}>{item.iconRight}</span>}
-                        {item.subMenu && <span className={cx("arrow")}>▶</span>}
+                        {item.subMenu && <span className={cx("arrow")}><ExpandIcon /></span>}
                         {/* {subMenu && (<SubContextMenu 
                             items={item.subMenu} 
                             position={subMenuPosition} 
                             isFixed
                         />)} */}
                     </div>
-                </>)
+                )
             })}
         </div>
     );

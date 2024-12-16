@@ -1,6 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
 import useDynamicColumns from '~/hooks/useDynamicColumns';
 import { DurationRepresentIcon } from '~/assets/icons';
+import { useDispatch } from 'react-redux';
+import {
+    trackContextMenu,
+    queueTrackContextMenu
+} from '~/constants/subContextItems';
 import TrackItemCard from '~/components/Card/TrackItemCard/TrackItemCard';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/TrackListSection.module.scss';
@@ -27,8 +32,10 @@ const TrackListSection = React.forwardRef((props, ref) => {
         showAll = false,
         showAddToLibrary,
         showExpand,
+        inQueue = false,
     } = props;
 
+    const dispatch = useDispatch();
     const headerRef = useRef(null);
 
     const [isFullList, setIsFullList] = useState(false);
@@ -56,8 +63,15 @@ const TrackListSection = React.forwardRef((props, ref) => {
             if (index > 3) return;
         }
 
+        let contextMenu = trackContextMenu(item.id, 'ADD', dispatch, showAlbum);
+
+        if (inQueue) {
+            contextMenu = queueTrackContextMenu(item.id, 'ADD', dispatch);
+        }
+
         return (
             <TrackItemCard 
+                id={element.id}
                 key={element.id}
                 routeLink = {`/track/${element.id}`}
                 trackIndex = {index + 1}
@@ -75,6 +89,7 @@ const TrackListSection = React.forwardRef((props, ref) => {
                 viewAs = {viewAs}
                 showAddToLibrary={showAddToLibrary}
                 showExpand={showExpand}
+                contextMenu={contextMenu}
             />
         )
     });

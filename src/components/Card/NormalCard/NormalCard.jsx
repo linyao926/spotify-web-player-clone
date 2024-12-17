@@ -2,7 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from "react-router";
 import { useDispatch, useSelector } from 'react-redux'; 
 import { useSubContext } from '~/hooks/useSubContext';
+import { selectTrackItemsData, fetchTrackItemsData } from '~/redux/slices/trackItemsDataSlice';
 import { PlayLargeIcon } from '~/assets/icons';
+import {
+    playlistContextMenu,
+    myPlaylistContextMenu,
+    albumContextMenu,
+    artistContextMenu,
+} from '~/constants/subContextItems';
 import Button from '~/components/Button/Button';
 import SubContextMenu from '~/components/SubContextMenu/SubContextMenu';
 import classNames from 'classnames/bind';
@@ -20,42 +27,75 @@ const NormalCard = (props) => {
         subtitle,
         routeLink = '/search',
         disableTextHover = false,
-        contextMenu = [], 
+        libraryContextMenu = [], 
+        type = '',
+        author = [],
+        trackTotal = 0,
     } = props;
 
     const navigate = useNavigate();
-    const isSubContextOpen = useSelector((state) => state.ui.subContext.contexts['library-item-menu'].isOpen);
-    const contextMenuId = useSelector((state) => state.ui.subContext.contexts['library-item-menu'].id);
-    const [position, setPosition] = useState({ x: 0, y: 0 });
+    const isSubContextOpen = useSelector((state) => state.ui.subContext.contexts['normal-card-menu'].isOpen);
+    const contextMenuId = useSelector((state) => state.ui.subContext.contexts['normal-card-menu'].id);
 
-    const { handleOpenSubContext, handleCloseSubContext } = useSubContext();
+    const { 
+        positionFixed,
+        handleOpenCardMenu, 
+        handleCloseCardMenu,
+        positionFromBottom,
+        positionFromRight, 
+        setMenuHeight,
+        setMenuWidth, 
+    } = useSubContext();
+
+    const dispatch = useDispatch();
+    const { accessToken } = useSelector((state) => state.auth);
+    const trackItems = useSelector(selectTrackItemsData);
+
+    const item = {
+        id: id,
+        name: title,
+        authorName: author.name ? author.name : author['display_name'],
+        authorId: author && author.id,
+        type: type,
+        tracks: { items: trackItems },
+        description: '',
+        track_total: trackItems ? trackItems.length : 0,
+        imageUrl: imgUrl,
+        time_added: new Date().toISOString(),
+        time_played: null,
+    };
+
+    let initialSubContext = playlistContextMenu(item, 'ADD', dispatch);
+
+    if (item.type === 'album') {
+        initialSubContext = albumContextMenu(item, 'ADD', dispatch);
+    } else if (item.type === 'artist') {
+        initialSubContext = artistContextMenu(item, 'ADD', dispatch);
+    } 
+
+    const [subContext, setSubContext] = useState([]);
 
     useEffect(() => {
-        document.addEventListener("contextmenu", handleClickOutside);
-        return () => {
-            document.removeEventListener("contextmenu", handleClickOutside);
-        };
+        setSubContext(initialSubContext);
     }, []);
 
-    const handleRightClick = (event) => {
-        event.preventDefault(); 
-        if (isSubContextOpen && contextMenuId === id) {
-            handleCloseSubContext('library-item-menu');
-        } else {
-            handleOpenSubContext(event, 'library-item-menu', 'bottom-right', id)
+    useEffect(() => {
+        if (accessToken) {
+            dispatch(fetchTrackItemsData({accessToken, type, id}));
         }
-        setPosition({ left: event.clientX, top: event.clientY });
-    };
+    }, [accessToken, dispatch]);
 
-    const handleClickOutside = (event) => {
-        event.preventDefault();
-        handleCloseSubContext('library-item-menu');
-    };
+    useEffect(() => {
+        document.addEventListener("contextmenu", handleCloseCardMenu);
+        return () => {
+            document.removeEventListener("contextmenu", handleCloseCardMenu);
+        };
+    }, []);
 
     return (
         <div className={cx('normal-card')}
             onClick={() => navigate(routeLink)}
-            onContextMenu={handleRightClick}
+            onContextMenu={(event) => handleOpenCardMenu(event, 'normal-card-menu', id)}
         >
             <div className={cx('normal-card-top')}>
                 {imgUrl 
@@ -91,9 +131,13 @@ const NormalCard = (props) => {
             </div>
             {isSubContextOpen && contextMenuId === id &&  (
                 <SubContextMenu 
-                    items={contextMenu} 
-                    position={position} 
+                    items={libraryContextMenu.length > 0 ? libraryContextMenu : subContext} 
+                    position={positionFixed} 
                     isFixed
+                    setMenuHeight={setMenuHeight}
+                    setMenuWidth={setMenuWidth}
+                    fromBottom={positionFromBottom}
+                    fromRight={positionFromRight}
                 />
             )}
         </div>

@@ -50,12 +50,12 @@ function Album(props) {
                 isVisible={isVisible}
                 showAlbum={false}
             />
-            {relatedTrack.tracks && relatedTrack.tracks.length > 0 && <MediaSection 
+            {/* {relatedTrack.tracks && relatedTrack.tracks.length > 0 && <MediaSection 
                 data={relatedTrack.tracks}
                 type="track"
                 title={`More by ${albumInfo && albumInfo.artists && albumInfo.artists.name}`}
                 routeLink = {`/artist/${albumInfo.artists.id}/discography`}
-            />}
+            />} */}
         </MediaDetailLayout>
     );
 }

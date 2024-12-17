@@ -1,6 +1,6 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from "react-router";
-import { useDispatch, useSelector } from 'react-redux'; 
+import { useSelector } from 'react-redux'; 
 import { useSubContext } from '~/hooks/useSubContext';
 import { PlayLargeIcon } from '~/assets/icons';
 import { formatDate } from '~/utils/timeUtils';
@@ -26,37 +26,29 @@ const LibraryItemCard = (props) => {
         viewAs = 'list',
         addedDate = '',
         played = '',
-        contextMenu,
+        contextMenu = [],
     } = props;
 
     const navigate = useNavigate();
-    const isSubContextOpen = useSelector((state) => state.ui.subContext.contexts['library-item-menu'].isOpen);
-    const contextMenuId = useSelector((state) => state.ui.subContext.contexts['library-item-menu'].id);
-    const [position, setPosition] = useState({ x: 0, y: 0 });
+    const isSubContextOpen = useSelector((state) => state.ui.subContext.contexts['library-card-menu'].isOpen);
+    const contextMenuId = useSelector((state) => state.ui.subContext.contexts['library-card-menu'].id);
 
-    const { handleOpenSubContext, handleCloseSubContext } = useSubContext();
+    const { 
+        positionFixed,
+        handleOpenCardMenu, 
+        handleCloseCardMenu,
+        positionFromBottom,
+        positionFromRight, 
+        setMenuHeight,
+        setMenuWidth, 
+    } = useSubContext();
 
     useEffect(() => {
-        document.addEventListener("contextmenu", handleClickOutside);
+        document.addEventListener("contextmenu", handleCloseCardMenu);
         return () => {
-          document.removeEventListener("contextmenu", handleClickOutside);
+            document.removeEventListener("contextmenu", handleCloseCardMenu);
         };
     }, []);
-
-    const handleRightClick = (event) => {
-        event.preventDefault(); 
-        if (isSubContextOpen && contextMenuId === id) {
-            handleCloseSubContext('library-item-menu');
-        } else {
-            handleOpenSubContext(event, 'library-item-menu', 'bottom-right', id)
-        }
-        setPosition({ left: event.clientX, top: event.clientY });
-    };
-
-    const handleClickOutside = (event) => {
-        event.preventDefault();
-        handleCloseSubContext('library-item-menu');
-    };
 
     if (collapse) {
         return (
@@ -64,7 +56,7 @@ const LibraryItemCard = (props) => {
                 onClick={() => {
                     navigate(routeLink);
                 }}
-                onContextMenu={handleRightClick}
+                onContextMenu={(event) => handleOpenCardMenu(event, 'library-card-menu', id)}
             >
                 <div className={cx('library-item-card-info')}>
                     <Tooltip content={<div className={cx('library-item-info-text')}>
@@ -95,8 +87,12 @@ const LibraryItemCard = (props) => {
                 {isSubContextOpen && contextMenuId === id &&  (
                     <SubContextMenu 
                         items={contextMenu} 
-                        position={position} 
+                        position={positionFixed} 
                         isFixed
+                        setMenuHeight={setMenuHeight}
+                        setMenuWidth={setMenuWidth}
+                        fromBottom={positionFromBottom}
+                        fromRight={positionFromRight}
                     />
                 )}
             </div>
@@ -108,7 +104,7 @@ const LibraryItemCard = (props) => {
             onClick={() => {
                 navigate(routeLink);
             }}
-            onContextMenu={handleRightClick}
+            onContextMenu={(event) => handleOpenCardMenu(event, 'library-card-menu', id)}
         >
             <div className={cx('library-item-card-info')}>
                 {viewAs === 'list' && <div className={cx('library-item-img-wrapper')}>
@@ -143,8 +139,12 @@ const LibraryItemCard = (props) => {
            {isSubContextOpen && contextMenuId === id &&  (
                 <SubContextMenu 
                     items={contextMenu} 
-                    position={position} 
+                    position={positionFixed} 
                     isFixed
+                    setMenuHeight={setMenuHeight}
+                    setMenuWidth={setMenuWidth}
+                    fromBottom={positionFromBottom}
+                    fromRight={positionFromRight}
                 />
             )}
         </div>

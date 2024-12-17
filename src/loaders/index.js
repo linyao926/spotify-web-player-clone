@@ -1,4 +1,4 @@
-import albumLoader from "./alubmLoader";
+import albumLoader from "./albumLoader";
 import artistLoader from "./artistLoader";
 import browseLoader from "./browseLoader";
 import homeLoader from "./homeLoader";

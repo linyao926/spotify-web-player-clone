@@ -39,33 +39,26 @@ const TrackItemCard = (props) => {
     const containerRef = useRef(null);
     const { currentColumns, templateColumns } = useDynamicColumns(containerRef, initialColumns, showIndex);
 
-    const isSubContextOpen = useSelector((state) => state.ui.subContext.contexts['library-item-menu'].isOpen);
-    const contextMenuId = useSelector((state) => state.ui.subContext.contexts['library-item-menu'].id);
-    const [position, setPosition] = useState({ x: 0, y: 0 });
+    const dispatch = useDispatch();
+    const isSubContextOpen = useSelector((state) => state.ui.subContext.contexts['normal-card-menu'].isOpen);
+    const contextMenuId = useSelector((state) => state.ui.subContext.contexts['normal-card-menu'].id);
 
-    const { handleOpenSubContext, handleCloseSubContext } = useSubContext();
+    const { 
+        positionFixed,
+        handleOpenCardMenu, 
+        handleCloseCardMenu,
+        positionFromBottom,
+        positionFromRight, 
+        setMenuHeight,
+        setMenuWidth, 
+    } = useSubContext();
 
     useEffect(() => {
-        document.addEventListener("contextmenu", handleClickOutside);
+        document.addEventListener("contextmenu", handleCloseCardMenu);
         return () => {
-            document.removeEventListener("contextmenu", handleClickOutside);
+            document.removeEventListener("contextmenu", handleCloseCardMenu);
         };
     }, []);
-
-    const handleRightClick = (event) => {
-        event.preventDefault(); 
-        if (isSubContextOpen && contextMenuId === id) {
-            handleCloseSubContext('library-item-menu');
-        } else {
-            handleOpenSubContext(event, 'library-item-menu', 'bottom-right', id)
-        }
-        setPosition({ left: event.clientX, top: event.clientY });
-    };
-
-    const handleClickOutside = (event) => {
-        event.preventDefault();
-        handleCloseSubContext('library-item-menu');
-    };
 
     const authorList = authors.map(authorName => (
         <span key={authorName} className={cx('track-item-card-author')}>{authorName}</span>
@@ -76,7 +69,7 @@ const TrackItemCard = (props) => {
             className={cx('track-item-card', templateColumns, viewAs)}
             to={routeLink}
             ref={containerRef}
-            onContextMenu={handleRightClick}
+            onContextMenu={(event) => handleOpenCardMenu(event, 'normal-card-menu', id)}
         >
             {showIndex && (
                 <div className={cx('track-item-index', 'show-play-icon')}>
@@ -116,8 +109,12 @@ const TrackItemCard = (props) => {
             {isSubContextOpen && contextMenuId === id &&  (
                 <SubContextMenu 
                     items={contextMenu} 
-                    position={position} 
+                    position={positionFixed} 
                     isFixed
+                    setMenuHeight={setMenuHeight}
+                    setMenuWidth={setMenuWidth}
+                    fromBottom={positionFromBottom}
+                    fromRight={positionFromRight}
                 />
             )}
         </Link>

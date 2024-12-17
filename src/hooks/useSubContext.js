@@ -1,65 +1,41 @@
-// import { useState, useEffect, useRef } from 'react';
-
-// const useContextMenu = (initialIsVisible) => {
-//     const [isComponentVisible, setIsComponentVisible] = useState(initialIsVisible);
-//     const [points, setPoints] = useState({
-//         x: 0,
-//         y: 0,
-//     });
-
-//     const ref = useRef(null);
-
-//     // Handle Right-Click context menu
-//     useEffect(() => {
-//         function handleContextMenu(e) {
-//             if (ref.current && !ref.current.contains(e.target)) {
-//                 setIsComponentVisible(false);
-//             } else { 
-//                 // Disable default right-click context menu
-//                 e.preventDefault();
-//             }
-//         }
-
-//         document.addEventListener('contextmenu', handleContextMenu);
-
-//         return () => {
-//             document.removeEventListener('contextmenu', handleContextMenu);
-//         };
-//     }, []);
-
-//     // Handle click outside 
-//     useEffect(() => {
-//         document.addEventListener('click', handleClickOutside, true);
-//         return () => {
-//             document.removeEventListener('click', handleClickOutside, true);
-//         };
-//     }, []);
-
-//     const handleClickOutside = (event) => {
-//         if (ref.current && !ref.current.contains(event.target)) {
-//             setIsComponentVisible(false);
-//         }
-//     };
-
-//     return { 
-//         ref, 
-//         isComponentVisible, 
-//         setIsComponentVisible, 
-//         points,
-//         setPoints 
-//     };
-// };
-
-// export default useContextMenu;
-
-import { useDispatch } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { openSubContext, closeSpecificSubContext } from '~/redux/slices/uiSlice';
 import { setPosition } from '~/redux/slices/positionSlice';
 
 export const useSubContext = () => {
   const dispatch = useDispatch();
+  const isSubContextOpen = useSelector((state) => state.ui.subContext.contexts['normal-card-menu'].isOpen);
+  const contextMenuId = useSelector((state) => state.ui.subContext.contexts['normal-card-menu'].id);
+  const [positionFixed, setPositionFixed] = useState({ top: 0, left: 0 });
+  const [positionFromBottom, setPositionFromBottom] = useState(false);
+  const [positionFromRight, setPositionFromRight] = useState(false);
+  const [menuHeight, setMenuHeight] = useState(0);
+  const [menuWidth, setMenuWidth] = useState(0);
+  
 
-  // Hàm mở subcontext
+  useEffect(() => {
+      const windowHeight = window.innerHeight;
+      if (menuHeight > 0) {
+          if (positionFixed.top + menuHeight > windowHeight) {
+              setPositionFromBottom(true);
+          } else {
+              setPositionFromBottom(false);
+          }
+      }
+  }, [menuHeight, positionFixed]);
+  
+  useEffect(() => {
+      const windowWidth = window.innerWidth;
+      if (menuWidth > 0) {
+          if (positionFixed.left + menuWidth > windowWidth) {
+              setPositionFromRight(true);
+          } else {
+              setPositionFromRight(false);
+          }
+      }
+  }, [menuWidth, positionFixed]);
+
   const handleOpenSubContext = (event, name, position, id = '') => {
     event.stopPropagation();
     const boundingRect = event.currentTarget.getBoundingClientRect();
@@ -85,5 +61,33 @@ export const useSubContext = () => {
 
   const handleCloseSubContext = (name) => dispatch(closeSpecificSubContext({ name }));
 
-  return { handleOpenSubContext, handleCloseSubContext };
+  const handleOpenCardMenu = (event, name, id) => {
+    event.preventDefault(); 
+
+      if (isSubContextOpen && contextMenuId !== id) {
+          handleCloseSubContext(name);
+      } 
+      
+      if (!isSubContextOpen || contextMenuId !== id || contextMenuId === id) {
+          handleOpenSubContext(event, name, 'bottom-right', id)
+      }
+      setPositionFixed({ left: event.clientX, top: event.clientY });
+  };
+
+  const handleCloseCardMenu = (event, name) => {
+      event.preventDefault();
+      handleCloseSubContext(name);
+  };
+
+  return { 
+    handleOpenSubContext, 
+    handleCloseSubContext, 
+    positionFixed, 
+    handleOpenCardMenu, 
+    handleCloseCardMenu,
+    positionFromBottom,
+    positionFromRight, 
+    setMenuHeight,
+    setMenuWidth, 
+  };
 };

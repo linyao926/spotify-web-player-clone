@@ -11,9 +11,12 @@ const SubContextMenu = (props) => {
     const { 
         items, 
         position,
+        fromBottom = false,
+        fromRight = false,
         alignRight = false, 
         isFixed = false,
         setMenuWidth,
+        setMenuHeight,
     } = props;
 
     const [activeItems, setActiveItems] = useState(items.map(item => item.active || false));
@@ -26,10 +29,16 @@ const SubContextMenu = (props) => {
     const menuRef = useRef(null);
 
     useEffect(() => {
-        if (menuRef?.current && setMenuWidth) {
-            setMenuWidth(menuRef?.current.getBoundingClientRect().width);
+        if (menuRef?.current) {
+            if (setMenuWidth) {
+                setMenuWidth(menuRef?.current.getBoundingClientRect().width);
+            }
+
+            if (setMenuHeight) {
+                setMenuHeight(menuRef?.current.getBoundingClientRect().height);
+            }
         }
-    }, [menuRef, position]);
+    }, [menuRef, position, fromBottom]);
 
     const handleMouseEnter = (item, event) => {
         if (item.subMenu) {
@@ -42,7 +51,9 @@ const SubContextMenu = (props) => {
         }
     };
 
-    const handleItemClick = (item, index) => {
+    const handleItemClick = (event, item, index) => {
+        event.preventDefault(); 
+        event.stopPropagation();
         if (item.toggle) {
             setActiveItems(prev => {
                 const updated = [...prev];
@@ -65,7 +76,12 @@ const SubContextMenu = (props) => {
     return (
         <div 
             className={cx("subcontext-menu", alignRight ? 'align-right' : '', isFixed && 'fixed')} 
-            style={{ top: position.top, left: position.left }}
+            style={{ 
+                top: fromBottom ? "auto" : position.top, 
+                bottom: fromBottom ? `${window.innerHeight - position.top}px` : "auto",
+                left: fromRight ? "auto" : position.left,
+                right: fromRight ? `${window.innerWidth - position.left}px` : "auto",
+            }}
             ref={menuRef}
         >
             {items.map((item, index) => {
@@ -82,7 +98,7 @@ const SubContextMenu = (props) => {
                     <div 
                         key={index} 
                         className={itemClasses} 
-                        onClick={() => handleItemClick(item, index)}
+                        onClick={(event) => handleItemClick(event, item, index)}
                         onMouseEnter={(event) => handleMouseEnter(item, event)} 
                     >
                         {item.iconLeft && <span className={cx('subcontext-icon')}>{item.iconLeft}</span>}

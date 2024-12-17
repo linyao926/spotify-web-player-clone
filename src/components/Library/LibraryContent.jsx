@@ -37,6 +37,29 @@ const LibraryContent = (props) => {
     const containerRef = useRef(null);
 
     const [pinnedItems, setPinnedItems] = useState([]);
+    const [likedTracksInfo, setLikedTracksInfo] = useState({
+        id: 'collection/tracks',
+        name: 'Liked Songs',
+        authorName: `${libraryItems.length} songs`,
+        type: 'playlist',
+        tracks: { items: libraryItems },
+        track_total: libraryItems ? libraryItems.length : 0,
+        imageUrl: "https://misc.scdn.co/liked-songs/liked-songs-300.png",
+        time_added: null,
+        time_played: null,
+        isLikedTracks: true,
+    });
+
+    useEffect(() => {
+        if (likedTracks.length > 0) {
+            setLikedTracksInfo({
+                ...likedTracksInfo,
+                tracks: { items: libraryItems },
+                track_total: libraryItems ? libraryItems.length : 0,
+                authorName: `${libraryItems.length} songs`,
+            })
+        }
+    }, [likedTracks]);
 
     useEffect(() => {
         const sortBy = options['sort-by'];
@@ -47,7 +70,7 @@ const LibraryContent = (props) => {
                 ...playlists,
                 ...artists,
                 ...albums,
-                ...likedTracks
+                likedTracksInfo
             ];
             result = sortItems(combinedItems, sortBy);
         } else {
@@ -57,10 +80,10 @@ const LibraryContent = (props) => {
                 ...albums,
             ];
             result = sortItems(combinedItems, sortBy);
-            result.push(...likedTracks);
+            result.push(likedTracksInfo);
         }
         setLibraryItems(result);
-    }, [playlists, artists, albums, likedTracks]);
+    }, [playlists, artists, albums, likedTracksInfo]);
 
     const handlePinItem = (item) => {
         setPinnedItems((prevPinned) => {
@@ -102,19 +125,18 @@ const LibraryContent = (props) => {
 
         routeLink = `/${item.type}/${item.id}`;
 
+        if (item.isLikedTracks) {
+            routeLink = `/${item.id}`;
+        }
+
         if (item.isMyPlaylist) {
             imgFallback = <PlaylistFallbackIcon />;
             routeLink = `/my_playlist/${item.id}`;
-            if (item.images.uploadUrl) {
-                imgUrl = item.images.uploadUrl;
-            } else if (item.images.fallbackUrl) {
-                imgUrl = item.images.fallbackUrl;
-            } else {
-                imgUrl = '';
-            };
             contextMenu = myPlaylistContextMenu(item.id, 'REMOVE', dispatch);
-        } else if (item.images.url) {
-            imgUrl = item.images.url;
+        };
+
+        if (item.imageUrl) {
+            imgUrl = item.imageUrl;
         } else imgUrl = '';
 
         if (item.type === 'artist') {
@@ -144,6 +166,7 @@ const LibraryContent = (props) => {
                     routeLink={routeLink}
                     disableTextHover
                     contextMenu={contextMenu}
+                    type={item.type}
                 />
             )
         } 

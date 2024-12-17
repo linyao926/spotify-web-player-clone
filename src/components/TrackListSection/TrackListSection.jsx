@@ -63,10 +63,16 @@ const TrackListSection = React.forwardRef((props, ref) => {
             if (index > 3) return;
         }
 
-        let contextMenu = trackContextMenu(item.id, 'ADD', dispatch, showAlbum);
+        const trackItem = {
+            ...item,
+            time_added: new Date().toISOString(),
+            time_played: null,
+        }
+
+        let contextMenu = trackContextMenu(trackItem, 'ADD', dispatch, showAlbum);
 
         if (inQueue) {
-            contextMenu = queueTrackContextMenu(item.id, 'ADD', dispatch);
+            contextMenu = queueTrackContextMenu(trackItem, 'ADD', dispatch);
         }
 
         return (

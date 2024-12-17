@@ -2,8 +2,9 @@ import React from 'react';
 import { logout } from '~/redux/slices/authSlice'; 
 import { 
   setLibraryOptions,
-
 } from '~/redux/slices/uiSlice';
+import { createPlaylist } from '~/redux/slices/myPlaylistSlice';
+import { addToLibrary, removeFromLibrary } from '~/redux/slices/librarySlice';
 import { 
   ExternalIcon, 
   CompactIcon, 
@@ -26,9 +27,9 @@ import {
   DismissSmallIcon,
   EditIcon,
   DeleteIcon,
+  PlusIcon,
 } from "~/assets/icons/icons";
 import config from "~/config";
-import { PlusIcon } from '../assets/icons/icons';
 
 export const profileSubContext = (id, dispatch) => [
     {
@@ -178,10 +179,10 @@ const shareLink = {
   }]
 };
 
-const libraryActions = (id, action, dispatch) => ({
+const libraryActions = (type, item, action, dispatch) => ({
   name: action === 'ADD' ? "Add to Library" : "Remove from Library",
   iconLeft: action === 'ADD' ? <AddToLibrarySmallIcon /> : <RemoveFromIcon />,
-  onClick: () => action === 'ADD' ? dispatch(addToLibrary(id)) : dispatch(removeFromLibrary(id)),
+  onClick: () => action === 'ADD' ? dispatch(addToLibrary({type, item})) : dispatch(removeFromLibrary({type, id: item.id})),
 });
 
 const queueActions = (id, action, dispatch) => ({
@@ -209,10 +210,10 @@ const addPlaylistToProfile = (id, action, dispatch) => ({
   borderBottom: true,
 });
 
-export const playlistContextMenu = (id, action, dispatch) => [
-  libraryActions(id, action, dispatch),
+export const playlistContextMenu = (item = {id: ''}, action, dispatch) => [
+  libraryActions('playlists', item, action, dispatch),
   {
-    ...queueActions(id, 'ADD', dispatch),
+    ...queueActions(item.id, 'ADD', dispatch),
     borderBottom: true,
   },
   shareLink,
@@ -220,12 +221,12 @@ export const playlistContextMenu = (id, action, dispatch) => [
 
 export const libraryPlaylistContextMenu = (id, profileAction, dispatch) => [
   {
-    ...queueActions(id, 'ADD', dispatch),
+    ...queueActions('playlists', id, 'ADD', dispatch),
     borderBottom: true,
   },
   addPlaylistToProfile(id, profileAction, dispatch),
   {
-    ...libraryActions(id, 'REMOVE', dispatch),
+    ...libraryActions({id}, 'REMOVE', dispatch),
     borderBottom: true,
   },
   cretePlaylistAction(dispatch),
@@ -258,10 +259,10 @@ export const myPlaylistContextMenu = (id, action, dispatch) => [
   shareLink,
 ];
 
-export const albumContextMenu = (id, action, dispatch) => [
-  libraryActions(id, action, dispatch),
+export const albumContextMenu = (item = {id: ''}, action, dispatch) => [
+  libraryActions('albums', item, action, dispatch),
   {
-    ...queueActions(id, 'ADD', dispatch),
+    ...queueActions(item.id, 'ADD', dispatch),
     borderBottom: true,
   },
   {
@@ -272,8 +273,8 @@ export const albumContextMenu = (id, action, dispatch) => [
   shareLink,
 ];
 
-export const libraryAlbumContextMenu = (id,dispatch) => [
-  libraryActions(id, 'REMOVE', dispatch),
+export const libraryAlbumContextMenu = (id ,dispatch) => [
+  libraryActions('albums', {id}, 'REMOVE', dispatch),
   {
     ...queueActions(id, 'ADD', dispatch),
     borderBottom: true,
@@ -287,11 +288,11 @@ export const libraryAlbumContextMenu = (id,dispatch) => [
   shareLink,
 ];
 
-export const artistContextMenu = (id, action, dispatch) => [
+export const artistContextMenu = (item = {id: ''}, action, dispatch) => [
   {
     name: action === 'ADD' ? "Follow" : "Unfollow",
     iconLeft: action === 'ADD' ? <FollowIcon /> : <DismissSmallIcon />,
-    onClick: () => action === 'ADD' ? dispatch(addToLibrary(id)) : dispatch(removeFromLibrary(id)),
+    onClick: () => action === 'ADD' ? dispatch(addToLibrary({type: 'artists', item})) : dispatch(removeFromLibrary({type: 'artists' , id: item.id})),
   },
   shareLink,
 ];
@@ -300,13 +301,13 @@ export const libraryArtistContextMenu = (id, dispatch) => [
   {
     name: "Unfollow",
     iconLeft: <DismissSmallIcon />,
-    onClick: () => dispatch(removeFromLibrary(id)),
+    onClick: () => dispatch(removeFromLibrary({type: 'artists' , id})),
   },
   pinAction(id, 'artist'),
   shareLink,
 ];
 
-export const trackContextMenu = (id, action, dispatch, inAlbum = false, inArtist = false, artists = []) => [
+export const trackContextMenu = (item, action, dispatch, inAlbum = false, inArtist = false, artists = []) => [
   {
     name: 'Add to playlist',
     iconLeft: <PlusIcon />,
@@ -315,10 +316,10 @@ export const trackContextMenu = (id, action, dispatch, inAlbum = false, inArtist
   {
     name: action === 'ADD' ? "Save to your Liked Songs" : "Remove from your Liked Songs",
     iconLeft: action === 'ADD' ? <AddToLibrarySmallIcon /> : <RemoveFromIcon />,
-    onClick: () => action === 'ADD' ? dispatch(addToLibrary(id)) : dispatch(removeFromLibrary(id)),
+    onClick: () => action === 'ADD' ? dispatch(addToLibrary({type: 'likedTracks', item})) : dispatch(removeFromLibrary({type: 'likedTracks', id: item.id})),
   },
   {
-    ...queueActions(id, 'ADD', dispatch),
+    ...queueActions(item.id, 'ADD', dispatch),
     borderBottom: true,
   },
   {
@@ -350,7 +351,7 @@ export const trackContextMenu = (id, action, dispatch, inAlbum = false, inArtist
   shareLink,
 ];
 
-export const queueTrackContextMenu = (id, action, dispatch, artists = []) => [
+export const queueTrackContextMenu = (item, action, dispatch, artists = []) => [
   {
     name: 'Add to playlist',
     iconLeft: <PlusIcon />,
@@ -360,11 +361,11 @@ export const queueTrackContextMenu = (id, action, dispatch, artists = []) => [
   {
     name: action === 'ADD' ? "Save to your Liked Songs" : "Remove from your Liked Songs",
     iconLeft: action === 'ADD' ? <AddToLibrarySmallIcon /> : <RemoveFromIcon />,
-    onClick: () => action === 'ADD' ? dispatch(addToLibrary(id)) : dispatch(removeFromLibrary(id)),
+    onClick: () => action === 'ADD' ? dispatch(addToLibrary({type: 'likedTracks', item})) : dispatch(removeFromLibrary({type: 'likedTracks', id: item.id})),
   },
-  queueActions(id, 'ADD', dispatch),
+  queueActions(item.id, 'ADD', dispatch),
   {
-    ...queueActions(id, 'REMOVE', dispatch),
+    ...queueActions(item.id, 'REMOVE', dispatch),
     borderBottom: true,
   },
   {

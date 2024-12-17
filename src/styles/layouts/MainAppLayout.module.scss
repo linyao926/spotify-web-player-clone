@@ -16,6 +16,7 @@
     flex-grow: 1;
     overflow: hidden;
     padding: 0 index.$spacing-base;
+    position: relative;
     
     .overview {
         width: 280px;

@@ -34,8 +34,6 @@ const Library = (props) => {
         const sidebarHeight = libraryRef.current?.parentElement?.offsetHeight || 0;
         const headerHeight = headerRef.current?.offsetHeight || 0;
 
-        console.log(maxHeight)
-
         setMaxHeight(sidebarHeight - headerHeight);
     }, [libraryRef, headerRef, maxHeight]);
 

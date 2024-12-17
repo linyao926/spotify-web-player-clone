@@ -39,7 +39,11 @@ const uiSlice = createSlice({
                 'create-playlist': { isOpen: false },
                 'track-list-view-as': { isOpen: false },
                 'library-options': { isOpen: false },
-                'library-item-menu': {
+                'normal-card-menu': {
+                    isOpen: false,
+                    id: '',
+                },
+                'library-card-menu': {
                     isOpen: false,
                     id: '',
                 }

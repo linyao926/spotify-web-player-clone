@@ -21,21 +21,21 @@ const albumLoader = async ({ params }) => {
 
     albumItems.forEach(item => {
         item.album = {
-        images: album.images,
-        name: album.name
+          images: album.images,
+          name: album.name
         }
     });
 
     return {
         albumInfo: {
-        "images": album.images,
-        "name": album.name,
-        "release_date": album["release_date"],
-        "artists": artist,
-        "id": album.id,
-        "type": album.type,
-        "album_type": album["album_type"],
-        "track_total": album['total_tracks'],
+          "images": album.images,
+          "name": album.name,
+          "release_date": album["release_date"],
+          "artists": artist,
+          "id": album.id,
+          "type": album.type,
+          "album_type": album["album_type"],
+          "track_total": album['total_tracks'],
         },
         albumItems: album.tracks.items,
         relatedTrack: relatedArtistTracks,

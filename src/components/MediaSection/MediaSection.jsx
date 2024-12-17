@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Link } from "react-router";
 import { useDispatch } from 'react-redux';
+import { useWindowSize } from 'react-use';
 import NormalCard from '~/components/Card/NormalCard/NormalCard';
 import SwiperWrap from './SwiperWrap';
 import {
@@ -23,11 +24,11 @@ const MediaSection = (props) => {
         data = [],
         type = '',
         isSwiper = false,
-        
     } = props;
 
     const dispatch = useDispatch();
     const containerRef = useRef(null);
+    const { width } = useWindowSize();
 
     const [columnCount, setColumnCount] = useState(5);
 
@@ -35,7 +36,8 @@ const MediaSection = (props) => {
         const container = containerRef.current;
         if (!container) return;
 
-        const adjustColumns = (width) => {
+        const adjustColumns = (contentWidth, paddingLeft, paddingRight) => {
+            const width = contentWidth + paddingLeft + paddingRight;
             let count;
             if (width > 1063) {
                 count = 6
@@ -53,14 +55,18 @@ const MediaSection = (props) => {
 
         const observer = new ResizeObserver((entries) => {
             for (let entry of entries) {
-                adjustColumns(entry.contentRect.width);
+                const computedStyle = window.getComputedStyle(entry.target);
+                const paddingLeft = parseFloat(computedStyle.paddingLeft);
+                const paddingRight = parseFloat(computedStyle.paddingRight);
+                
+                adjustColumns(entry.contentRect.width, paddingLeft, paddingRight);
             }
         });
 
         observer.observe(container);
 
         return () => observer.disconnect();
-    }, [containerRef, columnCount]);
+    }, [containerRef, columnCount, width]);
 
     const slidesData = data.map((item, index) => {
         let el;
@@ -79,7 +85,7 @@ const MediaSection = (props) => {
         }
 
         if (!isSwiper) {
-            if (index > columnCount) return;
+            if (index > columnCount - 1) return;
         }
 
         const mappedData = mapToNormalCardData(el, type);
@@ -94,6 +100,9 @@ const MediaSection = (props) => {
             subtitle={mappedData.subtitle}
             routeLink={`/${type}/${el.id}`}
             contextMenu = {contextMenu}
+            type={type}
+            author={el.artists ? el.artists[0] : null}
+            trackTotal={el['total_tracks'] ? el['total_tracks'] : 10}
           />
         );
     });

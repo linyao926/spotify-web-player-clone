@@ -24,6 +24,8 @@ function Sidebar (props) {
     const position = useSelector((state) => state.position);
     const library = useSelector((state) => state['library']);
 
+    console.log(library)
+
     const initialState = JSON.parse(localStorage.getItem(SIDEBAR_LOCAL_STORAGE_KEY)) || {
         sidebarWidth: 280,
         isCollapsed: false,

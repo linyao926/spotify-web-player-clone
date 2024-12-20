@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router";
 import { useDispatch, useSelector } from 'react-redux'; 
 import { useSubContext } from '~/hooks/useSubContext';
 import { selectTrackItemsData, fetchTrackItemsData } from '~/redux/slices/trackItemsDataSlice';
-import { PlayLargeIcon } from '~/assets/icons';
+import { PlayLargeIcon, PinnedIcon } from '~/assets/icons';
 import {
     playlistContextMenu,
     myPlaylistContextMenu,
@@ -19,18 +19,25 @@ const cx = classNames.bind(styles);
 
 const NormalCard = (props) => {
     const {
-        id,
+        id = '',
         imgCircle = false,
         imgUrl = '',
         imgFallback = '',
         title,
-        subtitle,
+        releaseDate = '',
+        description = '',
+        authorName,
         routeLink = '/search',
         disableTextHover = false,
         libraryContextMenu = [], 
         type = '',
+        album_type = '',
         author = [],
         trackTotal = 0,
+        isPinned = false,
+        showType = false,
+        showAuthor = false,
+        showDate = false,
     } = props;
 
     const navigate = useNavigate();
@@ -51,33 +58,36 @@ const NormalCard = (props) => {
     const { accessToken } = useSelector((state) => state.auth);
     const trackItems = useSelector(selectTrackItemsData);
 
-    const item = {
-        id: id,
-        name: title,
-        authorName: author.name ? author.name : author['display_name'],
-        authorId: author && author.id,
-        type: type,
-        tracks: { items: trackItems },
-        description: '',
-        track_total: trackItems ? trackItems.length : 0,
-        imageUrl: imgUrl,
-        time_added: new Date().toISOString(),
-        time_played: null,
-    };
-
-    let initialSubContext = playlistContextMenu(item, 'ADD', dispatch);
-
-    if (item.type === 'album') {
-        initialSubContext = albumContextMenu(item, 'ADD', dispatch);
-    } else if (item.type === 'artist') {
-        initialSubContext = artistContextMenu(item, 'ADD', dispatch);
-    } 
-
     const [subContext, setSubContext] = useState([]);
+    const [item, setItem] = useState({});
 
     useEffect(() => {
+        setItem({
+            id: id,
+            name: title,
+            authorName: author.name ? author.name : author['display_name'],
+            authorId: author && author.id,
+            type: type,
+            album_type: type === 'album' ? album_type : '',
+            tracks: { items: trackItems },
+            description: '',
+            track_total: trackItems ? trackItems.length : 0,
+            imageUrl: imgUrl,
+            time_added: new Date().toISOString(),
+            time_played: null,
+        })
+    }, [trackItems]);
+
+    useEffect(() => {
+        let initialSubContext = playlistContextMenu(item, 'ADD', dispatch);
+
+        if (item.type === 'album') {
+            initialSubContext = albumContextMenu(item, 'ADD', dispatch);
+        } else if (item.type === 'artist') {
+            initialSubContext = artistContextMenu(item, 'ADD', dispatch);
+        } 
         setSubContext(initialSubContext);
-    }, []);
+    }, [trackItems]);
 
     useEffect(() => {
         if (accessToken) {
@@ -124,10 +134,14 @@ const NormalCard = (props) => {
                 <Link className={cx('normal-card-title')}
                     to="/"
                 >{title}</Link>
-                <Link 
-                    draggable="false" dir="auto" 
-                    to="/artist/1qpe09vYC83Kbgro8hv4HN"
-                >{subtitle}</Link>
+                <div className={cx('normal-card-sub-title')}>
+                    {showDate && <span className={cx('normal-card-release')}>{releaseDate}</span>}
+                    {showType && <span className={cx('normal-card-type', isPinned && 'pinned')}>
+                        <span>{isPinned && <PinnedIcon />}</span>   
+                        {type === 'album' ? album_type : type}
+                    </span>}
+                    {showAuthor && <span className={cx('normal-card-author')}>{type === 'playlist' ? `By ${authorName}` : authorName}</span>}
+                </div>
             </div>
             {isSubContextOpen && contextMenuId === id &&  (
                 <SubContextMenu 

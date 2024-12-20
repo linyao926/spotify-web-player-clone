@@ -92,6 +92,7 @@ const SubContextMenu = (props) => {
                     item.borderBottom && 'border-bottom',
                     disableItems[index] ? "disable" : "",
                     item.hidden && 'hidden',
+                    item.iconActive && 'icon-active'
                 );
                 
                 return (

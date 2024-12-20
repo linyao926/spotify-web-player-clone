@@ -19,7 +19,7 @@ function MyPlaylist(props) {
 
     const { id } = useGetId();
     const playlist = useSelector((state) =>
-        state['my_playlist'].find((playlist) => playlist.id === id)
+        state['my_playlist'].playlists.find((playlist) => playlist.id === id)
     );
 
     if (!playlist) {

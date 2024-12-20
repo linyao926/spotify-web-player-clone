@@ -112,14 +112,42 @@ $library-item-img-height: 48px;
 
 .library-item-sub-title {
     font-weight: 500;
+    @include index.flex-center($justify: flex-start);
     span:not(:last-child):after {
         content: index.$not-last-child-after-content;
         margin: 0 4px;
     }
 }
 
+.library-item-title {
+    &.pinned {
+        span {
+            margin-right: 12px;
+        }
+
+        svg {
+            fill: var(--text-bright-accent);
+            width: 12px;
+            height: 12px;
+        }
+    }
+}
+
 .library-item-type {
     text-transform: capitalize;
+    @include index.flex-center($justify: flex-start);
+    
+    &.pinned {
+        svg {
+            fill: var(--text-bright-accent);
+            width: 12px;
+            height: 12px;
+        }
+
+        span {
+            margin-right: 4px;
+        }
+    }
 }
 
 .library-item-added-date,

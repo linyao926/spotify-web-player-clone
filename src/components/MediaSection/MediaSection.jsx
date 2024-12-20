@@ -11,6 +11,7 @@ import {
     artistContextMenu,
 } from '~/constants/subContextItems';
 import { mapToNormalCardData } from '~/utils/dataMapper';
+import { formatToYear } from '~/utils/timeUtils';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/MediaSection.module.scss';
 
@@ -92,17 +93,21 @@ const MediaSection = (props) => {
 
         return (
           <NormalCard
-            key={el.id}
-            id={el.id}
+            key={mappedData.id}
+            id={mappedData.id}
             imgCircle={mappedData.imgCircle}
             imgUrl={mappedData.imgUrl}
             title={mappedData.title}
-            subtitle={mappedData.subtitle}
             routeLink={`/${type}/${el.id}`}
             contextMenu = {contextMenu}
             type={type}
-            author={el.artists ? el.artists[0] : null}
+            author={mappedData.artists ? mappedData.artists[0] : (mappedData.author ? mappedData.author : null)}
             trackTotal={el['total_tracks'] ? el['total_tracks'] : 10}
+            showType = {mappedData.showType}
+            showAuthor = {mappedData.showAuthor}
+            showDate = {mappedData.showDate}
+            album_type = {type === 'album' ? mappedData['album_type'] : null}
+            releaseDate = {type === 'album' ? formatToYear(mappedData['release_date']) : null}
           />
         );
     });

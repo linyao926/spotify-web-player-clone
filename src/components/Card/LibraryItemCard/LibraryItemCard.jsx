@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from "react-router";
 import { useSelector } from 'react-redux'; 
 import { useSubContext } from '~/hooks/useSubContext';
-import { PlayLargeIcon } from '~/assets/icons';
+import { PlayLargeIcon, PinnedIcon } from '~/assets/icons';
 import { formatDate } from '~/utils/timeUtils';
 import Tooltip from '../../Tooltip/Tooltip';
 import SubContextMenu from '~/components/SubContextMenu/SubContextMenu';
@@ -27,6 +27,7 @@ const LibraryItemCard = (props) => {
         addedDate = '',
         played = '',
         contextMenu = [],
+        isPinned = false,
     } = props;
 
     const navigate = useNavigate();
@@ -123,12 +124,18 @@ const LibraryItemCard = (props) => {
                 {viewAs === 'list' ? <div className={cx('library-item-info-text')}>
                     <span className={cx('library-item-title')}>{title}</span>
                     <div className={cx('library-item-sub-title')}>
-                        <span className={cx('library-item-type')}>{type}</span>
+                        <span className={cx('library-item-type', isPinned && 'pinned')}>
+                            <span>{isPinned && <PinnedIcon />}</span>
+                            {type}
+                        </span>
                         <span className={cx('library-item-author')}>{author}</span>
                     </div>
                 </div>
                 : <div className={cx('library-item-sub-title')}>
-                    <span className={cx('library-item-title')}>{title}</span>
+                    <span className={cx('library-item-title', isPinned && 'pinned')}>
+                        {isPinned && <PinnedIcon />}
+                        <span>{title}</span>
+                    </span>
                     <span className={cx('library-item-type')}>{type}</span>
                 </div>}
             </div>

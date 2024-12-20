@@ -1,16 +1,20 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from 'react-redux';
+import { addToPinnedIds, removeFromPinnedIds } from '~/redux/slices/librarySlice';
 import LibraryItemCard from '~/components/Card/LibraryItemCard/LibraryItemCard';
 import NormalCard from '~/components/Card/NormalCard/NormalCard';
 import { 
     PlaylistFallbackIcon,
     UserFallbackIcon,
+    PinnedIcon,
+    PinIcon,
 } from '~/assets/icons';
 import {
     libraryPlaylistContextMenu,
     myPlaylistContextMenu,
     libraryAlbumContextMenu,
     libraryArtistContextMenu,
+    
 } from '~/constants/subContextItems';
 import ScrollWrapper from '~/components/ScrollWrapper/ScrollWrapper';
 import classNames from 'classnames/bind';
@@ -24,6 +28,7 @@ const LibraryContent = (props) => {
         artists = [],
         albums = [],
         likedTracks = [],
+        pinnedIds = [],
         options,
         filters = [],
         libraryItems = [],
@@ -34,16 +39,18 @@ const LibraryContent = (props) => {
     } = props;
 
     const dispatch = useDispatch();
+    const queue = useSelector((state) => state['queue']);
+    const [pinnedItems, setPinnedItems] = useState([]);
+
     const containerRef = useRef(null);
 
-    const [pinnedItems, setPinnedItems] = useState([]);
     const [likedTracksInfo, setLikedTracksInfo] = useState({
         id: 'collection/tracks',
         name: 'Liked Songs',
-        authorName: `${libraryItems.length} songs`,
+        authorName: `${likedTracks.length} songs`,
         type: 'playlist',
-        tracks: { items: libraryItems },
-        track_total: libraryItems ? libraryItems.length : 0,
+        tracks: { items: likedTracks },
+        track_total: likedTracks ? likedTracks.length : 0,
         imageUrl: "https://misc.scdn.co/liked-songs/liked-songs-300.png",
         time_added: null,
         time_played: null,
@@ -63,36 +70,59 @@ const LibraryContent = (props) => {
 
     useEffect(() => {
         const sortBy = options['sort-by'];
-        let result = [];
+        let sortedItems = [];
 
         if (sortBy === 'recents' || sortBy === 'alphabetical') {
-            const combinedItems = [
-                ...playlists,
-                ...artists,
-                ...albums,
-                likedTracksInfo
-            ];
-            result = sortItems(combinedItems, sortBy);
+            let combinedItems;
+
+            if (likedTracks.length > 0) {
+                combinedItems = [
+                    ...playlists,
+                    ...artists,
+                    ...albums,
+                    likedTracksInfo
+                ];
+            } else {
+                combinedItems = [
+                    ...playlists,
+                    ...artists,
+                    ...albums,
+                ];
+            }
+
+            sortedItems = sortItems(combinedItems, sortBy);
         } else {
             const combinedItems = [
                 ...playlists,
                 ...artists,
                 ...albums,
             ];
-            result = sortItems(combinedItems, sortBy);
-            result.push(likedTracksInfo);
-        }
-        setLibraryItems(result);
-    }, [playlists, artists, albums, likedTracksInfo]);
 
-    const handlePinItem = (item) => {
-        setPinnedItems((prevPinned) => {
-            if (prevPinned.find((p) => p.id === item.id)) {
-                return prevPinned.filter((p) => p.id !== item.id);
+            sortedItems = sortItems(combinedItems, sortBy);
+
+            if (likedTracks.length > 0) {
+                sortedItems.push(likedTracksInfo);
             }
-            return [...prevPinned, { ...item, isPinned: true }];
-        });
-    };
+        }
+
+        const finalItems = new Set([
+            ...sortedItems.filter((item) => pinnedIds.find((id) => id === item.id)),
+            ...sortedItems.filter((item) => !pinnedItems.some((p) => p.id === item.id))
+        ]);
+    
+        setLibraryItems(Array.from(finalItems));
+    }, [playlists, artists, albums, likedTracksInfo, options]);
+
+    const handlePinItem = useCallback(
+        (id) => {
+            if (pinnedIds.some((pinned) => pinned === id)) {
+                dispatch(removeFromPinnedIds(id)); 
+            } else {
+                dispatch(addToPinnedIds(id)); 
+            }
+        },
+        [pinnedIds, dispatch] 
+    );
 
     const sortItems = (items, sortBy) => {
         return items.sort((a, b) => {
@@ -121,7 +151,7 @@ const LibraryContent = (props) => {
     const getItem = (item) => {
         let imgUrl, imgFallback = '', routeLink, contextMenu;
 
-        contextMenu = libraryPlaylistContextMenu(item.id, 'ADD', dispatch);
+        contextMenu = libraryPlaylistContextMenu(item.tracks.items, 'ADD', dispatch);
 
         routeLink = `/${item.type}/${item.id}`;
 
@@ -132,7 +162,7 @@ const LibraryContent = (props) => {
         if (item.isMyPlaylist) {
             imgFallback = <PlaylistFallbackIcon />;
             routeLink = `/my_playlist/${item.id}`;
-            contextMenu = myPlaylistContextMenu(item.id, 'REMOVE', dispatch);
+            contextMenu = myPlaylistContextMenu(item.id, item.tracks.items, 'REMOVE', dispatch);
         };
 
         if (item.imageUrl) {
@@ -141,19 +171,29 @@ const LibraryContent = (props) => {
 
         if (item.type === 'artist') {
             imgFallback = <UserFallbackIcon />;
-            contextMenu = libraryArtistContextMenu(item.id, dispatch);
+            contextMenu = libraryArtistContextMenu(item.tracks.items, dispatch);
         };
 
         if (item.type === 'album') {
-            contextMenu = libraryAlbumContextMenu(item.id, dispatch);
+            contextMenu = libraryAlbumContextMenu(item.tracks.items, dispatch);
         };
 
-        if (options['view-mode'] === 'grid' && !isCollapsed) {
-            let subtitle = item.type;
-            if (item.type !== 'artist') {
-                subtitle = `${item.type} • ${item.authorName}`
+        contextMenu.map((obj) => {
+            if (obj.name.includes('Pin')) {
+                obj.onClick = () => handlePinItem(item.id); 
+                obj.iconActive = pinnedIds.some((id) => id === item.id);
+                if (obj.iconActive) {
+                    obj.iconLeft = <PinnedIcon/>;
+                    obj.name = `Unpin ${item.type}`;
+                } else {
+                    obj.name = `Pin ${item.type}`;
+                    obj.iconLeft = <PinIcon />;
+                }
             }
+            return obj; 
+        });
 
+        if (options['view-mode'] === 'grid' && !isCollapsed) {
             return (
                 <NormalCard
                     key={item.id}
@@ -162,11 +202,15 @@ const LibraryContent = (props) => {
                     imgUrl={imgUrl}
                     imgFallback = {imgFallback}
                     title={item.name}
-                    subtitle={subtitle}
+                    authorName={item.authorName}
                     routeLink={routeLink}
                     disableTextHover
                     contextMenu={contextMenu}
                     type={item.type}
+                    isPinned={pinnedIds.some((id) => id === item.id)}
+                    album_type={item.type === 'album' ? item['album_type'] : null}
+                    showType
+                    showAuthor
                 />
             )
         } 
@@ -188,6 +232,7 @@ const LibraryContent = (props) => {
                     viewAs = {options['view-mode']}
                     collapse={isCollapsed}
                     contextMenu={contextMenu}
+                    isPinned={pinnedIds.some((id) => id === item.id)}
                 />
             )
         }

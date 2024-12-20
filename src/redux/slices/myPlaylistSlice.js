@@ -1,6 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = [];
+const initialState = {
+  playlists: [],
+  totalCreated: 0,
+};
 
 const generateId = (index) => {
   const randomPart = Math.random().toString(36).substring(2, 8).toUpperCase(); 
@@ -16,8 +19,8 @@ const myPlaylistSlice = createSlice({
     createPlaylist: (state, action) => {
       const { profileInfo } = action.payload;
       const newPlaylist = {
-        id: generateId(state.length + 1),
-        name: `My Playlist #${state.length + 1}`,
+        id: generateId(state.totalCreated + 1),
+        name: `My Playlist #${state.totalCreated + 1}`,
         authorImgUrl: profileInfo?.images[0]?.url,
         authorName: profileInfo && profileInfo['display_name'],
         authorId: profileInfo && profileInfo.id,
@@ -33,12 +36,13 @@ const myPlaylistSlice = createSlice({
         time_played: null,
         isMyPlaylist: true,
       };
-      state.push(newPlaylist); 
+      state.playlists.push(newPlaylist);
+      state.totalCreated += 1;
     },
 
     addTrackToPlaylist: (state, action) => {
       const { playlistId, track } = action.payload;
-      const playlist = state.find((p) => p.id === playlistId);
+      const playlist = state.playlists.find((p) => p.id === playlistId);
       if (playlist) {
         playlist.tracks.items.push(track.id);
         playlist.track_total += 1;
@@ -50,7 +54,7 @@ const myPlaylistSlice = createSlice({
 
     uploadImageToPlaylist: (state, action) => {
       const { playlistId, imageUrl } = action.payload;
-      const playlist = state.find((p) => p.id === playlistId);
+      const playlist = state.playlists.find((p) => p.id === playlistId);
       if (playlist) {
         playlist.images.uploadUrl = imageUrl;
       }
@@ -58,11 +62,20 @@ const myPlaylistSlice = createSlice({
 
     updatePlaylistDetails: (state, action) => {
       const { playlistId, name, description } = action.payload;
-      const playlist = state.find((pl) => pl.id === playlistId);
+      const playlist = state.playlists.find((pl) => pl.id === playlistId);
 
       if (playlist) {
         if (name !== undefined) playlist.name = name;
         if (description !== undefined) playlist.description = description;
+      }
+    },
+
+    deletePlaylist: (state, action) => {
+      const { playlistId } = action.payload;
+      state.playlists = state.playlists.filter((pl) => pl.id !== playlistId);
+
+      if (state.playlists.length === 0) {
+        state.totalCreated = 0;
       }
     },
   },
@@ -72,7 +85,8 @@ export const {
   createPlaylist,
   addTrackToPlaylist,
   uploadImageToPlaylist,
-  updatePlaylistDetails
+  updatePlaylistDetails,
+  deletePlaylist
 } = myPlaylistSlice.actions;
 
 export default myPlaylistSlice.reducer;

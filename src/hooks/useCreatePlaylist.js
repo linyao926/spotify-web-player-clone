@@ -9,7 +9,7 @@ const useCreatePlaylist = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const playlists = useSelector((state) => state['my_playlist']);
+  const playlists = useSelector((state) => state['my_playlist'].playlists);
   const profileInfo = useSelector(selectProfileInfo);
 
   const [createNewPlaylist, setCreateNewPlaylist] = useState(false);

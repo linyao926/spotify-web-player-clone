@@ -5,6 +5,7 @@ import authReducer from './slices/authSlice';
 import uiReducer from './slices/uiSlice';
 import positionReducer from './slices/positionSlice';
 import libraryReducer from './slices/librarySlice';
+import queueReducer from './slices/queueSlice';
 import myPlaylistReducer from './slices/myPlaylistSlice';
 
 const rootReducer = combineReducers({
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
     ui: uiReducer,
     position: positionReducer,
     library: libraryReducer,
+    queue: queueReducer,
     'my_playlist': myPlaylistReducer,
     'track-items': trackItemsDataReducer,
 });

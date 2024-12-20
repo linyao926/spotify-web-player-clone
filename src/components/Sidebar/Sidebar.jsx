@@ -15,7 +15,7 @@ const cx = classNames.bind(styles);
 
 const SIDEBAR_LOCAL_STORAGE_KEY = 'sidebarWidthState';
 
-function Sidebar (props) {
+function Sidebar () {
     const { handleOpenSubContext, handleCloseSubContext } = useSubContext();
     const { width } = useWindowSize();
 
@@ -24,7 +24,7 @@ function Sidebar (props) {
     const position = useSelector((state) => state.position);
     const library = useSelector((state) => state['library']);
 
-    console.log(library)
+    // console.log(library)
 
     const initialState = JSON.parse(localStorage.getItem(SIDEBAR_LOCAL_STORAGE_KEY)) || {
         sidebarWidth: 280,
@@ -85,12 +85,13 @@ function Sidebar (props) {
                 />}
             />
             <div className={cx('sidebar-content')}>
-                {hasItems 
+                {accessToken && (hasItems 
                     ? <Library 
                         playlists={library.playlists}
                         albums={library.albums}
                         artists={library.artists}
                         likedTracks={library.likedTracks}
+                        pinnedIds={library.pinnedIds}
                         isCollapsed={isCollapsed}
                         isShowMore={isShowMore}
                     /> 
@@ -105,7 +106,12 @@ function Sidebar (props) {
                         : <div className={cx('create-playlist-prompt-wrapper')}>
                             <CreatePlaylistPrompt />
                         </div>)
-                }
+                )}
+                {!accessToken && (
+                    <div className={cx('create-playlist-prompt-wrapper')}>
+                        <CreatePlaylistPrompt />
+                    </div>
+                )}
             </div>
             {!accessToken && <SidebarFooter />}
             <ResizeBar

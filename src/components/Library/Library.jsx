@@ -16,6 +16,7 @@ const Library = (props) => {
         artists = [],
         albums = [],
         likedTracks = [],
+        pinnedIds = [],
         isCollapsed = false,
         isShowMore = false,
     } = props;
@@ -87,6 +88,7 @@ const Library = (props) => {
                 artists={artists}
                 playlists={playlists}
                 likedTracks={likedTracks}
+                pinnedIds={pinnedIds}
                 filters={filters}
                 libraryItems={libraryItems}
                 setLibraryItems={setLibraryItems}

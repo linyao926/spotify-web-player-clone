@@ -5,6 +5,7 @@ const initialState = {
   albums: [],
   artists: [],
   likedTracks: [],
+  pinnedIds: [],
 };
 
 const librarySlice = createSlice({
@@ -34,6 +35,19 @@ const librarySlice = createSlice({
     removeFromLikedTracks: (state, action) => {
       const trackId = action.payload;
       state.likedTracks = state.likedTracks.filter((t) => t.id !== trackId);
+    },
+    addToPinnedIds: (state, action) => {
+      const id = action.payload;
+      console.log(id)
+      const exists = state.pinnedIds.some((pinned) => pinned === id);
+      if (!exists) {
+        state.pinnedIds.push(id);
+      }
+    },
+    removeFromPinnedIds: (state, action) => {
+      const id = action.payload;
+      console.log(id)
+      state.pinnedIds = state.pinnedIds.filter((pinned) => pinned !== id);
     },
     updateLibraryItem: (state, action) => {
       const { type, item } = action.payload;
@@ -65,6 +79,8 @@ export const {
   addToLikedTracks,
   removeFromLikedTracks,
   updateLibraryItem,
+  addToPinnedIds,
+  removeFromPinnedIds
 } = librarySlice.actions;
 
 export default librarySlice.reducer;

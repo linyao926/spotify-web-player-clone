@@ -58,7 +58,7 @@ const MediaDetailLayout = React.forwardRef((props, ref) => {
     const dispatch = useDispatch(); 
     const { accessToken } = useSelector((state) => state.auth);
     const viewMode = useSelector((state) => state.ui.viewMode);
-    const isSubContextOpen = useSelector((state) => state.ui.subContext.contexts['track-list-view-as'].isOpen);
+    const isSubContextOpen = useSelector((state) => state.ui.subContext['track-list-view-as'].isOpen);
     const isEditOpen = useSelector((state) => state.ui.modal['edit-playlist'].isOpen);
     const position = useSelector((state) => state.position);
 
@@ -129,7 +129,7 @@ const MediaDetailLayout = React.forwardRef((props, ref) => {
                     : <span className={cx('cover-img-fallback', isEditable && 'hide-cover', coverIsCircle && 'cover-circle')}>{coverFallback}</span>
                     }
                     {isEditable && <div className={cx('photo-edit-section', coverIsCircle && 'cover-circle')} 
-                        onClick={() => dispatch(openModal({id: 'edit-playlist'}))}
+                        onClick={() => dispatch(openModal({name: 'edit-playlist'}))}
                     >
                         <EditIcon />
                         <span>Choose photo</span>
@@ -210,7 +210,7 @@ const MediaDetailLayout = React.forwardRef((props, ref) => {
                         onClick={
                             isSubContextOpen 
                             ? () => handleCloseSubContext('track-list-view-as')
-                            : (event) => handleOpenSubContext(event, 'track-list-view-as', 'bottom-right')
+                            : (event) => handleOpenSubContext(event, 'track-list-view-as', 'bottom-right', '')
                         }
                     >
                         <span className={cx('view-as-dropdown-btn')}>

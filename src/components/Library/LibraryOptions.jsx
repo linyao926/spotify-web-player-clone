@@ -16,7 +16,7 @@ const LibraryOptions = (props) => {
     } = props;
  
     const dispatch = useDispatch(); 
-    const isSubContextOpen = useSelector((state) => state.ui.subContext.contexts['library-options'].isOpen);
+    const isSubContextOpen = useSelector((state) => state.ui.subContext['library-options'].isOpen);
 
     const initialSubContext = libraryOptionsSubContext(dispatch, options);
 

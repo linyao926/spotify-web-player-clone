@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectProfileInfo } from '~/redux/slices/profileSlice';
 import { createPlaylist } from '~/redux/slices/myPlaylistSlice';
-import { addToLibrary } from '~/redux/slices/librarySlice';
 
 const useCreatePlaylist = () => {
   const dispatch = useDispatch();
@@ -23,7 +22,6 @@ const useCreatePlaylist = () => {
     if (createNewPlaylist) {
       const lastPlaylist = playlists[playlists.length - 1];
       if (lastPlaylist) {
-        dispatch(addToLibrary({ type: 'playlists', item: lastPlaylist }));
         navigate(`/my_playlist/${lastPlaylist.id}`);
         setCreateNewPlaylist(false); 
       }

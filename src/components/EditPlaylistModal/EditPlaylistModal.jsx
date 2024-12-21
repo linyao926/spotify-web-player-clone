@@ -39,14 +39,14 @@ const EditPlaylistModal = (props) => {
 
     const handleUpdatePlaylistDetails = (playlistId, name, description) => {
         dispatch(updatePlaylistDetails({ playlistId, name, description }));
-        dispatch(updateLibraryItem({
-            type: 'playlists',
-            item: {
-                id: playlistId,
-                name: name,
-                description: description,
-            }
-        }));
+        // dispatch(updateLibraryItem({
+        //     type: 'playlists',
+        //     item: {
+        //         id: playlistId,
+        //         name: name,
+        //         description: description,
+        //     }
+        // }));
     };
 
     const handleUploadImage = (file) => {
@@ -60,13 +60,13 @@ const EditPlaylistModal = (props) => {
 
     const handleSaveImage = (playlistId, imageUrl) => {
         dispatch(uploadImageToPlaylist({ playlistId, imageUrl }));
-        dispatch(updateLibraryItem({
-            type: 'playlists',
-            item: {
-                id: playlistId,
-                url: imageUrl,
-            }
-        }));
+        // dispatch(updateLibraryItem({
+        //     type: 'playlists',
+        //     item: {
+        //         id: playlistId,
+        //         url: imageUrl,
+        //     }
+        // }));
     };
 
     const handleClose = () => {
@@ -78,7 +78,7 @@ const EditPlaylistModal = (props) => {
             setOpenNotification(true);
             setHasChanges(false);
         } else {
-            dispatch(closeModal({id: 'edit-playlist'}));
+            dispatch(closeModal({name: 'edit-playlist'}));
         }
     };
 
@@ -86,7 +86,7 @@ const EditPlaylistModal = (props) => {
         if (formData.playlistName.length > 0) {
             handleUpdatePlaylistDetails(id, formData.playlistName, formData.playlistDescription);
             handleSaveImage(id, newCoverImage);
-            dispatch(closeModal({ id: 'edit-playlist' }));
+            dispatch(closeModal({ name: 'edit-playlist' }));
         }
     };
 

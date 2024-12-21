@@ -19,13 +19,15 @@ function CreatePlaylistButton (props) {
         handleCloseSubContext,
         handleOpenSubContext,
     } = props;
+    
+    const { handleCreatePlaylist } = useCreatePlaylist();
+
     const createPlaylistMenu = [{
         name: "Create a new playlist",
         iconLeft: <MusicalNotePlusIcon />,
         onClick: () => handleCreatePlaylist(),
     }];
 
-    const { handleCreatePlaylist } = useCreatePlaylist();
     let positionType = isCollapsed ? 'bottom-left' : 'bottom-right';
     
     return (
@@ -41,7 +43,7 @@ function CreatePlaylistButton (props) {
                 clickFunction={ 
                     isSubContextOpen 
                     ? () => handleCloseSubContext('create-playlist')
-                    : (event) => handleOpenSubContext(event, 'create-playlist', positionType)
+                    : (event) => handleOpenSubContext(event, 'create-playlist', positionType, '')
                 }
             />
             {isSubContextOpen && <SubContextMenu 

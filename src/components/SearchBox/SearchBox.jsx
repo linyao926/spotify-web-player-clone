@@ -14,8 +14,8 @@ function SearchBox (props) {
         size = 'medium',  // small | medium | large
         placeholder = '',
         showBrowse = false,
-        onSearch = () => {},
-        setIsBlur,
+        onSearch = () => {return},
+        setIsBlur = () => {return},
         inputIsClickFocus,
         clickFunction,
     } = props;
@@ -84,7 +84,7 @@ function SearchBox (props) {
             
             {showBrowse && <Tooltip content="Browse" position="bottom"><div className={cx("browse-icon", inputValue ? 'hidden' : '', isSearchPage && 'active')}
                 onClick={() => {
-                    accessToken ? navigate("/search") : dispatch(openModal({id: 'login-prompt'}))
+                    accessToken ? navigate("/search") : dispatch(openModal({name: 'login-prompt'}))
                 }}
             >
                 {isSearchPage ? <FillBrowseIcon /> : <BrowseIcon />}

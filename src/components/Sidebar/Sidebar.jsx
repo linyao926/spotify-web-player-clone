@@ -19,8 +19,9 @@ function Sidebar () {
     const { handleOpenSubContext, handleCloseSubContext } = useSubContext();
     const { width } = useWindowSize();
 
+    const myPlaylists = useSelector((state) => state['my_playlist'].playlists);
     const { accessToken } = useSelector((state) => state.auth);
-    const isSubContextOpen = useSelector((state) => state.ui.subContext.contexts['create-playlist'].isOpen);
+    const isSubContextOpen = useSelector((state) => state.ui.subContext['create-playlist'].isOpen);
     const position = useSelector((state) => state.position);
     const library = useSelector((state) => state['library']);
 
@@ -38,9 +39,14 @@ function Sidebar () {
     const [hasItems, setHasItems] = useState(false);
 
     useEffect(() => {
-        const checkHasItems = Object.values(library).some(array => array.length > 0);
+        let checkHasItems = Object.values(library).some(array => array.length > 0);
+        if (!checkHasItems) {
+            if (myPlaylists.length > 0) {
+                checkHasItems = true;
+            }
+        }
         setHasItems(checkHasItems);
-    }, [library]);
+    }, [library, myPlaylists]);
 
     useEffect(() => {
         if (sidebarWidth >= 584) {
@@ -88,6 +94,7 @@ function Sidebar () {
                 {accessToken && (hasItems 
                     ? <Library 
                         playlists={library.playlists}
+                        myPlaylists={myPlaylists}
                         albums={library.albums}
                         artists={library.artists}
                         likedTracks={library.likedTracks}

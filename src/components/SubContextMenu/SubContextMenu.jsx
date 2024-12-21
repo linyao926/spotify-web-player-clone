@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { useDispatch } from 'react-redux';
+import { closeSubContext } from '~/redux/slices/uiSlice';
 import { ExpandIcon } from '~/assets/icons/icons';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/SubContextMenu.module.scss';
@@ -19,6 +20,7 @@ const SubContextMenu = (props) => {
         setMenuHeight,
     } = props;
 
+    const dispatch = useDispatch();
     const [activeItems, setActiveItems] = useState(items.map(item => item.active || false));
     const [disableItems, setDisableItems] = useState(items.map(item => item.disableItem || false));
     const [subMenu, setSubMenu] = useState(null);
@@ -54,6 +56,7 @@ const SubContextMenu = (props) => {
     const handleItemClick = (event, item, index) => {
         event.preventDefault(); 
         event.stopPropagation();
+
         if (item.toggle) {
             setActiveItems(prev => {
                 const updated = [...prev];
@@ -71,6 +74,8 @@ const SubContextMenu = (props) => {
         }
 
         if (item.onClick) item.onClick();
+
+        dispatch(closeSubContext());
     };
 
     return (

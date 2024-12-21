@@ -38,7 +38,7 @@ const MediaInformation = (props) => {
                 isExtraComponentVisible={false} 
                 clickFunction={() => {
                     if (isEditable) {
-                        dispatch(openModal({id: 'edit-playlist'}))
+                        dispatch(openModal({name: 'edit-playlist'}))
                     }
                 }}
             />

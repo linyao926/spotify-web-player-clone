@@ -1,8 +1,11 @@
 import React, { useEffect, useState, useRef, useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { addToPinnedIds, removeFromPinnedIds } from '~/redux/slices/librarySlice';
+import { openModal } from '~/redux/slices/uiSlice';
+import useCreatePlaylist from '~/hooks/useCreatePlaylist';
 import LibraryItemCard from '~/components/Card/LibraryItemCard/LibraryItemCard';
 import NormalCard from '~/components/Card/NormalCard/NormalCard';
+import EditPlaylistModal from '~/components/EditPlaylistModal/EditPlaylistModal';
 import { 
     PlaylistFallbackIcon,
     UserFallbackIcon,
@@ -25,6 +28,7 @@ const cx = classNames.bind(styles);
 const LibraryContent = (props) => {
     const {
         playlists = [],
+        myPlaylists = [],
         artists = [],
         albums = [],
         likedTracks = [],
@@ -38,9 +42,18 @@ const LibraryContent = (props) => {
         maxHeight = 0,
     } = props;
 
+    const { handleCreatePlaylist } = useCreatePlaylist();
     const dispatch = useDispatch();
     const queue = useSelector((state) => state['queue']);
+    const isEditOpen = useSelector((state) => state.ui.modal['edit-playlist'].isOpen);
     const [pinnedItems, setPinnedItems] = useState([]);
+    const [editModalState, setEditModalState] = useState({
+        coverUrl: '',
+        coverFallback: '',
+        title: '',
+        description: '',
+        id: ''
+    });    
 
     const containerRef = useRef(null);
 
@@ -80,6 +93,7 @@ const LibraryContent = (props) => {
                     ...playlists,
                     ...artists,
                     ...albums,
+                    ...myPlaylists,
                     likedTracksInfo
                 ];
             } else {
@@ -87,6 +101,7 @@ const LibraryContent = (props) => {
                     ...playlists,
                     ...artists,
                     ...albums,
+                    ...myPlaylists,
                 ];
             }
 
@@ -96,6 +111,7 @@ const LibraryContent = (props) => {
                 ...playlists,
                 ...artists,
                 ...albums,
+                ...myPlaylists,
             ];
 
             sortedItems = sortItems(combinedItems, sortBy);
@@ -111,7 +127,7 @@ const LibraryContent = (props) => {
         ]);
     
         setLibraryItems(Array.from(finalItems));
-    }, [playlists, artists, albums, likedTracksInfo, options]);
+    }, [playlists, artists, albums, myPlaylists, likedTracksInfo, options]);
 
     const handlePinItem = useCallback(
         (id) => {
@@ -190,6 +206,29 @@ const LibraryContent = (props) => {
                     obj.iconLeft = <PinIcon />;
                 }
             }
+
+            if (obj.name.includes('Create')) {
+                obj.onClick = () => handleCreatePlaylist(); 
+            }
+
+            if (obj.name.includes('Edit')) {
+                obj.onClick = () => {
+                    setEditModalState({
+                        coverUrl: item.images.uploadUrl 
+                        ? item.images.uploadUrl 
+                        : (item.images.fallbackUrl 
+                            ? item.images.fallbackUrl 
+                            : null
+                        ),
+                        coverFallback: <PlaylistFallbackIcon />,
+                        title: item.name,
+                        description: item.description,
+                        id: item.id,
+                    })
+                    dispatch(openModal({name: 'edit-playlist'}))
+                }; 
+            }
+
             return obj; 
         });
 
@@ -249,6 +288,13 @@ const LibraryContent = (props) => {
                     {libraryItems.map(item => getItem(item))}
                 </div>
             </div>
+            {isEditOpen && <EditPlaylistModal 
+                coverUrl = {editModalState.coverUrl}
+                coverFallback = {editModalState.coverFallback}
+                title = {editModalState.title}
+                description = {editModalState.description}
+                id={editModalState.id}
+            />}
         </>
     )
 };

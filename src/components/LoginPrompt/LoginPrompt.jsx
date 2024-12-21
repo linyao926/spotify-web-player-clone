@@ -36,7 +36,7 @@ const LoginPrompt = () => {
             <Button 
                 size="size-small"
                 variant="transparent"
-                clickFunction={() => dispatch(closeModal({id: 'login-prompt'}))}
+                clickFunction={() => dispatch(closeModal({name: 'login-prompt'}))}
             >Close</Button>
         </div>
     );

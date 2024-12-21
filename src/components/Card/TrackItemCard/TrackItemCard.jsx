@@ -40,8 +40,8 @@ const TrackItemCard = (props) => {
     const { currentColumns, templateColumns } = useDynamicColumns(containerRef, initialColumns, showIndex);
 
     const dispatch = useDispatch();
-    const isSubContextOpen = useSelector((state) => state.ui.subContext.contexts['normal-card-menu'].isOpen);
-    const contextMenuId = useSelector((state) => state.ui.subContext.contexts['normal-card-menu'].id);
+    const isSubContextOpen = useSelector((state) => state.ui.subContext['normal-card-menu'].isOpen);
+    const contextMenuId = useSelector((state) => state.ui.subContext['normal-card-menu'].id);
 
     const { 
         positionFixed,

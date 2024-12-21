@@ -38,7 +38,6 @@ const librarySlice = createSlice({
     },
     addToPinnedIds: (state, action) => {
       const id = action.payload;
-      console.log(id)
       const exists = state.pinnedIds.some((pinned) => pinned === id);
       if (!exists) {
         state.pinnedIds.push(id);
@@ -46,7 +45,6 @@ const librarySlice = createSlice({
     },
     removeFromPinnedIds: (state, action) => {
       const id = action.payload;
-      console.log(id)
       state.pinnedIds = state.pinnedIds.filter((pinned) => pinned !== id);
     },
     updateLibraryItem: (state, action) => {

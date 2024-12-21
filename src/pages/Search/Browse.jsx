@@ -8,13 +8,13 @@ import styles from '~/styles/pages/Search.module.scss';
 const cx = classNames.bind(styles);
 
 function Browse() {
-    const { browseData } = useLoaderData();
+    const { browse } = useLoaderData();
 
     const contentRef = useRef(null);
 
     // console.log(browseData);
 
-    const browseCards = browseData?.categories?.items?.map((item) => (
+    const browseCards = browse?.categories?.items?.map((item) => (
       <BrowseCard 
           key={item.id}
           routeLink={`/genre/${item.id}`}

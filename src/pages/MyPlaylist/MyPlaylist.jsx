@@ -56,6 +56,7 @@ function MyPlaylist(props) {
             trackCount = {playlist['track_total']}
             totalDuration = {0}
             canPlay={playlist['track_total'] > 0}
+            description={playlist.description}
             canShowOptions
             canViewAs
             isEditable

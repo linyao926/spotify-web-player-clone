@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useLocation, Link } from "react-router";
+import { useLocation, Link, useNavigate } from "react-router";
 import { useDispatch, useSelector } from 'react-redux';
 import { selectProfileInfo, fetchProfileData } from '~/redux/slices/profileSlice';
 import { useSubContext } from '~/hooks/useSubContext';
@@ -26,11 +26,11 @@ function MainAppHeader () {
     const { accessToken } = useSelector((state) => state.auth);
     const profileInfo = useSelector(selectProfileInfo);
     const profileStatus = useSelector((state) => state.profile.status);
-
-    const isSubContextOpen = useSelector((state) => state.ui.subContext.contexts['profile'].isOpen);
+    const isSubContextOpen = useSelector((state) => state.ui.subContext['profile'].isOpen);
     const position = useSelector((state) => state.position);
     const { handleOpenSubContext, handleCloseSubContext } = useSubContext();
 
+    const navigate = useNavigate();
     const location = useLocation();
     const isHomePage = location.pathname === '/';
 
@@ -87,7 +87,9 @@ function MainAppHeader () {
                     onClick={
                         isSubContextOpen 
                         ? () => handleCloseSubContext('profile')
-                        : (event) => handleOpenSubContext(event, 'profile', 'bottom-right')
+                        : (event) => {
+                            handleOpenSubContext(event, 'profile', 'bottom-right')
+                        }
                     }
                 >
                         {profileInfo
@@ -112,7 +114,7 @@ function MainAppHeader () {
     };
 
     const handleSearchClick = (inputRef) => {
-        accessToken ? navigate("/search") : dispatch(openModal({id: 'login-prompt'}));
+        accessToken ? navigate("/search") : dispatch(openModal({name: 'login-prompt'}));
         inputRef.current.focus();
     };
     

@@ -31,8 +31,8 @@ const LibraryItemCard = (props) => {
     } = props;
 
     const navigate = useNavigate();
-    const isSubContextOpen = useSelector((state) => state.ui.subContext.contexts['library-card-menu'].isOpen);
-    const contextMenuId = useSelector((state) => state.ui.subContext.contexts['library-card-menu'].id);
+    const isSubContextOpen = useSelector((state) => state.ui.subContext['library-card-menu'].isOpen);
+    const contextMenuId = useSelector((state) => state.ui.subContext['library-card-menu'].id);
 
     const { 
         positionFixed,

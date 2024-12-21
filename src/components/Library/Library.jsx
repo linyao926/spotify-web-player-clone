@@ -13,6 +13,7 @@ const cx = classNames.bind(styles);
 const Library = (props) => {
     const {
         playlists = [],
+        myPlaylists = [],
         artists = [],
         albums = [],
         likedTracks = [],
@@ -41,7 +42,7 @@ const Library = (props) => {
     useEffect(() => {
         const result = [];
 
-        if (playlists.length > 0 || likedTracks.length > 0) {
+        if (playlists.length > 0 || likedTracks.length > 0 || myPlaylists.length > 0) {
             result.push({ value: 'playlist', label: 'Playlists' })
         } 
 
@@ -54,7 +55,7 @@ const Library = (props) => {
         } 
 
         setFilters(result);
-    }, [playlists, artists, albums, likedTracks]);
+    }, [playlists, artists, albums, likedTracks, myPlaylists]);
 
     return (
         <section className={cx('library')} ref={libraryRef}>
@@ -87,6 +88,7 @@ const Library = (props) => {
                 albums={albums}
                 artists={artists}
                 playlists={playlists}
+                myPlaylists={myPlaylists}
                 likedTracks={likedTracks}
                 pinnedIds={pinnedIds}
                 filters={filters}

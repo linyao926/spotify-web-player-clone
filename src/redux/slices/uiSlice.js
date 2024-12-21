@@ -1,18 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const openFunction = (state, action) => {    
-    if (state) {
-        Object.keys(state).forEach((key) => {
-            state[key].isOpen = false;
-        });
-    }
+const openFunction = (state, action) => {
+    if (!state) return;
 
-    if (action.payload && action.payload.name) {
-        state[action.payload.name].isOpen = true;
+    Object.keys(state).forEach((key) => {
+        state[key].isOpen = false;
+    });
 
-        if (action.payload.id) {
-            state[action.payload.name].id = action.payload.id;
+    const { name, id } = action.payload || {};
+
+    if (name && state[name]) {
+        state[name].isOpen = true;
+        if (id !== undefined) {
+            state[name].id = id;
         }
+    } else {
+        console.warn(`Key "${name}" không tồn tại trong state.`);
     }
 };
 
@@ -34,20 +37,18 @@ const uiSlice = createSlice({
     name: 'ui',
     initialState: {
         subContext: {
-            contexts: {
-                profile: { isOpen: false },
-                'create-playlist': { isOpen: false },
-                'track-list-view-as': { isOpen: false },
-                'library-options': { isOpen: false },
-                'normal-card-menu': {
-                    isOpen: false,
-                    id: '',
-                },
-                'library-card-menu': {
-                    isOpen: false,
-                    id: '',
-                }
-            }  
+            profile: { isOpen: false },
+            'create-playlist': { isOpen: false },
+            'track-list-view-as': { isOpen: false },
+            'library-options': { isOpen: false },
+            'normal-card-menu': {
+                isOpen: false,
+                id: '',
+            },
+            'library-card-menu': {
+                isOpen: false,
+                id: '',
+            } 
         },
         dialog: { isOpen: false },
         modal: { 
@@ -59,15 +60,15 @@ const uiSlice = createSlice({
         'library-options': initialLibraryOptions,
     },
     reducers: {
-        openSubContext: (state, action) => openFunction(state.subContext.contexts, action),
+        openSubContext: (state, action) => openFunction(state.subContext, action),
         closeSubContext: (state) => {
-            if (state.subContext.contexts) {
-                Object.keys(state.subContext.contexts).forEach((key) => {
-                    state.subContext.contexts[key].isOpen = false;
+            if (state.subContext) {
+                Object.keys(state.subContext).forEach((key) => {
+                    state.subContext[key].isOpen = false;
                 });
             }
         },
-        closeSpecificSubContext: (state, action) => closeFunction(state.subContext.contexts, action),
+        closeSpecificSubContext: (state, action) => closeFunction(state.subContext, action),
         openModal: (state, action) => openFunction(state.modal, action),
         closeModal: (state, action) => closeFunction(state.modal, action),
         openDialog: (state) => {

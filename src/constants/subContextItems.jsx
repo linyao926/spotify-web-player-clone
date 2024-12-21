@@ -193,11 +193,10 @@ const queueActions = (tracks, action, dispatch) => ({
   onClick: () => action === 'ADD' ? dispatch(addToQueue({tracks})) : dispatch(removeFromQueue()),
 });
 
-const cretePlaylistAction = (dispatch) => ({
-  name: "Add to Library",
+const cretePlaylistAction = {
+  name: "Create playlist",
   iconLeft: <MusicalNotePlusIcon />,
-  onClick: () => {return},
-});
+};
 
 const pinAction = (type) => ({
   name: `Pin ${type}`,
@@ -230,7 +229,7 @@ export const libraryPlaylistContextMenu = (item = {id: ''} , profileAction, disp
     ...libraryActions('playlists', item, 'REMOVE', dispatch),
     borderBottom: true,
   },
-  cretePlaylistAction(dispatch),
+  cretePlaylistAction,
   {
     ...pinAction('playlist'),
     borderBottom: true,
@@ -252,7 +251,7 @@ export const myPlaylistContextMenu = (id, tracks, action, dispatch) => [
     onClick: () => {dispatch(deletePlaylist({playlistId: id}))},
     borderBottom: true,
   },
-  cretePlaylistAction(dispatch),
+  cretePlaylistAction,
   {
     ...pinAction('playlist'),
     borderBottom: true,

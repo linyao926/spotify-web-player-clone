@@ -5,8 +5,8 @@ import { setPosition } from '~/redux/slices/positionSlice';
 
 export const useSubContext = () => {
   const dispatch = useDispatch();
-  const isSubContextOpen = useSelector((state) => state.ui.subContext.contexts['normal-card-menu'].isOpen);
-  const contextMenuId = useSelector((state) => state.ui.subContext.contexts['normal-card-menu'].id);
+  const isSubContextOpen = useSelector((state) => state.ui.subContext['normal-card-menu'].isOpen);
+  const contextMenuId = useSelector((state) => state.ui.subContext['normal-card-menu'].id);
   const [positionFixed, setPositionFixed] = useState({ top: 0, left: 0 });
   const [positionFromBottom, setPositionFromBottom] = useState(false);
   const [positionFromRight, setPositionFromRight] = useState(false);
@@ -38,6 +38,7 @@ export const useSubContext = () => {
 
   const handleOpenSubContext = (event, name, position, id = '') => {
     event.stopPropagation();
+    event.preventDefault(); 
     const boundingRect = event.currentTarget.getBoundingClientRect();
     const { clientX, clientY } = event;
 
@@ -52,11 +53,8 @@ export const useSubContext = () => {
         },
       })
     );
-    if (id.length > 0) {
-      dispatch(openSubContext({ name, id }));
-    } else {
-      dispatch(openSubContext({ name }));
-    }
+
+    dispatch(openSubContext({ name, id }));
   };
 
   const handleCloseSubContext = (name) => dispatch(closeSpecificSubContext({ name }));

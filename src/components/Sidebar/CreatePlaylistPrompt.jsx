@@ -31,7 +31,7 @@ function CreatePlaylistPrompt () {
                 clickFunction={() => {
                     accessToken 
                     ? handleCreatePlaylist()
-                    : dispatch(openModal({id: 'login-prompt'}))}
+                    : dispatch(openModal({name: 'login-prompt'}))}
                 }
             >Create playlist</Button>
         </section>

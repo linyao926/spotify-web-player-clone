@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '~/redux/slices/uiSlice';
 import { updatePlaylistDetails, uploadImageToPlaylist } from '~/redux/slices/myPlaylistSlice';
-import { updateLibraryItem } from '~/redux/slices/librarySlice';
 import { DismissIcon, InfoIcon} from '~/assets/icons/icons';
 import CoverWrapper from './CoverWrapper';
 import FormWrapper from './FormWrapper';
@@ -39,14 +38,6 @@ const EditPlaylistModal = (props) => {
 
     const handleUpdatePlaylistDetails = (playlistId, name, description) => {
         dispatch(updatePlaylistDetails({ playlistId, name, description }));
-        // dispatch(updateLibraryItem({
-        //     type: 'playlists',
-        //     item: {
-        //         id: playlistId,
-        //         name: name,
-        //         description: description,
-        //     }
-        // }));
     };
 
     const handleUploadImage = (file) => {
@@ -60,13 +51,6 @@ const EditPlaylistModal = (props) => {
 
     const handleSaveImage = (playlistId, imageUrl) => {
         dispatch(uploadImageToPlaylist({ playlistId, imageUrl }));
-        // dispatch(updateLibraryItem({
-        //     type: 'playlists',
-        //     item: {
-        //         id: playlistId,
-        //         url: imageUrl,
-        //     }
-        // }));
     };
 
     const handleClose = () => {

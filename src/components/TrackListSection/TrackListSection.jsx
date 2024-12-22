@@ -1,12 +1,16 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { useNavigate } from "react-router";
+import { useDispatch, useSelector } from 'react-redux';
+import { openModal } from '~/redux/slices/uiSlice';
+import { selectAlbumData, fetchAlbumData } from '~/redux/slices/albumDataSlice';
 import useDynamicColumns from '~/hooks/useDynamicColumns';
 import { DurationRepresentIcon } from '~/assets/icons';
-import { useDispatch } from 'react-redux';
 import {
     trackContextMenu,
     queueTrackContextMenu
 } from '~/constants/subContextItems';
 import TrackItemCard from '~/components/Card/TrackItemCard/TrackItemCard';
+import TrackCreditModal from '../TrackCreditModal/TrackCreditModal';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/TrackListSection.module.scss';
 
@@ -33,14 +37,33 @@ const TrackListSection = React.forwardRef((props, ref) => {
         showAddToLibrary,
         showExpand,
         inQueue = false,
+        inArtist = false,
+        artistId = '',
     } = props;
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const headerRef = useRef(null);
 
+    const { accessToken } = useSelector((state) => state.auth);
+    const albumData = useSelector(selectAlbumData);
+    const isCreditOpen = useSelector((state) => state.ui.modal['track-credit'].isOpen);
+
+    const [albumId, setAlbumId] = useState('');
     const [isFullList, setIsFullList] = useState(false);
+    const [creditModalState, setCreditModalState] = useState({
+        title: '',
+        performed: '',
+        sourceTrack: ''
+    });  
 
     const { currentColumns, templateColumns } = useDynamicColumns(headerRef, initialColumns, true);
+
+    useEffect(() => {
+        if (accessToken && albumId.length > 0) {
+            dispatch(fetchAlbumData({accessToken, id: albumId}));
+        }
+    }, [accessToken, dispatch, albumId]);
 
     const trackListItems = data.map((item, index) => {
         let element;
@@ -49,7 +72,13 @@ const TrackListSection = React.forwardRef((props, ref) => {
         } else {
             element = item;
         }
-        const authors = element.artists.map(artist => artist.name);
+        const authors = element.artists.map(artist => (
+            {
+                name: artist.name, 
+                id: artist.id,
+                onClick: () => navigate(`/artist/${artist.id}`)
+            }
+        ));
 
         if (related) {
             if ((index > 4 && index < 10) || (index > 14 && index < 19)) return;
@@ -67,12 +96,41 @@ const TrackListSection = React.forwardRef((props, ref) => {
             ...item,
             time_added: new Date().toISOString(),
             time_played: null,
+        };
+
+        let contextMenu = trackContextMenu(trackItem, 'ADD', dispatch, !showAlbum, inArtist, authors);
+
+        contextMenu.map((obj) => {
+            if (obj.name.includes('Go to album')) {
+                obj.onClick = () => navigate(`/album/${element.album.id}`); 
+            }
+
+            if (obj.name.includes('credits')) {
+                obj.onClick = () => {
+                    setAlbumId(element.album.id);
+                    if (albumData.label) {
+                        setCreditModalState({
+                            title: element.name,
+                            performed: element.artists.map(artist => artist.name),
+                            sourceTrack: albumData.label,
+                        })
+                    }
+                    dispatch(openModal({name: 'track-credit'}))
+                };
+            }
+
+            return obj; 
+        });
+
+        if (inArtist) {
+            const filteredAuthors = authors.filter(author => author.id !== artistId);
+            if (filteredAuthors.length > 0) {
+                contextMenu = trackContextMenu(trackItem, 'ADD', dispatch, !showAlbum, false, filteredAuthors);
+            }
         }
 
-        let contextMenu = trackContextMenu(trackItem, 'ADD', dispatch, showAlbum);
-
         if (inQueue) {
-            contextMenu = queueTrackContextMenu(trackItem, 'ADD', dispatch);
+            contextMenu = queueTrackContextMenu(trackItem, 'ADD', dispatch, authors);
         }
 
         return (
@@ -131,6 +189,13 @@ const TrackListSection = React.forwardRef((props, ref) => {
             >
                 {isFullList ? 'Show less' : 'See more'}
             </span>}
+            {isCreditOpen && albumData.label && (
+                <TrackCreditModal 
+                    title = {creditModalState.title}
+                    performed = {creditModalState.performed}
+                    sourceTrack = {creditModalState.sourceTrack}
+                />
+            )}
         </section>
     );
 });

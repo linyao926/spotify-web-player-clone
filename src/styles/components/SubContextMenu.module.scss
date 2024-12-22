@@ -14,7 +14,7 @@ $box-shadow: 0 16px 24px rgba(0, 0, 0, .3), 0 6px 8px rgba(0, 0, 0, .2);
     min-width: 152px;
     width: max-content;
     z-index: 5;
-    overflow-y: auto;
+    overflow: hidden;
 }
 
 .subcontext-menu.align-right {

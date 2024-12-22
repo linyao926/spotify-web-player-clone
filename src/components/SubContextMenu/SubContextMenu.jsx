@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router";
 import { useDispatch } from 'react-redux';
+import { useSubContext } from '~/hooks/useSubContext';
 import { closeSubContext } from '~/redux/slices/uiSlice';
 import { ExpandIcon } from '~/assets/icons/icons';
 import classNames from 'classnames/bind';
@@ -42,15 +43,24 @@ const SubContextMenu = (props) => {
         }
     }, [menuRef, position, fromBottom]);
 
-    const handleMouseEnter = (item, event) => {
-        if (item.subMenu) {
-            setSubMenu(true);
-            const subMenuPosition = {
-                top: event.currentTarget.offsetTop,
-                left: event.currentTarget.offsetWidth + 10,
-            };
-            setSubMenuPosition(subMenuPosition)
+    const handleMouseEnter = (item, event, index) => {
+        if (item.subMenu && item.subMenu.length > 0) {
+            const parentRect = event.currentTarget.getBoundingClientRect(); 
+            const subMenuWidth = menuRef?.current.getBoundingClientRect().width || 0;
+            let calculatedLeft = parentRect.right + 5; 
+            let calculatedTop = parentRect.top - 4; 
+
+            if (calculatedLeft + subMenuWidth > window.innerWidth) {
+                calculatedLeft = parentRect.left + 5; 
+            }
+            
+            setSubMenu(index);
+            setSubMenuPosition({ top: calculatedTop, left: calculatedLeft })
         }
+    };
+
+    const handleMouseLeave = () => {
+        setSubMenu(null); 
     };
 
     const handleItemClick = (event, item, index) => {
@@ -88,6 +98,7 @@ const SubContextMenu = (props) => {
                 right: fromRight ? `${window.innerWidth - position.left}px` : "auto",
             }}
             ref={menuRef}
+            onMouseLeave={handleMouseLeave}
         >
             {items.map((item, index) => {
                 const itemClasses = cx(
@@ -105,17 +116,19 @@ const SubContextMenu = (props) => {
                         key={index} 
                         className={itemClasses} 
                         onClick={(event) => handleItemClick(event, item, index)}
-                        onMouseEnter={(event) => handleMouseEnter(item, event)} 
+                        onMouseEnter={(event) => handleMouseEnter(item, event, index)} 
                     >
                         {item.iconLeft && <span className={cx('subcontext-icon')}>{item.iconLeft}</span>}
                         <span className={cx("subcontext-item-text")}>{item.name}</span>
                         {item.iconRight && <span className={cx('subcontext-icon')}>{item.iconRight}</span>}
-                        {item.subMenu && <span className={cx("arrow")}><ExpandIcon /></span>}
-                        {/* {subMenu && (<SubContextMenu 
-                            items={item.subMenu} 
-                            position={subMenuPosition} 
-                            isFixed
-                        />)} */}
+                        {item.subMenu && item.subMenu.length > 0 && <span className={cx("arrow")}><ExpandIcon /></span>}
+                        {subMenu === index && (
+                            <SubContextMenu 
+                                items={item.subMenu} 
+                                position={subMenuPosition} 
+                                isFixed
+                            />
+                        )}
                     </div>
                 )
             })}

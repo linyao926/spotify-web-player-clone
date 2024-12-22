@@ -26,7 +26,7 @@ function CollectionTracks(props) {
 
     const dispatch = useDispatch(); 
     const profileInfo = useSelector(selectProfileInfo);
-    const profileStatus = useSelector((state) => state.profile.status);
+    const likedTracks = useSelector((state) => state['library'].likedTracks);
 
     const mediaLayoutRef = useRef(null);
     const childRef = useRef(null);
@@ -42,21 +42,21 @@ function CollectionTracks(props) {
             authorImgUrl={profileInfo?.images[0]?.url}
             authorName = {profileInfo && profileInfo['display_name']}
             authorId = {profileInfo && profileInfo.id}
-            trackCount = {0}
+            trackCount = {likedTracks.length}
             canViewAs
             ref={mediaLayoutRef}
             contentScrollHandler={handleScroll}
         >
-            {/* <TrackListSection 
-                data={playlistItems}
-                viewAs={viewAs}
-                initialColumns={viewAs === 'list' ? 5 : 6}
-                ref={childRef}
-                isFixed={isFixed}
-                isVisible={isVisible}
-            /> */}
-            {false 
-                ? <></>
+            
+            {likedTracks.length > 0 
+                ? <TrackListSection 
+                    data={likedTracks}
+                    viewAs={viewAs}
+                    initialColumns={viewAs === 'list' ? 5 : 6}
+                    ref={childRef}
+                    isFixed={isFixed}
+                    isVisible={isVisible}
+                />
                 : <section className={cx('liked-placeholder')}>
                     <span className={cx('icon-wrapper')}> <LikedPlaceholderIcon /> </span>
                     <h3>Songs you like will appear here</h3>

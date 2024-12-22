@@ -168,229 +168,133 @@ export const libraryOptionsSubContext = (dispatch, options) => [
   },
 ];
 
-const shareLink = {
-  name: "Share",
-  iconLeft: <ShareIcon />,
-  subMenu: [{
-    name: 'Copy link',
-    iconLeft: <CopyLinkIcon />,
-    onClick: () => {
-      navigator.clipboard.writeText(window.location.href);
-    },
-  }]
-};
-
-const libraryActions = (type, item, action, dispatch) => ({
-  name: action === 'ADD' ? "Add to Library" : "Remove from Library",
-  iconLeft: action === 'ADD' ? <AddToLibrarySmallIcon /> : <RemoveFromIcon />,
-  onClick: () => action === 'ADD' ? dispatch(addToLibrary({type, item})) : dispatch(removeFromLibrary({type, id: item.id})),
-  iconActive: action === 'ADD' ? false : true,
+const createAction = (name, iconLeft, iconRight = null, onClick = null, subMenu = [], borderBottom = false, hidden = false) => ({
+  name,
+  iconLeft,
+  iconRight,
+  onClick,
+  subMenu,
+  borderBottom,
+  hidden,
 });
 
-const queueActions = (tracks, action, dispatch) => ({
-  name: action === 'ADD' ? "Add to Queue" : "Remove from Queue",
-  iconLeft: action === 'ADD' ? <AddToQueueIcon /> : <RemoveQueueIcon />,
-  onClick: () => action === 'ADD' ? dispatch(addToQueue({tracks})) : dispatch(removeFromQueue()),
-});
+const createLibraryAction = (type, item, action, dispatch) => createAction(
+  action === 'ADD' 
+  ? (type === 'likedTracks' ? "Save to your Liked Songs" : "Add to Library") 
+  : (type === 'likedTracks' ? "Remove from your Liked Songs" : "Remove from Library"),
+  action === 'ADD' ? <AddToLibrarySmallIcon /> : <RemoveFromIcon />,
+  null,
+  () => action === 'ADD'
+    ? dispatch(addToLibrary({ type, item }))
+    : dispatch(removeFromLibrary({ type, id: item.id })),
+  [],
+  false,
+  action !== 'ADD'
+);
 
-const cretePlaylistAction = {
-  name: "Create playlist",
-  iconLeft: <MusicalNotePlusIcon />,
-};
+const createQueueAction = (tracks, action, dispatch) => createAction(
+  action === 'ADD' ? "Add to Queue" : "Remove from Queue",
+  action === 'ADD' ? <AddToQueueIcon /> : <RemoveQueueIcon />,
+  null,
+  () => action === 'ADD'
+    ? dispatch(addToQueue({ tracks }))
+    : dispatch(removeFromQueue())
+);
 
-const pinAction = (type) => ({
-  name: `Pin ${type}`,
-  iconLeft: <PinIcon />,
-});
+const createSubMenu = (items) => items.map(({ name, onClick }) => createAction(name, null, null, onClick));
 
-const addPlaylistToProfile = (id, action, dispatch) => ({
-  name: action === 'ADD' ? "Add to profile" : "Remove from profile",
-  iconLeft: <AddToProfileIcon />,
-  onClick: () => action === 'ADD' ? dispatch(addToLibrary(id)) : dispatch(addToLibrary(id)),
-  borderBottom: true,
-});
+const shareLink = createAction("Share", <ShareIcon />, null, null, [
+  createAction('Copy link', <CopyLinkIcon />, null, () => navigator.clipboard.writeText(window.location.href))
+]);
 
-export const playlistContextMenu = (item = {id: ''}, action, dispatch) => [
-  libraryActions('playlists', item, action, dispatch),
-  {
-    ...queueActions(item.tracks ? item.tracks.items : [], 'ADD', dispatch),
-    borderBottom: true,
-  },
-  shareLink,
-];
+const createPinAction = (type) => createAction(`Pin ${type}`, <PinIcon />);
 
-export const libraryPlaylistContextMenu = (item = {id: ''} , profileAction, dispatch) => [
-  {
-    ...queueActions('playlists', item, 'ADD', dispatch),
-    borderBottom: true,
-  },
-  addPlaylistToProfile(item.id, profileAction, dispatch),
-  {
-    ...libraryActions('playlists', item, 'REMOVE', dispatch),
-    borderBottom: true,
-  },
-  cretePlaylistAction,
-  {
-    ...pinAction('playlist'),
-    borderBottom: true,
-  },
-  shareLink,
-];
+const createPlaylistProfileAction = (id, action, dispatch) => createAction(
+  action === 'ADD' ? "Add to profile" : "Remove from profile",
+  <AddToProfileIcon />, 
+  null,
+  () => dispatch(addToLibrary(id)),
+  [],
+  true
+);
 
-export const myPlaylistContextMenu = (id, tracks, action, dispatch) => [
-  queueActions(tracks, 'ADD', dispatch),
-  addPlaylistToProfile(id, action, dispatch),
-  {
-    name: 'Edit details',
-    iconLeft: <EditIcon />,
-    onClick: () => {return},
-  },
-  {
-    name: 'Delete',
-    iconLeft: <DeleteIcon />,
-    onClick: () => {dispatch(deletePlaylist({playlistId: id}))},
-    borderBottom: true,
-  },
-  cretePlaylistAction,
-  {
-    ...pinAction('playlist'),
-    borderBottom: true,
-  },
-  shareLink,
-];
+const createContextMenu = (...actions) => actions;
 
-export const albumContextMenu = (item = {id: ''}, action, dispatch) => [
-  libraryActions('albums', item, action, dispatch),
-  {
-    ...queueActions(item.tracks ? item.tracks.items : [], 'ADD', dispatch),
-    borderBottom: true,
-  },
-  {
-    name: 'Add to playlist',
-    iconLeft: <PlusIcon />,
-    subMenu: [],
-  },
-  shareLink,
-];
+export const playlistContextMenu = (item = { id: '' }, action, dispatch) => createContextMenu(
+  createLibraryAction('playlists', item, action, dispatch),
+  { ...createQueueAction(item.tracks?.items || [], 'ADD', dispatch), borderBottom: true },
+  shareLink
+);
 
-export const libraryAlbumContextMenu = (item = {id: ''} ,dispatch) => [
-  libraryActions('albums', item, 'REMOVE', dispatch),
-  {
-    ...queueActions(item, 'ADD', dispatch),
-    borderBottom: true,
-  },
-  pinAction('album'),
-  {
-    name: 'Add to playlist',
-    iconLeft: <PlusIcon />,
-    subMenu: [],
-  },
-  shareLink,
-];
+export const libraryPlaylistContextMenu = (item = { id: '' }, profileAction, dispatch) => createContextMenu(
+  { ...createQueueAction('playlists', item, 'ADD', dispatch), borderBottom: true },
+  createPlaylistProfileAction(item.id, profileAction, dispatch),
+  { ...createLibraryAction('playlists', item, 'REMOVE', dispatch), borderBottom: true },
+  createAction("Create playlist", <MusicalNotePlusIcon />),
+  { ...createPinAction('playlist'), borderBottom: true },
+  shareLink
+);
 
-export const artistContextMenu = (item = {id: ''}, action, dispatch) => [
-  {
-    name: action === 'ADD' ? "Follow" : "Unfollow",
-    iconLeft: action === 'ADD' ? <FollowIcon /> : <DismissSmallIcon />,
-    onClick: () => action === 'ADD' ? dispatch(addToLibrary({type: 'artists', item})) : dispatch(removeFromLibrary({type: 'artists' , id: item.id})),
-  },
-  shareLink,
-];
+export const myPlaylistContextMenu = (id, tracks, action, dispatch) => createContextMenu(
+  createQueueAction(tracks, 'ADD', dispatch),
+  createPlaylistProfileAction(id, action, dispatch),
+  createAction('Edit details', <EditIcon />, null, () => {}),
+  createAction('Delete', <DeleteIcon />, null, () => dispatch(deletePlaylist({ playlistId: id })), [], true),
+  createAction("Create playlist", <MusicalNotePlusIcon />),
+  { ...createPinAction('playlist'), borderBottom: true },
+  shareLink
+);
 
-export const libraryArtistContextMenu = (id, dispatch) => [
-  {
-    name: "Unfollow",
-    iconLeft: <DismissSmallIcon />,
-    onClick: () => dispatch(removeFromLibrary({type: 'artists' , id})),
-  },
-  pinAction('artist'),
-  shareLink,
-];
+export const albumContextMenu = (item = { id: '' }, action, dispatch) => createContextMenu(
+  createLibraryAction('albums', item, action, dispatch),
+  { ...createQueueAction(item.tracks?.items || [], 'ADD', dispatch), borderBottom: true },
+  createAction('Add to playlist', <PlusIcon />, null, null, []),
+  shareLink
+);
 
-export const trackContextMenu = (item, action, dispatch, inAlbum = false, inArtist = false, artists = []) => [
-  {
-    name: 'Add to playlist',
-    iconLeft: <PlusIcon />,
-    subMenu: [],
-  },
-  {
-    name: action === 'ADD' ? "Save to your Liked Songs" : "Remove from your Liked Songs",
-    iconLeft: action === 'ADD' ? <AddToLibrarySmallIcon /> : <RemoveFromIcon />,
-    onClick: () => action === 'ADD' ? dispatch(addToLibrary({type: 'likedTracks', item})) : dispatch(removeFromLibrary({type: 'likedTracks', id: item.id})),
-  },
-  {
-    ...queueActions([item], 'ADD', dispatch),
-    borderBottom: true,
-  },
-  {
-    name: 'Go to artist',
-    iconLeft: <ArtistFallbackIcon />,
-    subMenu: artists.length > 1 ? artists.map(item => ({
-      name: item.name,
-      onClick: () => {return}
-    })) : [],
-    onClick: () => {
-      if (artists.length === 1) {
-        return;
-      }
-    },
-    hidden: inArtist,
-  },
-  {
-    name: 'Go to album',
-    iconLeft: <AlbumFallbackIcon />,
-    onClick: () => {return},
-    hidden: inAlbum,
-  },
-  {
-    name: 'View credits',
-    iconLeft: <CreditIcon />,
-    onClick: () => {return},
-    borderBottom: true,
-  },
-  shareLink,
-];
+export const libraryAlbumContextMenu = (item = { id: '' }, dispatch) => createContextMenu(
+  createLibraryAction('albums', item, 'REMOVE', dispatch),
+  { ...createQueueAction(item, 'ADD', dispatch), borderBottom: true },
+  createPinAction('album'),
+  createAction('Add to playlist', <PlusIcon />, null, null, []),
+  shareLink
+);
 
-export const queueTrackContextMenu = (item, action, dispatch, artists = []) => [
-  {
-    name: 'Add to playlist',
-    iconLeft: <PlusIcon />,
-    iconRight: <ExpandIcon />,
-    subMenu: [],
-  },
-  {
-    name: action === 'ADD' ? "Save to your Liked Songs" : "Remove from your Liked Songs",
-    iconLeft: action === 'ADD' ? <AddToLibrarySmallIcon /> : <RemoveFromIcon />,
-    onClick: () => action === 'ADD' ? dispatch(addToLibrary({type: 'likedTracks', item})) : dispatch(removeFromLibrary({type: 'likedTracks', id: item.id})),
-  },
-  queueActions([item], 'ADD', dispatch),
-  {
-    ...queueActions(item.id, 'REMOVE', dispatch),
-    borderBottom: true,
-  },
-  {
-    name: 'Go to artist',
-    iconLeft: <ArtistFallbackIcon />,
-    subMenu: artists.length > 1 ? artists.map(item => ({
-      name: item.name,
-      onClick: () => {return}
-    })) : [],
-    onClick: () => {
-      if (artists.length === 1) {
-        return;
-      }
-    }
-  },
-  {
-    name: 'Go to album',
-    iconLeft: <AlbumFallbackIcon />,
-    onClick: () => {return}
-  },
-  {
-    name: 'View credits',
-    iconLeft: <CreditIcon />,
-    onClick: () => {return},
-    borderBottom: true,
-  },
-  shareLink,
-];
+export const artistContextMenu = (item = { id: '' }, action, dispatch) => createContextMenu(
+  createAction(
+    action === 'ADD' ? "Follow" : "Unfollow",
+    action === 'ADD' ? <FollowIcon /> : <DismissSmallIcon />,
+    null,
+    () => action === 'ADD'
+      ? dispatch(addToLibrary({ type: 'artists', item }))
+      : dispatch(removeFromLibrary({ type: 'artists', id: item.id }))
+  ),
+  shareLink
+);
+
+export const libraryArtistContextMenu = (id, dispatch) => createContextMenu(
+  createAction("Unfollow", <DismissSmallIcon />, null, () => dispatch(removeFromLibrary({ type: 'artists', id }))),
+  createPinAction('artist'),
+  shareLink
+);
+
+export const trackContextMenu = (item, action, dispatch, inAlbum = false, inArtist = false, artists = []) => createContextMenu(
+  createAction('Add to playlist', <PlusIcon />, null, null, []),
+  createLibraryAction('likedTracks', item, action, dispatch),
+  { ...createQueueAction([item], 'ADD', dispatch), borderBottom: true },
+  createAction('Go to artist', <ArtistFallbackIcon />, null, null, createSubMenu(artists), false, inArtist),
+  createAction('Go to album', <AlbumFallbackIcon />, null, () => {}, [], false, inAlbum),
+  createAction('View credits', <CreditIcon />, null, () => {}, [], true),
+  shareLink
+);
+
+export const queueTrackContextMenu = (item, action, dispatch, artists = []) => createContextMenu(
+  createAction('Add to playlist', <PlusIcon />, <ExpandIcon />, null, []),
+  createLibraryAction('likedTracks', item, action, dispatch),
+  createQueueAction([item], 'ADD', dispatch),
+  { ...createQueueAction(item.id, 'REMOVE', dispatch), borderBottom: true },
+  createAction('Go to artist', <ArtistFallbackIcon />, null, null, createSubMenu(artists)),
+  createAction('Go to album', <AlbumFallbackIcon />),
+  createAction('View credits', <CreditIcon />, null, () => {}, [], true),
+  shareLink
+);

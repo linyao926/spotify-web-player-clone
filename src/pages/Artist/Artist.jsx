@@ -34,6 +34,8 @@ function Artist(props) {
                 initialColumns={4}
                 ref={childRef}
                 showAlbum
+                inArtist
+                artistId = {id}
                 headerType="title"
                 title="Popular"
                 seeMore

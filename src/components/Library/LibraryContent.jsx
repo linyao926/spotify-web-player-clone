@@ -74,9 +74,9 @@ const LibraryContent = (props) => {
         if (likedTracks.length > 0) {
             setLikedTracksInfo({
                 ...likedTracksInfo,
-                tracks: { items: libraryItems },
-                track_total: libraryItems ? libraryItems.length : 0,
-                authorName: `${libraryItems.length} songs`,
+                tracks: { items: likedTracks },
+                track_total: likedTracks ? likedTracks.length : 0,
+                authorName: `${likedTracks.length} songs`,
             })
         }
     }, [likedTracks]);

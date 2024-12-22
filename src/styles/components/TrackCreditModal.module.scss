@@ -1,0 +1,63 @@
+@use '../index.scss';
+
+.track-credit {
+    @include index.full-screen-overlay;
+    @include index.flex-center;
+    z-index: 6;
+}
+
+.track-credit-container {
+    background-color: #282828;
+    width: 440px;
+    max-height: 489px;
+    border-radius: 8px;
+    @include index.flex-center(column, flex-start, flex-start);
+    position: relative;
+
+    header {
+        @include index.flex-center($justify: space-between);
+        padding: 32px 32px 12px;
+        width: 100%;
+        border-bottom: 1px solid hsla(0, 0%, 100%, .1);
+    }
+
+    h3 {
+        font-size: 2rem;
+    }
+
+    .close-btn-wrapper {
+        margin-right: -16px;
+    }
+}
+
+.track-credit-content {
+    padding: 16px 32px 4px;
+}
+
+.track-credit-title,
+.track-credit-item,
+.track-credit-source {
+    display: block;
+    padding-bottom: 16px;
+    font-size: index.$font-size-small;
+    font-weight: 700;
+    color: var(--text-base);
+}
+
+.track-credit-title {
+    font-size: index.$font-size-base;
+}
+
+.track-credit-item {
+    @include index.flex-center(column, flex-start, flex-start);
+    gap: 4px;
+}
+
+.track-credit-value {
+    color: var(--text-subdued);
+    font-weight: 400;
+}
+
+.track-credit-source {
+    font-weight: 400;
+}

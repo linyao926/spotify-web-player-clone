@@ -60,8 +60,8 @@ const TrackItemCard = (props) => {
         };
     }, []);
 
-    const authorList = authors.map(authorName => (
-        <span key={authorName} className={cx('track-item-card-author')}>{authorName}</span>
+    const authorList = authors.map(author => (
+        <span key={author.id} className={cx('track-item-card-author')}>{author.name}</span>
     ));
 
     return (

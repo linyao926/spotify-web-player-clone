@@ -54,6 +54,7 @@ const uiSlice = createSlice({
         modal: { 
             'login-prompt': { isOpen: false },
             'edit-playlist': { isOpen: false },
+            'track-credit': { isOpen: false },
         },
         notification: { isOpen: false },
         viewMode: 'compact',

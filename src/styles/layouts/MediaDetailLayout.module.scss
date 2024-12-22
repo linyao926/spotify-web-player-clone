@@ -5,6 +5,7 @@ $primary-background-color: rgb(83, 83, 83);
 .media-detail-layout {
     @include index.pageContentBase;
     position: relative;
+    z-index: 5;
 }
 
 .media-detail-header {

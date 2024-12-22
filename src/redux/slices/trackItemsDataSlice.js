@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchData } from '~/services/api';
 
 export const fetchTrackItemsData = createAsyncThunk(
-  'profile/fetchTrackItemsData',
+  'trackItems/fetchTrackItemsData',
   async ({accessToken, type, id}, { rejectWithValue }) => {
     try {
         const path = type === 'artist' ? `/${type}s/${id}/top-tracks` : `/${type}s/${id}/tracks`

@@ -7,6 +7,7 @@ import positionReducer from './slices/positionSlice';
 import libraryReducer from './slices/librarySlice';
 import queueReducer from './slices/queueSlice';
 import myPlaylistReducer from './slices/myPlaylistSlice';
+import albumDataReducer from './slices/albumDataSlice';
 
 const rootReducer = combineReducers({
     profile: profileReducer,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
     queue: queueReducer,
     'my_playlist': myPlaylistReducer,
     'track-items': trackItemsDataReducer,
+    'album-data': albumDataReducer,
 });
 
 export default rootReducer;

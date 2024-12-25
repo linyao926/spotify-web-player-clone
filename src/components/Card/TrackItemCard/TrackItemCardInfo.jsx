@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from "react-router";
-import { PlayLargeIcon } from '~/assets/icons';
+import { PlayLargeIcon, MusicalNotePlusIcon } from '~/assets/icons';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/TrackItemCard.module.scss';
 
@@ -18,13 +18,18 @@ const TrackItemCardInfo = (props) => {
     return (
         <div className={cx('track-item-card-info')}>
             <div className={cx('track-item-card-img-wrapper', !showIndex && 'show-play-icon')}>
-                <img 
-                    draggable="false" 
-                    loading="lazy" 
-                    src={imgUrl} 
-                    alt="" 
-                    className={cx('track-item-card-img')} 
-                />
+                {imgUrl.length > 0 
+                    ? <img 
+                        draggable="false" 
+                        loading="lazy" 
+                        src={imgUrl} 
+                        alt="" 
+                        className={cx('track-item-card-img')} 
+                    />
+                    : <span className={cx('track-item-card-img')} >
+                        <MusicalNotePlusIcon />
+                    </span> 
+                }
                 {!showIndex && <span className={cx('play-icon-wrapper')}><PlayLargeIcon /></span>}
             </div>
             <div className={cx('track-item-card-info-text')}>

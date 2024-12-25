@@ -10,7 +10,7 @@ const queueSlice = createSlice({
   name: "queue",
   initialState,
   reducers: {
-    setPlaylist(state, action) {
+    setQueuePlaylist(state, action) {
       const { tracks, startTrackId } = action.payload;
       const startIndex = tracks.findIndex((track) => track.id === startTrackId);
       state.nowPlaying = tracks[startIndex];
@@ -34,6 +34,6 @@ const queueSlice = createSlice({
   },
 });
 
-export const { setPlaylist, addToQueue, playFromQueue } = queueSlice.actions;
+export const { setQueuePlaylist, addToQueue, playFromQueue } = queueSlice.actions;
 
 export default queueSlice.reducer;

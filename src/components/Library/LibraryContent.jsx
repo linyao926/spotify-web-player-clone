@@ -44,7 +44,6 @@ const LibraryContent = (props) => {
 
     const { handleCreatePlaylist } = useCreatePlaylist();
     const dispatch = useDispatch();
-    const queue = useSelector((state) => state['queue']);
     const isEditOpen = useSelector((state) => state.ui.modal['edit-playlist'].isOpen);
     const [pinnedItems, setPinnedItems] = useState([]);
     const [editModalState, setEditModalState] = useState({

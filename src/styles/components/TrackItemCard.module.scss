@@ -106,7 +106,11 @@ $track-item-img-height: 40px;
 }
 
 .track-item-card-img-wrapper {
+    @include index.flex-center;
     position: relative;
+    height: $track-item-img-height;
+    width: auto;
+    aspect-ratio: 1;
 }
 
 .track-item-card-img {
@@ -135,7 +139,7 @@ $track-item-img-height: 40px;
 }
 
 .show-play-icon {
-    margin: -8px;
+    margin-left: -8px;
 }
 
 .track-item-card-img-wrapper .play-icon-wrapper {
@@ -227,4 +231,8 @@ $track-item-img-height: 40px;
 
 .add-btn-wrapper {
     @include index.flex-center;
+}
+
+.option-btn-wrapper {
+    align-items: flex-end;
 }

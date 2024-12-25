@@ -114,3 +114,12 @@
 .track-album-display-content {
     margin-top: 2px;
 }
+
+.release-info {
+    @include index.flex-center(column, center, flex-start);
+    margin-top: 32px;
+    color: var(--text-subdued);
+    font-size: index.$font-size-small;
+    font-weight: 500;
+    gap: 2px;
+}

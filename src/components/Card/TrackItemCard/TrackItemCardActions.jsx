@@ -9,22 +9,25 @@ const cx = classNames.bind(styles);
 const TrackItemCardActions = (props) => {
     const {
         duration,
+        showOptionOnly,
     } = props;
 
     return (
         <div className={cx('track-item-card-actions')}>
-            <span className={cx('btn-wrapper')}>
-                <Button 
-                    hasIcon 
-                    icon={<AddToLibrarySmallIcon />} 
-                    borderRadius="circle" 
-                    variant="transparent" 
-                    size="size-small" 
-                    padding="8px" 
-                />
-            </span>
-            <span className={cx('track-item-duration')}>{duration}</span>
-            <span className={cx('btn-wrapper')}>
+            {!showOptionOnly && <>
+                <span className={cx('btn-wrapper')}>
+                    <Button 
+                        hasIcon 
+                        icon={<AddToLibrarySmallIcon />} 
+                        borderRadius="circle" 
+                        variant="transparent" 
+                        size="size-small" 
+                        padding="8px" 
+                    />
+                </span>
+                <span className={cx('track-item-duration')}>{duration}</span>
+            </>}
+            <span className={cx('btn-wrapper', showOptionOnly && 'option-btn-wrapper')}>
                 <Button 
                     hasIcon 
                     icon={<OptionSmallIcon />} 

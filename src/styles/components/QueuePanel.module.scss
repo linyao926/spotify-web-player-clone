@@ -1,0 +1,106 @@
+@use '../index.scss';
+
+.queue-panel {
+    @include index.bodySectionBase;
+    flex-shrink: 0;
+    z-index: 5;
+    min-width: 280px;
+    width: 380px;
+
+    &.collapsed {
+        align-items: center;
+    }
+}
+
+.queue-panel-header {
+    @include index.flex-center($justify: space-between);
+    height: 64px;
+    padding: index.$spacing-base index.$spacing-medium;
+    flex-shrink: 0;
+
+    h3 {
+        font-size: index.$font-size-base;
+    }
+
+    .close-btn-wrapper {
+        margin-right: -8px;
+    }
+}
+
+.queue-panel-container {
+    height: 100%;
+}
+
+.queue-panel-prompt,
+.queue-panel-content {
+    @include index.flex-center(column);
+    gap: 24px;
+    height: 100%;
+    padding-inline: index.$spacing-medium;
+}
+
+.icon-wrapper {
+    svg {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+.title-wrapper {
+    @include index.flex-center(column);
+    gap: 8px;
+    font-weight: 600;
+}
+
+.content-subtitle {
+    color: var(--text-subdued);
+    font-size: index.$font-size-small;
+    font-weight: 400;
+}
+
+.queue-panel-content {
+    @include index.flex-center(column, flex-start, flex-start);
+    padding: 16px;
+    padding-block-end: 8px;
+}
+
+.now-playling,
+.next-in-queue,
+.next-from {
+    @include index.flex-center(column, flex-start, flex-start);
+    width: 100%;
+}
+
+.content-header-title {
+    @include index.flex-center($justify: flex-start);
+    font-weight: 600;
+    height: 32px;
+    width: 100%;
+
+    a {
+        color: var(--text-base);
+        text-decoration: none;
+        margin-left: 4px;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+.next-in-queue-header {
+    @include index.flex-center($justify: space-between);
+    width: 100%;
+}
+
+.clear-btn-wrapper {
+    flex-shrink: 0;
+}
+
+.next-from {
+    padding-bottom: 8px;
+}
+
+.content-tracks {
+    padding-top: 4px;
+}

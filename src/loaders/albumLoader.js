@@ -36,6 +36,7 @@ const albumLoader = async ({ params }) => {
           "type": album.type,
           "album_type": album["album_type"],
           "track_total": album['total_tracks'],
+          "copyrights": album.copyrights,
         },
         albumItems: album.tracks.items,
         relatedTrack: relatedArtistTracks,

@@ -19,7 +19,7 @@ const useExtractColors = (coverUrl) => {
 
     const findReadableColor = (colors) => {
         const MIN_BRIGHTNESS = 0.2; 
-        const MAX_BRIGHTNESS = 0.8; 
+        const MAX_BRIGHTNESS = 0.7; 
 
         const getAdjustedColor = (color) => {
             const brightness = getBrightness(color);
@@ -34,9 +34,9 @@ const useExtractColors = (coverUrl) => {
         
         const chosenColor = filteredColors.length
         ? filteredColors.reduce((dominant, color) =>
-            color.area > dominant.area ? color : dominant)
+            color.intensity > dominant.intensity ? color : dominant)
         : colors.reduce((dominant, color) =>
-            color.area > dominant.area ? color : dominant);
+            color.intensity > dominant.intensity ? color : dominant);
 
         const chosenBrightness = getBrightness(chosenColor);
 
@@ -59,8 +59,12 @@ const useExtractColors = (coverUrl) => {
 
     useEffect(() => {
         if (colorPalettes) {
+            // console.log(colorPalettes)
             const dominantColor = findReadableColor(colorPalettes);
             setBackgroundBase(dominantColor.hex);
+            // setBackgroundBase('#cf4e49')
+            // setBackgroundBase("#0b265d")
+            // setBackgroundBase("#086898")
         }
     }, [colorPalettes]);
 

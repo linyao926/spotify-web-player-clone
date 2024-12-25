@@ -17,7 +17,7 @@ const cx = classNames.bind(styles);
 const TrackItemCard = (props) => {
     const {
         id,
-        viewAs,
+        viewAs = 'list',
         initialColumns = 5,
         routeLink = '/',
         trackIndex = 1,
@@ -34,6 +34,7 @@ const TrackItemCard = (props) => {
         showAddedDate = false,
         showAddToLibrary = false,
         showExpand = false,
+        showOptionOnly = false,
     } = props;
 
     const containerRef = useRef(null);
@@ -94,7 +95,8 @@ const TrackItemCard = (props) => {
             {(currentColumns >= 6 || (viewAs === 'list' && currentColumns >= 5)) && showAddedDate && <span className={cx('track-item-added-date')}>{formatDate(addedDate)}</span>}
             {!showAddToLibrary 
                 ? <TrackItemCardActions 
-                duration={formatMillisecondsToMinutes(duration)}
+                    duration={formatMillisecondsToMinutes(duration)}
+                    showOptionOnly={showOptionOnly}
                 />
                 : <span className={cx('add-btn-wrapper')}>
                     <Button

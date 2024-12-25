@@ -1,0 +1,11 @@
+@use '../index.scss';
+
+.release-info {
+    @include index.flex-center(column, center, flex-start);
+    margin-top: calc(32px - var(--content-spacing) * 1px);
+    color: var(--text-subdued);
+    font-size: index.$font-size-small;
+    font-weight: 500;
+    gap: 2px;
+    padding: 0 var(--content-spacing) var(--content-spacing);
+}

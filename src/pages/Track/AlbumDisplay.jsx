@@ -55,6 +55,18 @@ function AlbumDisplay({ albumData }) {
             <div className={cx('track-album-display-content')}>
                 {trackListItems}
             </div>
+            <div className={cx("release-info")}>
+                <span>{new Date(albumData.release_date).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric"
+                })}</span>
+                {albumData.copyrights.map((copyright, index) => (
+                    <span key={index}>
+                    {copyright.type === "C" ? "©" : "℗"} {copyright.text}
+                    </span>
+                ))}
+            </div>
         </section>
     );
 };

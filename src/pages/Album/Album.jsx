@@ -5,6 +5,10 @@ import MediaDetailLayout from '~/layouts/MediaDetailLayout/MediaDetailLayout';
 import TrackListSection from '~/components/TrackListSection/TrackListSection';
 import MediaSection from '~/components/MediaSection/MediaSection';
 import { contentScrollHandler } from '~/utils/eventHandler';
+import classNames from 'classnames/bind';
+import styles from '~/styles/pages/Album.module.scss';
+
+const cx = classNames.bind(styles);
 
 function Album(props) {
     const {
@@ -50,6 +54,18 @@ function Album(props) {
                 isVisible={isVisible}
                 showAlbum={false}
             />
+            <div className={cx("release-info")}>
+                <span>{new Date(albumInfo.release_date).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric"
+                })}</span>
+                {albumInfo.copyrights.map((copyright, index) => (
+                    <span key={index}>
+                    {copyright.type === "C" ? "©" : "℗"} {copyright.text}
+                    </span>
+                ))}
+            </div>
             {/* {relatedTrack.tracks && relatedTrack.tracks.length > 0 && <MediaSection 
                 data={relatedTrack.tracks}
                 type="track"

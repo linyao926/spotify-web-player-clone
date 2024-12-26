@@ -31,7 +31,7 @@ function MainAppLayout () {
                 <Outlet /> 
                 {/* {accessToken && isDialogOpen && <div className={cx('overview')}>listening panel</div>} */}
                 {/* <QueuePanel /> */}
-                <NowPlayingPanel />
+                {/* <NowPlayingPanel /> */}
             </div>
             {accessToken ? <PlayingBar/> : <GuestFooter />}
             {isLoginPromptOpen && <LoginPrompt />}

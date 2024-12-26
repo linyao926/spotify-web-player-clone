@@ -20,6 +20,8 @@ import Playlist from '~/pages/Playlist/Playlist';
 import MyPlaylist from '~/pages/MyPlaylist/MyPlaylist';
 import Track from '~/pages/Track/Track';
 import CollectionTracks from '~/pages/CollectionTracks/CollectionTracks';
+import Download from '~/pages/Download/Download';
+import Settings from '~/pages/Settings/Settings';
 
 import GuestContent from '~/components/Guest/GuestContent/GuestContent';
 
@@ -94,6 +96,16 @@ const AppRoutes = () => {
       path: '/track/:id',
       element: <Track />,
       loader: loaders.trackLoader,
+      errorElement: <ErrorBoundary />, 
+    },
+    {
+      path: '/download',
+      element: <Download />,
+      errorElement: <ErrorBoundary />, 
+    },
+    {
+      path: '/preferences',
+      element: <Settings />,
       errorElement: <ErrorBoundary />, 
     },
     {

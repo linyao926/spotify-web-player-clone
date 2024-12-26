@@ -69,7 +69,7 @@ function MainAppHeader () {
                 size="size-small"
                 padding="4px 16px 4px 33px"
                 borderRadius="rounded"
-                routeLink={config.routes.home}
+                routeLink={config.routes('').download}
             >Install App</Button>
             <Tooltip content="What's New" position="bottom">
                 <Button 

@@ -11,7 +11,7 @@ const routes = (id = '') => ({
     userProfile: `/user/${id}`,
     genre: `/genre/${id}`,
     download: `/download`,
-    settings: '/settings',
+    settings: '/preferences',
     login: '/auth/login',
 });
 

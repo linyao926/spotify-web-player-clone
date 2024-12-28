@@ -52,6 +52,13 @@ function OwnProfile() {
                 showAll
                 showAlbum
                 routeLink = {`/user/${profileInfo.id}/top/tracks`}
+                parent={{
+                    cover: '',
+                    id: '',
+                    title: '',
+                    type: '',
+                    data: profileTopTracks.items,
+                }}
             />}
         </MediaDetailLayout>
     );

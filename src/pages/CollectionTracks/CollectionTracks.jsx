@@ -7,6 +7,7 @@ import {
     PlaylistFallbackIcon,
     LikedPlaceholderIcon,
 } from '~/assets/icons';
+import images from '~/assets/images';
 import MediaDetailLayout from '~/layouts/MediaDetailLayout/MediaDetailLayout';
 import TrackListSection from '~/components/TrackListSection/TrackListSection';
 import Button from '~/components/Button/Button';
@@ -35,7 +36,7 @@ function CollectionTracks(props) {
 
     return (
         <MediaDetailLayout
-            coverUrl = "https://misc.scdn.co/liked-songs/liked-songs-300.png"
+            coverUrl = {images['LikedTracksCover']}
             coverFallback = {<PlaylistFallbackIcon />}
             type = 'playlist'
             title = 'Liked Songs'
@@ -56,6 +57,12 @@ function CollectionTracks(props) {
                     ref={childRef}
                     isFixed={isFixed}
                     isVisible={isVisible}
+                    parent={{
+                        cover: images['LikedTracksCover'],
+                        id: 'collection/tracks',
+                        title: 'Liked Songs',
+                        type: 'playlist',
+                    }}
                 />
                 : <section className={cx('liked-placeholder')}>
                     <span className={cx('icon-wrapper')}> <LikedPlaceholderIcon /> </span>

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from "react-router";
 import { useSelector } from 'react-redux'; 
+import { useQueueHandler } from '~/hooks/useQueueHandler';
 import { useSubContext } from '~/hooks/useSubContext';
 import { PlayLargeIcon, PinnedIcon } from '~/assets/icons';
 import { formatDate } from '~/utils/timeUtils';
@@ -33,7 +34,10 @@ const LibraryItemCard = (props) => {
     const navigate = useNavigate();
     const isSubContextOpen = useSelector((state) => state.ui.subContext['library-card-menu'].isOpen);
     const contextMenuId = useSelector((state) => state.ui.subContext['library-card-menu'].id);
+    const queuePlaylist = useSelector((state) => state['queue'].queueData);
+    const itemIsPlaying = useSelector((state) => state['queue'].itemIsPlaying);
 
+    const { handlePlayClick } = useQueueHandler({ type, id, title, imgUrl });
     const { 
         positionFixed,
         handleOpenCardMenu, 
@@ -81,7 +85,9 @@ const LibraryItemCard = (props) => {
                             />
                             : <span className={cx('library-item-img', 'fallback', imgCircle && 'circle', 'img-fallback')}>{imgFallback}</span>
                             }
-                            <span className={cx('play-icon-wrapper')}><PlayLargeIcon /></span>
+                            <span className={cx('play-icon-wrapper', (itemIsPlaying && queuePlaylist.id === id) && 'playing')}
+                                onClick={(event) => handlePlayClick(event)}
+                            ><PlayLargeIcon /></span>
                         </div>
                     </Tooltip>
                 </div>
@@ -119,7 +125,9 @@ const LibraryItemCard = (props) => {
                     />
                     : <span className={cx('library-item-img', 'fallback', imgCircle && 'circle', 'img-fallback')}>{imgFallback}</span>
                     }
-                    <span className={cx('play-icon-wrapper')}><PlayLargeIcon /></span>
+                    <span className={cx('play-icon-wrapper', (itemIsPlaying && queuePlaylist.id === id) && 'playing')}
+                        onClick={(event) => handlePlayClick(event)}
+                    ><PlayLargeIcon /></span>
                 </div>}
                 {viewAs === 'list' ? <div className={cx('library-item-info-text')}>
                     <span className={cx('library-item-title')}>{title}</span>

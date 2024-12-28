@@ -37,6 +37,12 @@ function AlbumDisplay({ albumData }) {
                 showIndex
                 showAlbum = {false}
                 initialColumns = {3}
+                parent={{
+                    cover: albumData.images[0].url,
+                    id: albumData.id,
+                    title: albumData.name,
+                    type: 'album',
+                }}
             />
         )
     });

@@ -13,6 +13,9 @@ const TrackItemCardInfo = (props) => {
         authors,
         showIndex,
         showArtist,
+        handlePlayClick,
+        queuePlaylist,
+        itemIsPlaying,
     } = props;
 
     return (
@@ -30,7 +33,10 @@ const TrackItemCardInfo = (props) => {
                         <MusicalNotePlusIcon />
                     </span> 
                 }
-                {!showIndex && <span className={cx('play-icon-wrapper')}><PlayLargeIcon /></span>}
+                {!showIndex && <span className={cx('play-icon-wrapper')}
+                    onClick={(event) => handlePlayClick(event)}
+                    itemIsPlaying={itemIsPlaying ? queuePlaylist.id === parent.id : false}
+                ><PlayLargeIcon /></span>}
             </div>
             <div className={cx('track-item-card-info-text')}>
                 <span className={cx('track-item-card-title')}>{title}</span>

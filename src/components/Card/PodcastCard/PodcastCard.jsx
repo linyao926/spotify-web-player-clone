@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link } from "react-router";
-import { PlayLargeIcon, AddToLibraryIcon, OptionIcon } from '~/assets/icons';
+import { AddToLibraryIcon, OptionIcon } from '~/assets/icons';
 import Button from '~/components/Button/Button';
+import PlayButton from '../../PlayButton/PlayButton';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/PodcastCard.module.scss';
 
@@ -71,15 +71,10 @@ const PodcastCard = (props) => {
                   padding="8px" 
                   iconSize="large-icon"
                 />
-                <Button 
-                  hasIcon 
-                  icon={<PlayLargeIcon />} 
-                  borderRadius="circle" 
-                  variant="background-base" 
-                  size="size-base" 
-                  iconSize="medium-icon"
-                  padding="8px" 
-                  withBoxshadow
+                <PlayButton 
+                    size={48}
+                    title={title}
+                    withBoxShadow
                 />
             </footer>
         </div>

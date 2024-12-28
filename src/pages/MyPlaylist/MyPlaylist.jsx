@@ -70,6 +70,12 @@ function MyPlaylist(props) {
                 ref={childRef}
                 isFixed={isFixed}
                 isVisible={isVisible}
+                parent={{
+                    cover: '',
+                    id: id,
+                    title: playlist.name,
+                    type: 'playlist',
+                }}
             />
             {relatedTrack.length > 0 && <TrackListSection 
                 data={relatedTrack}
@@ -107,6 +113,13 @@ function MyPlaylist(props) {
                 nonIndex
                 showAlbum
                 showAddToLibrary
+                parent={{
+                    cover: '',
+                    id: '',
+                    title: '',
+                    type: '',
+                    data: profileTopTracks.items,
+                }}
             />} 
         </MediaDetailLayout>
     );

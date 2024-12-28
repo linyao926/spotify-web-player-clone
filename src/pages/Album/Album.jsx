@@ -53,6 +53,12 @@ function Album(props) {
                 isFixed={isFixed}
                 isVisible={isVisible}
                 showAlbum={false}
+                parent={{
+                    cover: albumInfo?.images && albumInfo?.images[0].url,
+                    id: id,
+                    title: albumInfo?.name,
+                    type: 'album',
+                }}
             />
             <div className={cx("release-info")}>
                 <span>{new Date(albumInfo.release_date).toLocaleDateString("en-US", {

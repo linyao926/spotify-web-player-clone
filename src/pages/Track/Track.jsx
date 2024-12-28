@@ -77,6 +77,12 @@ function Track(props) {
                 seeMore
                 showAlbum
                 showArtist={false}
+                parent={{
+                    cover: '',
+                    id: trackArtist.id,
+                    title: trackArtist.name,
+                    type: 'artist',
+                }}
             />}
             {artistAlbums.items && artistAlbums.items.length > 0 && <MediaSection 
                 data={artistAlbums.items}

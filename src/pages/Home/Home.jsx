@@ -1,12 +1,11 @@
 import React, { useRef, useState } from 'react';
-import { useNavigate, useLoaderData } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import useExtractColors from "~/hooks/useExtractColors";
 import ScrollWrapper from '~/components/ScrollWrapper/ScrollWrapper';
-import { PlayIcon } from '~/assets/icons';
+import TopItem from './TopItem';
 import FilterBar from '~/components/FilterBar/FilterBar';
 import MediaSection from '~/components/MediaSection/MediaSection';
 import ContentFooter from '~/components/ContentFooter/ContentFooter';
-import Button from '~/components/Button/Button';
 import classNames from 'classnames/bind';
 import styles from '~/styles/pages/Home.module.scss';
 
@@ -26,11 +25,12 @@ function Home() {
     const [trigger, setTrigger] = useState(false);
     const [currentUrl, setCurrentUrl] = useState(null);
 
+    const navigate = useNavigate();
+
     const containerRef = useRef(null);
     const headerBGRef = useRef(null);
 
     const { backgroundBase } = useExtractColors(currentUrl);
-    let navigate = useNavigate();
 
     const layoutScrollHandler = (scrollY) => {
         if (!containerRef.current || !headerBGRef.current) return;
@@ -50,48 +50,18 @@ function Home() {
         }
     };
 
-    const getHeaderButton = (text, active = true) => {
-        return (
-          <Button 
-            variant={active ? "background-base" : "non-active"}
-            borderRadius="rounded"
-            size="size-small"
-            padding="4px 12px"
-            hoverEffect={["hover-none-scale"]} 
-          >{text}</Button>
-        )
-    };
-
     const getTopItem = (item) => {
-        return (
-          <div className={cx("item-wrapper")}
-            onMouseEnter={() => setCurrentUrl(item?.images ? item?.images[0].url : item?.album.images[0]?.url)}
-            onMouseLeave={() => setCurrentUrl(topTracks[0]?.album?.images[0]?.url)}
-            onClick={() => {
-              navigate(`/${item?.type}/${item?.id}`);
-            }}
-          >
-            <img 
-              src={item?.images ? item?.images[0].url : item?.album.images[0]?.url} 
-              alt={`${item?.name} avatar`} 
-              className={cx("item-img")} 
-              loading='lazy'
-            />
-            <div className={cx("item-details")}>
-              <span className={cx("item-name")}>{item?.name}</span>
-              <span className={cx("item-btn-wrapper")}>
-                <Button 
-                  hasIcon 
-                  icon={<PlayIcon />} 
-                  borderRadius="circle" 
-                  variant="primary" 
-                  size="size-small" 
-                  padding="8px" 
-                />
-              </span>
-            </div>
-          </div>
-        )
+      return (
+        <TopItem 
+          id={item.id}
+          title={item.name}
+          coverUrl={item?.images ? item?.images[0].url : item?.album.images[0]?.url}
+          type={item.type}
+          topTracks={topTracks} 
+          setCurrentUrl={setCurrentUrl}
+          navigate={navigate}
+        />
+      )
     };
     
     return (
@@ -114,22 +84,22 @@ function Home() {
                   }}
                 ></div>
                 <FilterBar
-                  filters={[
-                    { value: 'music', label: 'Music' },
-                    { value: 'podcast', label: 'Podcasts' }
-                  ]}
-                  onFilterChange={(filter) => console.log('Filter changed to:', filter)}
-                  hasAll
-                  isLibrary={false}
+                    filters={[
+                      { value: 'music', label: 'Music' },
+                      { value: 'podcast', label: 'Podcasts' }
+                    ]}
+                    onFilterChange={(filter) => console.log('Filter changed to:', filter)}
+                    hasAll
+                    isLibrary={false}
                 />
             </header>
             <div className={cx('home-page-content')} >
-              {<section className={cx("content-top-items")}>
-                {getTopItem(topArtists[0])}
-                {getTopItem(topArtists[1])}
-                {getTopItem(topTracks[0])}
-                {getTopItem(topTracks[1])}
-              </section>}
+              <section className={cx("content-top-items")}>
+                {topArtists.length > 0 && getTopItem(topArtists[0])}
+                {topArtists.length > 0 && getTopItem(topArtists[1])}
+                {topTracks.length > 0 && getTopItem(topTracks[0])}
+                {topTracks.length > 0 && getTopItem(topTracks[1])}
+              </section>
 
               {/* {recentlyPlayed.length > 0 && <MediaSection 
                   data={recentlyPlayed}

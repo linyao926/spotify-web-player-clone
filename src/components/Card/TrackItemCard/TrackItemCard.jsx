@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Link } from "react-router";
 import { useDispatch, useSelector } from 'react-redux'; 
+import { useQueueHandler } from '~/hooks/useQueueHandler';
 import { useSubContext } from '~/hooks/useSubContext';
 import useDynamicColumns from '~/hooks/useDynamicColumns';
 import { PlayLargeIcon } from '~/assets/icons';
@@ -17,6 +18,7 @@ const cx = classNames.bind(styles);
 const TrackItemCard = (props) => {
     const {
         id,
+        parent = {},
         viewAs = 'list',
         initialColumns = 5,
         routeLink = '/',
@@ -39,10 +41,20 @@ const TrackItemCard = (props) => {
 
     const containerRef = useRef(null);
     const { currentColumns, templateColumns } = useDynamicColumns(containerRef, initialColumns, showIndex);
+    const { handlePlayClick } = useQueueHandler({ 
+        type: parent.type, 
+        id: parent.id, 
+        title: parent.title, 
+        coverUrl: parent.cover,
+        trackId: id,
+        data: parent.data ? parent.data : [],
+    });
 
     const dispatch = useDispatch();
     const isSubContextOpen = useSelector((state) => state.ui.subContext['normal-card-menu'].isOpen);
     const contextMenuId = useSelector((state) => state.ui.subContext['normal-card-menu'].id);
+    const queuePlaylist = useSelector((state) => state['queue'].queueData);
+    const itemIsPlaying = useSelector((state) => state['queue'].itemIsPlaying);
 
     const { 
         positionFixed,
@@ -75,7 +87,10 @@ const TrackItemCard = (props) => {
             {showIndex && (
                 <div className={cx('track-item-index', 'show-play-icon')}>
                     <span>{trackIndex}</span>
-                    <span className={cx('play-icon-wrapper')}><PlayLargeIcon /></span>
+                    <span className={cx('play-icon-wrapper')}
+                        onClick={(event) => handlePlayClick(event)}
+                        itemIsPlaying={itemIsPlaying ? queuePlaylist.id === parent.id : false}
+                    ><PlayLargeIcon /></span>
                 </div>
             )}
             {viewAs === 'list' 
@@ -85,6 +100,9 @@ const TrackItemCard = (props) => {
                     authors={authorList}
                     showIndex={showIndex}
                     showArtist={showArtist}
+                    handlePlayClick={handlePlayClick}
+                    queuePlaylist={queuePlaylist}
+                    itemIsPlaying={itemIsPlaying}
                 /> 
                 : <>
                     <span className={cx('track-item-card-title')}>{title}</span>

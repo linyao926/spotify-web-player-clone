@@ -78,7 +78,7 @@ $border-radius-value: 4px;
             cursor: pointer;
         }
 
-        &:hover .item-btn-wrapper {
+        &:hover .play-btn-wrapper {
             opacity: 1;
         }
     }
@@ -110,7 +110,22 @@ $border-radius-value: 4px;
 
     .item-btn-wrapper {
         flex-shrink: 0;
-        opacity: 0;
         transition: index.$opacity-transition;
+    }
+}
+
+.item-btn-wrapper {
+    position: relative;
+    display: block;
+
+    .play-btn-wrapper {
+        opacity: 0;
+    }
+
+    img {
+        width: 14px;
+        height: 14px;
+        display: block;
+        @include index.absolute-center; 
     }
 }

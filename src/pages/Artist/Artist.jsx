@@ -39,6 +39,12 @@ function Artist(props) {
                 headerType="title"
                 title="Popular"
                 seeMore
+                parent={{
+                    cover: artistInfo?.images && artistInfo?.images[0].url,
+                    id: id,
+                    title: artistInfo?.name,
+                    type: 'artist',
+                }}
             />}
             {artistAlbums.items && <MediaSection 
                 data={artistAlbums.items}

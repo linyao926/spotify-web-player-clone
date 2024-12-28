@@ -762,6 +762,19 @@ export const PauseIcon = ({ className, width = '1rem', height = '1rem' }) => (
     </svg>
 );
 
+export const PauseLargeIcon = ({ className, width = '1rem', height = '1rem' }) => (
+    <svg
+        className={className}
+        width={width}
+        height={height}
+        viewBox="0 0 24 24"
+        fill="currentcolor"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path d="M5.7 3a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7H5.7zm10 0a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7h-2.6z"></path>
+    </svg>
+);
+
 export const PlayIcon = ({ className, width = '1rem', height = '1rem' }) => (
     <svg
         className={className}

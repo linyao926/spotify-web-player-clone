@@ -5,8 +5,8 @@ export const fetchTrackItemsData = createAsyncThunk(
   'trackItems/fetchTrackItemsData',
   async ({accessToken, type, id}, { rejectWithValue }) => {
     try {
-        const path = type === 'artist' ? `/${type}s/${id}/top-tracks` : `/${type}s/${id}/tracks`
-        const trackItemsData = await fetchData(path, accessToken);
+        const path = type === 'artist' ? `/${type}s/${id}/top-tracks` : `/${type}s/${id}/tracks`;
+        const trackItemsData = await fetchData(path, accessToken, 50);
         const result = type === 'artist' ? trackItemsData.tracks : trackItemsData.items;
 
         return {

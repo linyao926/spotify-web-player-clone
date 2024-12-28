@@ -12,6 +12,7 @@ import {
     PinnedIcon,
     PinIcon,
 } from '~/assets/icons';
+import images from '~/assets/images';
 import {
     libraryPlaylistContextMenu,
     myPlaylistContextMenu,
@@ -63,7 +64,7 @@ const LibraryContent = (props) => {
         type: 'playlist',
         tracks: { items: likedTracks },
         track_total: likedTracks ? likedTracks.length : 0,
-        imageUrl: "https://misc.scdn.co/liked-songs/liked-songs-300.png",
+        imageUrl: images['LikedTracksCover'],
         time_added: null,
         time_played: null,
         isLikedTracks: true,

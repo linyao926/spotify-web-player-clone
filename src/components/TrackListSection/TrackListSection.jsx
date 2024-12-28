@@ -39,6 +39,7 @@ const TrackListSection = React.forwardRef((props, ref) => {
         inQueue = false,
         inArtist = false,
         artistId = '',
+        parent, 
     } = props;
 
     const dispatch = useDispatch();
@@ -135,6 +136,7 @@ const TrackListSection = React.forwardRef((props, ref) => {
 
         return (
             <TrackItemCard 
+                parent={parent}
                 id={element.id}
                 key={element.id}
                 routeLink = {`/track/${element.id}`}

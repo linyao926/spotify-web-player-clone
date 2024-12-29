@@ -122,10 +122,12 @@ const AppRoutes = () => {
       {
         path: '/',
         element: <GuestContent />,
+        errorElement: <ErrorBoundary />, 
       },
       {
         path: '*',
         element: <GuestContent />,
+        errorElement: <ErrorBoundary />, 
       },
     ]
     : children,

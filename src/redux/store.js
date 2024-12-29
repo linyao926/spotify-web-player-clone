@@ -1,4 +1,4 @@
-import { configureStore, createListenerMiddleware } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 import localforage from 'localforage';
 import rootReducer from './reducers';
@@ -8,7 +8,6 @@ const persistConfig = {
   key: 'root',
   storage: localforage,
   whitelist: ['auth', 'library', 'my_playlist'],
-  blacklist: ['someOtherReducer'],
 };
 
 // localforage.clear().then(() => {

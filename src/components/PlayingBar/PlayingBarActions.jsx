@@ -13,7 +13,11 @@ import styles from '~/styles/components/PlayingBar.module.scss';
 
 const cx = classNames.bind(styles);
 
-function PlayingBarActions() {
+function PlayingBarActions(props) {
+    const {
+      hasTrackPlay = false,
+    } = props;
+
     const [volumeValue, setVolumeValue] = useState(100);
     const [previousVolumeValue, setPreviousVolumeValue] = useState(100);
     const [volumeIcon, setVolumeIcon] = useState(<VolumeHighIcon />);
@@ -64,7 +68,7 @@ function PlayingBarActions() {
 
     return (
         <div className={cx('playing-bar-actions')}>
-          {createIconButton(<NowPlayingViewIcon />, true)}
+          {createIconButton(<NowPlayingViewIcon />, !hasTrackPlay)}
           {createIconButton(<QueueIcon />)}
           <div className={cx('volume')}>
             {createIconButton(volumeIcon, false, handleMuteClick)}

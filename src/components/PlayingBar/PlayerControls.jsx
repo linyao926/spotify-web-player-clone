@@ -2,17 +2,24 @@ import React, { useState } from 'react';
 import {  
   ShuffleIcon,
   PreviousTrackIcon,
+  PlayIcon,
   PauseIcon,
   NextTrackIcon,
   RepeatIcon,
 } from '~/assets/icons/icons';
+import { formatMillisecondsToMinutes } from '~/utils/timeUtils';
 import Button from '../Button/Button';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/PlayingBar.module.scss';
 
 const cx = classNames.bind(styles);
 
-function PlayerControls() {
+function PlayerControls(props) {
+    const {
+        itemIsPlaying = false,
+        trackPlayingData,
+    } = props;
+
     const [progress, setProgress] = useState(0);
 
     const handleInputChange = (e) => {
@@ -30,24 +37,26 @@ function PlayerControls() {
                 size="size-small" 
                 padding="8px" 
                 hoverEffect={["hover-none-scale"]} 
-                disableButton
+                disableButton={!trackPlayingData}
             /> 
         ); 
     };
+
+    const duration = formatMillisecondsToMinutes(trackPlayingData['duration_ms']);
 
     return (
         <div className={cx('player-controls')}>
             <div className={cx('general-controls')}>
                 {createIconButton(<ShuffleIcon />)}
                 {createIconButton(<PreviousTrackIcon />)}
-                <span className={cx('playpause-wrapper')}>
-                    {createIconButton(<PauseIcon />)}
+                <span className={cx('playpause-wrapper', trackPlayingData && 'playing')}>
+                    {createIconButton(trackPlayingData ? (itemIsPlaying ? <PauseIcon /> : <PlayIcon />) : <PauseIcon />)}
                 </span>
                 {createIconButton(<NextTrackIcon />)}
                 {createIconButton(<RepeatIcon />)}
             </div>
             <div className={cx('playback')}>
-                <div className={cx("playback-position")}>-:--</div>
+                <div className={cx("playback-position")}>{trackPlayingData ? '0:00' : '-:--'}</div>
                 <div className={cx("playback-progressbar")}>
                     <div 
                         className={cx("range-slider-background")}
@@ -71,7 +80,7 @@ function PlayerControls() {
                         />
                     </label>
                 </div>
-                <div className={cx("playback-duration")}>-:--</div>
+                <div className={cx("playback-duration")}>{trackPlayingData ? duration : '-:--'}</div>
             </div>
         </div>
     );

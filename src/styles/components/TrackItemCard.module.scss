@@ -70,6 +70,22 @@ $track-item-img-height: 40px;
     &.six-cols {
         @include index.dynamic-grid(six-cols);
     }
+
+    .playing.show-play-icon {
+        span {
+            opacity: 0;
+        }
+
+        .track-item-card-img {
+            background-color: #282828;
+        }
+
+        .play-icon-wrapper {
+            opacity: 1;
+            border-radius: 4px;
+            color: var(--text-base);
+        }
+    }
 }
 
 .track-item-card.compact {

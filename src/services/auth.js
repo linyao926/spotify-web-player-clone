@@ -1,18 +1,17 @@
 import { store } from '~/redux/store';
 import { 
-  updateTokenFetchTime, 
   setTokens, 
   logout 
 } from '~/redux/slices/authSlice';
 
-
-export const getRefreshToken = async () => {
+export const getAccessToken = async () => {
     const spotify_client_id = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
     const spotify_client_secret = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET;
 
     const basicAuth = btoa(`${spotify_client_id}:${spotify_client_secret}`);
 
-    const refreshToken = localStorage.getItem('refreshToken');
+    const state = store.getState();
+    const refreshToken = state.auth.refreshToken;
     const url = "https://accounts.spotify.com/api/token";
 
     const payload = {
@@ -51,7 +50,7 @@ export const checkTokenExpirationMiddleware = (store) => (next) => async (action
   if (tokenFetchTime > 0 && tokenExpiresIn > 0) {
     if (currentTime > (tokenFetchTime + tokenExpiresIn * 1000)) {
       try {
-        const {accessToken, refreshToken, expiresIn} = await getRefreshToken();
+        const {accessToken, refreshToken, expiresIn} = await getAccessToken();
         store.dispatch(setTokens({accessToken, refreshToken, expiresIn}));
       } catch (error) {
         store.dispatch(logout());

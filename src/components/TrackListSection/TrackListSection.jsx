@@ -1,14 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from 'react-redux';
-import { openModal } from '~/redux/slices/uiSlice';
 import { selectAlbumData, fetchAlbumData } from '~/redux/slices/albumDataSlice';
 import useDynamicColumns from '~/hooks/useDynamicColumns';
+import { updateContextMenuActions, getArtistsOfTrack } from '~/utils/trackHandler';
 import { DurationRepresentIcon } from '~/assets/icons';
-import {
-    trackContextMenu,
-    queueTrackContextMenu
-} from '~/constants/subContextItems';
+import { trackContextMenu } from '~/constants/subContextItems';
 import TrackItemCard from '~/components/Card/TrackItemCard/TrackItemCard';
 import TrackCreditModal from '../TrackCreditModal/TrackCreditModal';
 import classNames from 'classnames/bind';
@@ -36,7 +33,6 @@ const TrackListSection = React.forwardRef((props, ref) => {
         showAll = false,
         showAddToLibrary,
         showExpand,
-        inQueue = false,
         inArtist = false,
         artistId = '',
         parent, 
@@ -73,13 +69,7 @@ const TrackListSection = React.forwardRef((props, ref) => {
         } else {
             element = item;
         }
-        const authors = element.artists.map(artist => (
-            {
-                name: artist.name, 
-                id: artist.id,
-                onClick: () => navigate(`/artist/${artist.id}`)
-            }
-        ));
+        const authors = getArtistsOfTrack(element.artists);
 
         if (related) {
             if ((index > 4 && index < 10) || (index > 14 && index < 19)) return;
@@ -101,37 +91,13 @@ const TrackListSection = React.forwardRef((props, ref) => {
 
         let contextMenu = trackContextMenu(trackItem, 'ADD', dispatch, !showAlbum, inArtist, authors);
 
-        contextMenu.map((obj) => {
-            if (obj.name.includes('Go to album')) {
-                obj.onClick = () => navigate(`/album/${element.album.id}`); 
-            }
-
-            if (obj.name.includes('credits')) {
-                obj.onClick = () => {
-                    setAlbumId(element.album.id);
-                    if (albumData.label) {
-                        setCreditModalState({
-                            title: element.name,
-                            performed: element.artists.map(artist => artist.name),
-                            sourceTrack: albumData.label,
-                        })
-                    }
-                    dispatch(openModal({name: 'track-credit'}))
-                };
-            }
-
-            return obj; 
-        });
+        contextMenu = updateContextMenuActions(contextMenu, navigate, setAlbumId, setCreditModalState, dispatch, albumData, item);
 
         if (inArtist) {
             const filteredAuthors = authors.filter(author => author.id !== artistId);
             if (filteredAuthors.length > 0) {
                 contextMenu = trackContextMenu(trackItem, 'ADD', dispatch, !showAlbum, false, filteredAuthors);
             }
-        }
-
-        if (inQueue) {
-            contextMenu = queueTrackContextMenu(trackItem, 'ADD', dispatch, authors);
         }
 
         return (

@@ -8,7 +8,7 @@ const initialState = {
   queueData: {},   
   itemIsPlaying: false, 
   isShuffle: false, 
-  isRepeat: false,      
+  repeatMode: 0,      
 };
 
 function shouldAddToPreviousQueue(nowPlaying, previousQueue, nextFrom, queueData) {
@@ -49,7 +49,8 @@ const queueSlice = createSlice({
       }
     },
     toggleRepeat(state) {
-      state.isRepeat = !state.isRepeat; 
+      // 0: off, 1: repeat all, 2: repeat one
+      state.repeatMode = (state.repeatMode + 1) % 3;
     },
     setQueueAndPlay(state, action) {
       const { tracks, startTrackId, parentData } = action.payload;
@@ -119,6 +120,16 @@ const queueSlice = createSlice({
   },
 });
 
-export const { togglePlayPause, toggleShuffle, setQueueAndPlay, addToQueue, playFromQueue, playFromNextFrom, playPrevious, playNext } = queueSlice.actions;
+export const { 
+  togglePlayPause, 
+  toggleShuffle, 
+  toggleRepeat, 
+  setQueueAndPlay,
+  addToQueue, 
+  playFromQueue, 
+  playFromNextFrom, 
+  playPrevious, 
+  playNext 
+} = queueSlice.actions;
 
 export default queueSlice.reducer;

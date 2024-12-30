@@ -50,7 +50,6 @@ const uiSlice = createSlice({
                 id: '',
             } 
         },
-        dialog: { isOpen: false },
         modal: { 
             'login-prompt': { isOpen: false },
             'edit-playlist': { isOpen: false },
@@ -59,6 +58,10 @@ const uiSlice = createSlice({
         notification: { isOpen: false },
         viewMode: 'compact',
         'library-options': initialLibraryOptions,
+        panel: {
+            'queue': { isOpen: false, nowPlayingIsOpen: false },
+            'now-playing': { isOpen: false },
+        }
     },
     reducers: {
         openSubContext: (state, action) => openFunction(state.subContext, action),
@@ -72,11 +75,30 @@ const uiSlice = createSlice({
         closeSpecificSubContext: (state, action) => closeFunction(state.subContext, action),
         openModal: (state, action) => openFunction(state.modal, action),
         closeModal: (state, action) => closeFunction(state.modal, action),
-        openDialog: (state) => {
-            state.modal.isOpen = true;
+        openPanel: (state, action) => {
+            Object.keys(state.panel).forEach((key) => {
+                if (key === 'now-playing') {
+                    state.panel['queue'].nowPlayingIsOpen = state.panel[key].isOpen;
+                }
+                state.panel[key].isOpen = false;
+            });
+        
+            const { name } = action.payload || {};
+        
+            if (name && state.panel[name]) {
+                state.panel[name].isOpen = true;
+            }
         },
-        closeDialog: (state) => {
-            state.modal.isOpen = false;
+        closePanel: (state, action) => {
+            const { name } = action.payload;
+
+            if (name === 'queue') {
+                state.panel['now-playing'].isOpen = state.panel['queue'].nowPlayingIsOpen;
+            }
+    
+            if (state.panel[name]) {
+                state.panel[name].isOpen = false;
+            }
         },
         setViewMode: (state, action) => {
             state.viewMode = action.payload; 
@@ -95,6 +117,8 @@ export const {
   closeSpecificSubContext,
   openModal,
   closeModal,
+  openPanel,
+  closePanel,
   setViewMode,
   setLibraryOptions,
 } = uiSlice.actions;

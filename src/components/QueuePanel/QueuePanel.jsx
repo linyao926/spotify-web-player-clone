@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { openPanel, closePanel } from '~/redux/slices/uiSlice';
 import { closeSubContext } from '~/redux/slices/uiSlice';
 import { DismissIcon, QueueIcon } from '~/assets/icons/icons';
 import QueuePanelContent from './QueuePanelContent';
@@ -13,7 +14,10 @@ const cx = classNames.bind(styles);
 function QueuePanel () {
     const dispatch = useDispatch(); 
     const { accessToken } = useSelector((state) => state.auth);
-    const queuePlaylist = useSelector((state) => state['queue']);
+    const queuePlaylist = useSelector((state) => state['queue'].queueData);
+    const nowPlaying = useSelector((state) => state['queue'].nowPlaying);
+    const nextQueue = useSelector((state) => state['queue'].nextQueue);
+    const nextFrom = useSelector((state) => state['queue'].nextFrom);
 
     const containerRef = useRef(null);
 
@@ -32,7 +36,7 @@ function QueuePanel () {
                         borderRadius="circle"
                         padding="0"
                         hoverEffect={["hover-none-scale", "hover-button-tinted-base"]} 
-                        clickFunction={() => {return}}
+                        clickFunction={() => dispatch(closePanel({name: 'queue'}))}
                     />
                 </span>
             </header>
@@ -40,14 +44,14 @@ function QueuePanel () {
             <div className={cx('queue-panel-container')}
                 ref={containerRef}
             >
-                {queuePlaylist.length > 0 || true 
+                {queuePlaylist
                     ? <QueuePanelContent 
-                        nowPlaying
-                        nextFrom = {[]}
-                        nextQueue = {[]}
-                        title = 'Playlist 2024'
-                        playlistId = '6AtpvRxDKuY1TzM5P2dXFG'
-                        playlistType = 'playlist'
+                        nowPlaying={nowPlaying}
+                        nextFrom = {nextFrom}
+                        nextQueue = {nextQueue}
+                        title = {queuePlaylist.title}
+                        playlistId = {queuePlaylist.id}
+                        playlistType = {queuePlaylist.type}
                     />
                     : <div className={cx('queue-panel-prompt')}>
                         <span className={cx("icon-wrapper")}><QueueIcon/></span>

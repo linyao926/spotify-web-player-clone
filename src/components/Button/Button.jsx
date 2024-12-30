@@ -20,7 +20,7 @@ function Button (props) {
         padding = '8px 32px',
         hoverEffect = ['hover-scale'],
         styles,
-        clickFunction,
+        clickFunction = () => {return},
         routeLink="",
         externalLink="",
         disableBlank = false,
@@ -54,7 +54,7 @@ function Button (props) {
     if (routeLink) {
         return (
             <Link className={buttonClasses} style={{ padding, ...styles }}
-                  onClick={clickFunction}
+                  onClick={disableButton ? () => {return} : clickFunction}
                   to={routeLink}
             >
                 {ButtonContent}
@@ -73,7 +73,7 @@ function Button (props) {
     } else {
         return (
             <button className={buttonClasses} style={{ padding, ...styles }}
-                    onClick={clickFunction}
+                    onClick={disableButton ? () => {return} : clickFunction}
             >
                 {ButtonContent}
             </button>

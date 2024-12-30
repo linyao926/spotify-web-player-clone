@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { openPanel, closePanel } from '~/redux/slices/uiSlice';
 import {  
   NowPlayingViewIcon,
   QueueIcon,
@@ -18,6 +20,7 @@ function PlayingBarActions(props) {
       hasTrackPlay = false,
     } = props;
 
+    const dispatch = useDispatch();
     const [volumeValue, setVolumeValue] = useState(100);
     const [previousVolumeValue, setPreviousVolumeValue] = useState(100);
     const [volumeIcon, setVolumeIcon] = useState(<VolumeHighIcon />);
@@ -68,8 +71,8 @@ function PlayingBarActions(props) {
 
     return (
         <div className={cx('playing-bar-actions')}>
-          {createIconButton(<NowPlayingViewIcon />, !hasTrackPlay)}
-          {createIconButton(<QueueIcon />)}
+          {createIconButton(<NowPlayingViewIcon />, !hasTrackPlay, () => dispatch(openPanel({name: 'now-playing'})))}
+          {createIconButton(<QueueIcon />, false, () => dispatch(openPanel({name: 'queue'})))}
           <div className={cx('volume')}>
             {createIconButton(volumeIcon, false, handleMuteClick)}
             <div className={cx("volume-bar")}>

@@ -18,8 +18,9 @@ function MainAppLayout () {
     const dispatch = useDispatch(); 
 
     const isLoginPromptOpen = useSelector((state) => state.ui.modal['login-prompt'].isOpen);
-    const isDialogOpen = useSelector((state) => state.ui.dialog.isOpen);
     const { accessToken } = useSelector((state) => state.auth);
+    const isQueuePanelOpen = useSelector((state) => state.ui.panel['queue'].isOpen);
+    const isNowPlayingPanelOpen = useSelector((state) => state.ui.panel['now-playing'].isOpen);
 
     return (
         <main className={cx('main-app')}
@@ -29,9 +30,8 @@ function MainAppLayout () {
             <div className={cx('body-section')}>
                 <Sidebar />
                 <Outlet /> 
-                {/* {accessToken && isDialogOpen && <div className={cx('overview')}>listening panel</div>} */}
-                {/* <QueuePanel /> */}
-                {/* <NowPlayingPanel /> */}
+                {isQueuePanelOpen && <QueuePanel />}
+                {isNowPlayingPanelOpen && <NowPlayingPanel />}
             </div>
             {accessToken ? <PlayingBar/> : <GuestFooter />}
             {isLoginPromptOpen && <LoginPrompt />}

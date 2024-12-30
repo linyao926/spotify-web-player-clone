@@ -11,16 +11,12 @@ const cx = classNames.bind(styles);
 function PlayingBar() {
     const nowPlaying = useSelector((state) => state['queue'].nowPlaying);
     const queuePlaylist = useSelector((state) => state['queue'].queueData);
-    const itemIsPlaying = useSelector((state) => state['queue'].itemIsPlaying);
-
-    console.log(nowPlaying)
 
     return (
       <footer className={cx('playing-bar-wrapper')}>
         <div className={cx('playing-bar')}>
             <PlayingInfo infoData={nowPlaying} />
             <PlayerControls 
-              itemIsPlaying={itemIsPlaying} 
               trackPlayingData = {nowPlaying}
             />
             <PlayingBarActions hasTrackPlay={nowPlaying} />

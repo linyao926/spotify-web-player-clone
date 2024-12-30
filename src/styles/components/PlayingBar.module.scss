@@ -120,6 +120,30 @@ $slider-thumb-size: 12px;
     gap: index.$spacing-base;
 }
 
+.btn-wrapper.active {
+    position: relative;
+    color: var(--text-bright-accent);
+
+    svg {
+        fill: var(--text-bright-accent);
+    }
+    
+    &::before {
+        background-color: currentcolor;
+        border-radius: 50%;
+        bottom: 0;
+        content: "";
+        display: block;
+        left: 50%;
+        position: absolute;
+        width: 4px;
+        inline-size: 4px;
+        height: 4px;
+        -webkit-transform: translateX(-50%);
+        transform: translateX(-50%);
+    }
+}
+
 .playback-position {
     min-width: 40px;
     text-align: right;

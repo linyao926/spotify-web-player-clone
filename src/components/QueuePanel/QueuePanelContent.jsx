@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { closeSubContext } from '~/redux/slices/uiSlice';
-import { selectTrackItemsData, fetchTrackItemsData } from '~/redux/slices/trackItemsDataSlice';
-import { DismissIcon, QueueIcon } from '~/assets/icons/icons';
-import Button from '../Button/Button';
-import TrackItemCard from '../Card/TrackItemCard/TrackItemCard';
+import { selectAlbumData, fetchAlbumData } from '~/redux/slices/albumDataSlice';
+import { updateContextMenuActions, getArtistsOfTrack } from '~/utils/trackHandler';
 import {
     trackContextMenu,
     queueTrackContextMenu
 } from '~/constants/subContextItems';
-import { selectAlbumData, fetchAlbumData } from '~/redux/slices/albumDataSlice';
+import Button from '../Button/Button';
+import TrackItemCard from '../Card/TrackItemCard/TrackItemCard';
+import TrackCreditModal from '../TrackCreditModal/TrackCreditModal';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/QueuePanel.module.scss';
 
@@ -28,71 +27,49 @@ function QueuePanelContent (props) {
 
     const dispatch = useDispatch(); 
     const { accessToken } = useSelector((state) => state.auth);
-    const trackItems = useSelector(selectTrackItemsData);
-    useEffect(() => {
-        if (accessToken) {
-            dispatch(fetchTrackItemsData({accessToken, type: playlistType, id: playlistId}));
-        }
-    }, [accessToken, dispatch]);
+    const albumData = useSelector(selectAlbumData);
+    const isCreditOpen = useSelector((state) => state.ui.modal['track-credit'].isOpen);
 
-    const getTrackListItem = (list) => {
+    const navigate = useNavigate();
+
+    const [albumId, setAlbumId] = useState('');
+    const [creditModalState, setCreditModalState] = useState({
+        title: '',
+        performed: '',
+        sourceTrack: ''
+    }); 
+
+    useEffect(() => {
+        if (accessToken && albumId.length > 0) {
+            dispatch(fetchAlbumData({accessToken, id: albumId}));
+        }
+    }, [accessToken, dispatch, albumId]);
+
+    const getTrackListItem = (list, isNextQueue = false) => {
         const result = list.map((item, index) => {
-            let element;
-            if (item.track) {
-                element = item.track;
-            } else {
-                element = item;
-            }
-            const authors = element.artists.map(artist => (
-                {
-                    name: artist.name, 
-                    id: artist.id,
-                    onClick: () => navigate(`/artist/${artist.id}`)
-                }
-            ));
-    
+            const authors = getArtistsOfTrack(item.artists);
+
             const trackItem = {
                 ...item,
                 time_added: new Date().toISOString(),
                 time_played: null,
             };
     
-            let contextMenu = trackContextMenu(trackItem, 'ADD', dispatch);
-    
-            contextMenu.map((obj) => {
-                if (obj.name.includes('Go to album')) {
-                    obj.onClick = () => navigate(`/album/${element.album.id}`); 
-                }
-    
-                if (obj.name.includes('credits')) {
-                    obj.onClick = () => {
-                        setAlbumId(element.album.id);
-                        if (albumData.label) {
-                            setCreditModalState({
-                                title: element.name,
-                                performed: element.artists.map(artist => artist.name),
-                                sourceTrack: albumData.label,
-                            })
-                        }
-                        dispatch(openModal({name: 'track-credit'}))
-                    };
-                }
-    
-                return obj; 
-            });
-    
-            // if (inQueue) {
-            //     contextMenu = queueTrackContextMenu(trackItem, 'ADD', dispatch, authors);
-            // }
+            let contextMenu = trackContextMenu(trackItem, 'ADD', dispatch, false, false, authors);
+
+            if (isNextQueue) {
+                contextMenu = queueTrackContextMenu(trackItem, 'ADD', dispatch, authors);
+            }
+        
+            contextMenu = updateContextMenuActions(contextMenu, navigate, setAlbumId, setCreditModalState, dispatch, albumData, item);
     
             return (
                 <TrackItemCard 
-                    id={element.id}
-                    key={element.id}
-                    routeLink = {`/track/${element.id}`}
-                    trackIndex = {index + 1}
-                    imgUrl = {''}
-                    title = {element.name}
+                    id={item.id}
+                    key={item.id}
+                    routeLink = {`/track/${item.id}`}
+                    imgUrl = {item.album.images[0].url}
+                    title = {item.name}
                     authors = {authors}
                     showIndex={false}
                     showOptionOnly
@@ -103,14 +80,15 @@ function QueuePanelContent (props) {
         });
 
         return result;
-    }
+    };
 
     return (
         <div className={cx('queue-panel-content')}>
-            {true && <div className={cx('now-playling')}>
+            {nowPlaying && <div className={cx('now-playling')}>
                 <span className={cx('content-header-title')}>Now playing</span>
+                {getTrackListItem([nowPlaying])}
             </div>}
-            {true && <div className={cx('next-in-queue')}>
+            {nextQueue.length > 0 && <div className={cx('next-in-queue')}>
                 <div className={cx('next-in-queue-header')}>
                     <span className={cx('content-header-title')}>Next in queue</span>
                     <span className={cx('clear-btn-wrapper')}>
@@ -121,18 +99,25 @@ function QueuePanelContent (props) {
                     </span>
                 </div>
                 <div className={cx('content-tracks')}>
-                    {/* {getTrackListItem(trackItems)} */}
+                    {getTrackListItem(nextQueue, true)}
                 </div>
             </div>}
-            {true && <div className={cx('next-from')}>
+            {nextFrom.length > 0 && <div className={cx('next-from')}>
                 <span className={cx('content-header-title')}>
                     Next from: 
                     <Link to={`/${playlistType}/${playlistId}`}>{title}</Link>
                 </span>
                 <div className={cx('content-tracks')}>
-                    {/* {getTrackListItem(trackItems)} */}
+                    {getTrackListItem(nextFrom)}
                 </div>
             </div>}
+            {isCreditOpen && albumData.label && (
+                <TrackCreditModal 
+                    title = {creditModalState.title}
+                    performed = {creditModalState.performed}
+                    sourceTrack = {creditModalState.sourceTrack}
+                />
+            )}
         </div>
     )
 };

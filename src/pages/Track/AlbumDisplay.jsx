@@ -43,6 +43,7 @@ function AlbumDisplay({ albumData }) {
                     title: albumData.name,
                     type: 'album',
                 }}
+                displayInContentPage
             />
         )
     });

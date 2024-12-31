@@ -48,7 +48,8 @@ $track-item-img-height: 40px;
 
     // Template grid
     &.two-cols {
-        @include index.dynamic-grid(two-cols)
+        @include index.flex-center(row, space-between, center);
+        gap: 12px;
     }
 
     &.three-cols {
@@ -165,6 +166,8 @@ $track-item-img-height: 40px;
 .track-item-card-info-text {
     @include index.flex-center(column, $align: flex-start);
     width: calc(100% - $track-item-img-height - 12px) ;
+    @include index.ellipsis-one-line;
+    flex: 1;
 }
 
 .track-item-card-title {
@@ -179,10 +182,10 @@ $track-item-img-height: 40px;
 
 .track-item-card-title,
 .track-item-card-author-wrapper {
-    @include index.flex-center($justify: flex-start);
     width: 100%;
     min-width: 0;
     @include index.ellipsis-one-line;
+    display: block;
 }
 
 .track-item-card-author-wrapper {
@@ -251,4 +254,5 @@ $track-item-img-height: 40px;
 
 .option-btn-wrapper {
     align-items: flex-end;
+    margin-right: -16px;
 }

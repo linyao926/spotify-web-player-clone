@@ -75,7 +75,8 @@ const queueSlice = createSlice({
       state.nextQueue = [...state.nextQueue, ...tracks];
     },
     playFromQueue(state, action) {
-      const { trackIndex } = action.payload;
+      const { trackId } = action.payload;
+      const trackIndex = state.nextQueue.findIndex((track) => track.id === trackId);
 
       const newNowPlaying = state.nextQueue[trackIndex];
 
@@ -85,35 +86,42 @@ const queueSlice = createSlice({
       }
     },
     playFromNextFrom(state, action) {
-      const { trackIndex } = action.payload;
+      const { trackId } = action.payload;
+      const trackIndex = state.nextFrom.findIndex((track) => track.id === trackId);
 
       const newNowPlaying = state.nextFrom[trackIndex];
-      const removedTracks = state.nextFrom.slice(0, trackIndex);
 
       if (newNowPlaying) {
-        if (shouldAddToPreviousQueue(state.nowPlaying, state.previousQueue, state.nextFrom, state.queueData.tracks)) {
-            state.previousQueue = [...state.previousQueue, state.nowPlaying, ...removedTracks]; 
-        } else {
-            state.previousQueue = [...state.previousQueue, ...removedTracks]; 
-        }
+        state.previousQueue = [
+          ...state.previousQueue,
+          ...(shouldAddToPreviousQueue(state.nowPlaying, state.previousQueue, state.nextFrom, state.queueData.tracks) ? [state.nowPlaying] : []),
+          ...state.nextFrom.slice(0, trackIndex),
+        ];
         state.nowPlaying = newNowPlaying;
         state.nextFrom = state.nextFrom.slice(trackIndex + 1); 
       }
     },
     playPrevious(state) {
       if (state.previousQueue.length > 0) {
-        const lastPlayed = state.previousQueue.pop(); 
-        state.nextFrom = [state.nowPlaying, ...state.nextFrom]; 
-        state.nowPlaying = lastPlayed; 
+        state.nextFrom.unshift(state.nowPlaying);
+        state.nowPlaying = state.previousQueue.pop();
       }
     },
     playNext(state) {
       if (state.nextQueue.length > 0) {
         const nextTrack = state.nextQueue.shift(); 
+        state.previousQueue = [
+          ...state.previousQueue,
+          ...(shouldAddToPreviousQueue(state.nowPlaying, state.previousQueue, state.nextFrom, state.queueData.tracks) ? [state.nowPlaying] : []),
+        ];
         state.nowPlaying = nextTrack; 
       } else if (state.nextFrom.length > 0) {
         const nextTrack = state.nextFrom.shift(); 
-        state.previousQueue.push(state.nowPlaying); 
+        state.previousQueue = [
+          ...state.previousQueue,
+          ...(shouldAddToPreviousQueue(state.nowPlaying, state.previousQueue, state.nextFrom, state.queueData.tracks) ? [state.nowPlaying] : []),
+          ...state.nextFrom.slice(0, 0),
+        ]; 
         state.nowPlaying = nextTrack; 
       }
     },

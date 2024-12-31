@@ -17,11 +17,12 @@ const TrackItemCardInfo = (props) => {
         handlePlayClick,
         itemIsPlaying,
         nowPlaying,
+        displayInNextFrom,
     } = props;
 
     return (
         <div className={cx('track-item-card-info')}>
-            <div className={cx('track-item-card-img-wrapper', !showIndex && 'show-play-icon', (itemIsPlaying && nowPlaying && nowPlaying.id === id) && 'playing')}>
+            <div className={cx('track-item-card-img-wrapper', !showIndex && 'show-play-icon', (!displayInNextFrom && itemIsPlaying && nowPlaying && nowPlaying.id === id) && 'playing')}>
                 {imgUrl.length > 0 
                     ? <img 
                         draggable="false" 

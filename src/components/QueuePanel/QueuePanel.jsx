@@ -21,6 +21,10 @@ function QueuePanel () {
 
     const containerRef = useRef(null);
 
+    function isObjectEmpty(obj) {
+        return Object.keys(obj).length === 0;
+    }
+
     return (
         <section className={cx('queue-panel')}
             onClick={() => dispatch(closeSubContext())}
@@ -44,7 +48,7 @@ function QueuePanel () {
             <div className={cx('queue-panel-container')}
                 ref={containerRef}
             >
-                {queuePlaylist
+                {!isObjectEmpty(queuePlaylist)
                     ? <QueuePanelContent 
                         nowPlaying={nowPlaying}
                         nextFrom = {nextFrom}

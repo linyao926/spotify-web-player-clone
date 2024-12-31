@@ -1,16 +1,22 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectTrackItemsData, fetchTrackItemsData } from '~/redux/slices/trackItemsDataSlice';
-import { setQueueAndPlay, togglePlayPause } from '~/redux/slices/queueSlice';
+import { 
+    setQueueAndPlay, 
+    togglePlayPause, 
+    playFromQueue, 
+    playFromNextFrom, 
+} from '~/redux/slices/queueSlice';
 
 export const useQueueHandler = (props) => {
     const { 
-        type, 
-        id, 
-        title, 
-        coverUrl,
-        trackId,
+        type = '', 
+        id = '', 
+        title = '', 
+        coverUrl = '',
+        trackId = '',
         data = [], 
+        inNext = {},
     } = props;
 
     const dispatch = useDispatch();
@@ -62,7 +68,11 @@ export const useQueueHandler = (props) => {
 
             let startTrackId = trackId || tracks[0]?.id;
 
-            if (queuePlaylist.id) {
+            if (inNext.nextQueue) {
+                dispatch(playFromQueue({ trackId: startTrackId }));
+            } else if (inNext.nextFrom) {
+                dispatch(playFromNextFrom({ trackId: startTrackId }));
+            } else if (queuePlaylist.id) {
                 if (queuePlaylist.id === id) {
                     dispatch(togglePlayPause());
                 } else {

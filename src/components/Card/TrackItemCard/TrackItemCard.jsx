@@ -37,6 +37,9 @@ const TrackItemCard = (props) => {
         showAddToLibrary = false,
         showExpand = false,
         showOptionOnly = false,
+        displayInNextQueue = false,
+        displayInNextFrom = false,
+        displayInContentPage = false,
     } = props;
 
     const containerRef = useRef(null);
@@ -48,6 +51,10 @@ const TrackItemCard = (props) => {
         coverUrl: parent.cover,
         trackId: id,
         data: parent.data ? parent.data : [],
+        inNext: {
+            nextQueue: displayInNextQueue,
+            nextFrom: displayInNextFrom,
+        }
     });
 
     const dispatch = useDispatch();
@@ -78,15 +85,17 @@ const TrackItemCard = (props) => {
         <span key={author.id} className={cx('track-item-card-author')}>{author.name}</span>
     ));
 
+    const uniqueId = `${displayInNextQueue ? 'next-queue' : displayInNextFrom ? 'next-from' : displayInContentPage ? 'content-page' : 'normal'}-${id}`;
+
     return (
         <Link 
             className={cx('track-item-card', templateColumns, viewAs)}
             to={routeLink}
             ref={containerRef}
-            onContextMenu={(event) => handleOpenCardMenu(event, 'normal-card-menu', id)}
+            onContextMenu={(event) => handleOpenCardMenu(event, 'normal-card-menu', uniqueId)}
         >
             {showIndex && (
-                <div className={cx('track-item-index', 'show-play-icon', (itemIsPlaying && nowPlaying && nowPlaying.id === id) && 'playing')}>
+                <div className={cx('track-item-index', 'show-play-icon', (!displayInNextFrom && itemIsPlaying && nowPlaying && nowPlaying.id === id) && 'playing')}>
                     <span>{trackIndex}</span>
                     <span className={cx('play-icon-wrapper')}
                         onClick={(event) => handlePlayClick(event)}
@@ -105,13 +114,14 @@ const TrackItemCard = (props) => {
                     queuePlaylist={queuePlaylist}
                     itemIsPlaying={itemIsPlaying}
                     nowPlaying={nowPlaying}
+                    displayInNextFrom={displayInNextFrom}
                 /> 
                 : <>
                     <span className={cx('track-item-card-title')}>{title}</span>
                     {showArtist && currentColumns >= 4 && <span className={cx('track-item-card-author-wrapper')}>{authorList}</span>}
                 </>
             }
-            {((currentColumns >= 5 || (viewAs === 'list' && currentColumns >= 4)) || initialColumns >= 3) && showAlbum && <span className={cx('track-item-album')}>{album}</span>}
+            {((currentColumns >= 5 || (viewAs === 'list' && currentColumns >= 4))) && showAlbum && <span className={cx('track-item-album')}>{album}</span>}
             {(currentColumns >= 6 || (viewAs === 'list' && currentColumns >= 5)) && showAddedDate && <span className={cx('track-item-added-date')}>{formatDate(addedDate)}</span>}
             {!showAddToLibrary 
                 ? <TrackItemCardActions 
@@ -128,7 +138,7 @@ const TrackItemCard = (props) => {
                     >Add</Button>
                 </span>
             }
-            {isSubContextOpen && contextMenuId === id &&  (
+            {isSubContextOpen && contextMenuId === uniqueId &&  (
                 <SubContextMenu 
                     items={contextMenu} 
                     position={positionFixed} 

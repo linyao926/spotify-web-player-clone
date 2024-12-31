@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectAlbumData, fetchAlbumData } from '~/redux/slices/albumDataSlice';
-import { updateContextMenuActions, getArtistsOfTrack } from '~/utils/trackHandler';
+import { openModal } from '~/redux/slices/uiSlice';
+import { getArtistsOfTrack } from '~/utils/trackHandler';
 import {
     trackContextMenu,
     queueTrackContextMenu
@@ -35,7 +36,7 @@ function QueuePanelContent (props) {
     const [albumId, setAlbumId] = useState('');
     const [creditModalState, setCreditModalState] = useState({
         title: '',
-        performed: '',
+        performed: [''],
         sourceTrack: ''
     }); 
 
@@ -45,7 +46,7 @@ function QueuePanelContent (props) {
         }
     }, [accessToken, dispatch, albumId]);
 
-    const getTrackListItem = (list, isNextQueue = false) => {
+    const getTrackListItem = (list, isNextQueue = false, isNextFrom = false) => {
         const result = list.map((item, index) => {
             const authors = getArtistsOfTrack(item.artists);
 
@@ -61,12 +62,32 @@ function QueuePanelContent (props) {
                 contextMenu = queueTrackContextMenu(trackItem, 'ADD', dispatch, authors);
             }
         
-            contextMenu = updateContextMenuActions(contextMenu, navigate, setAlbumId, setCreditModalState, dispatch, albumData, item);
+            contextMenu.map((obj) => {
+                if (obj.name.includes('Go to album')) {
+                    obj.onClick = () => navigate(`/album/${item.album.id}`); 
+                }
+    
+                if (obj.name.includes('credits')) {
+                    obj.onClick = () => {
+                        setAlbumId(item.album.id);
+                        if (albumData.label) {
+                            setCreditModalState({
+                                title: item.name,
+                                performed: item.artists.map(artist => artist.name),
+                                sourceTrack: albumData.label,
+                            })
+                        }
+                        dispatch(openModal({name: 'track-credit'}))
+                    };
+                }
+    
+                return obj; 
+            }); 
     
             return (
                 <TrackItemCard 
                     id={item.id}
-                    key={item.id}
+                    key={`${isNextFrom && 'next-from'}-${isNextQueue && 'next-queue'}-${index}-${item.id}`}
                     routeLink = {`/track/${item.id}`}
                     imgUrl = {item.album.images[0].url}
                     title = {item.name}
@@ -75,6 +96,8 @@ function QueuePanelContent (props) {
                     showOptionOnly
                     initialColumns = {2}
                     contextMenu={contextMenu}
+                    displayInNextQueue={isNextQueue}
+                    displayInNextFrom={isNextFrom}
                 />
             )
         });
@@ -108,7 +131,7 @@ function QueuePanelContent (props) {
                     <Link to={`/${playlistType}/${playlistId}`}>{title}</Link>
                 </span>
                 <div className={cx('content-tracks')}>
-                    {getTrackListItem(nextFrom)}
+                    {getTrackListItem(nextFrom, false, true)}
                 </div>
             </div>}
             {isCreditOpen && albumData.label && (

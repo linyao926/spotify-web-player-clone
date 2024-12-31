@@ -2,9 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { openPanel, closePanel } from '~/redux/slices/uiSlice';
+import { openModal } from '~/redux/slices/uiSlice';
 import { closeSubContext } from '~/redux/slices/uiSlice';
 import { selectAlbumData, fetchAlbumData } from '~/redux/slices/albumDataSlice';
-import { updateContextMenuActions, getArtistsOfTrack } from '~/utils/trackHandler';
+import { getArtistsOfTrack } from '~/utils/trackHandler';
 import { DismissIcon, OptionSmallIcon, RemoveFromIcon, ShareIcon } from '~/assets/icons/icons';
 import { trackContextMenu } from '~/constants/subContextItems';
 import Button from '../Button/Button';
@@ -32,7 +33,7 @@ function NowPlayingPanel () {
     const [albumId, setAlbumId] = useState('');
     const [creditModalState, setCreditModalState] = useState({
         title: '',
-        performed: '',
+        performed: [''],
         sourceTrack: ''
     });
 
@@ -47,7 +48,16 @@ function NowPlayingPanel () {
     const containerRef = useRef(null);
 
     const getContextMenu = (item) => {
+        if (!item || !item.artists) {
+            console.error("Invalid item or missing artists");
+            return [];
+        }
+
         const artists = getArtistsOfTrack(item.artists);
+        if (!artists) {
+            console.error("Failed to retrieve artists");
+            return [];
+        }
 
         const trackItem = {
             ...item,
@@ -56,8 +66,27 @@ function NowPlayingPanel () {
         };
 
         let contextMenu = trackContextMenu(trackItem, 'ADD', dispatch, false, false, artists);
-    
-        contextMenu = updateContextMenuActions(contextMenu, navigate, setAlbumId, setCreditModalState, dispatch, albumData, item);
+        contextMenu.map((obj) => {
+            if (obj.name.includes('Go to album')) {
+                obj.onClick = () => navigate(`/album/${item.album.id}`); 
+            }
+
+            if (obj.name.includes('credits')) {
+                obj.onClick = () => {
+                    setAlbumId(item.album.id);
+                    if (albumData.label) {
+                        setCreditModalState({
+                            title: item.name,
+                            performed: item.artists.map(artist => artist.name),
+                            sourceTrack: albumData.label,
+                        })
+                    }
+                    dispatch(openModal({name: 'track-credit'}))
+                };
+            }
+
+            return obj; 
+        }); 
 
         return contextMenu;
     }
@@ -172,6 +201,7 @@ function NowPlayingPanel () {
                             showOptionOnly
                             initialColumns = {2}
                             contextMenu={getContextMenu(nextQueue[0])}
+                            displayInNextQueue
                         /> : nextFrom.length > 0 && <TrackItemCard 
                             id={nextFrom[0].id}
                             key={nextFrom[0].id}
@@ -183,6 +213,7 @@ function NowPlayingPanel () {
                             showOptionOnly
                             initialColumns = {2}
                             contextMenu={getContextMenu(nextFrom[0])}
+                            displayInNextFrom
                         />}
                     </div>}
                 </div>

@@ -18,6 +18,7 @@ import {
 } from '~/assets/icons/icons';
 import { formatMillisecondsToMinutes } from '~/utils/timeUtils';
 import Button from '../Button/Button';
+import ProgressBar from './ProgressBar';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/PlayingBar.module.scss';
 
@@ -26,6 +27,7 @@ const cx = classNames.bind(styles);
 function PlayerControls(props) {
     const {
         trackPlayingData,
+        player,
     } = props;
 
     const dispatch = useDispatch();
@@ -33,13 +35,6 @@ function PlayerControls(props) {
     const itemIsPlaying = useSelector((state) => state['queue'].itemIsPlaying);
     const isShuffle = useSelector((state) => state.queue.isShuffle);
     const repeatMode = useSelector((state) => state.queue.repeatMode);
-
-    const [progress, setProgress] = useState(0);
-
-    const handleInputChange = (e) => {
-        const value = e.target.value;
-        setProgress(value); 
-    };
 
     const createIconButton = (icon, clickFunction) => { 
         return ( 
@@ -74,29 +69,7 @@ function PlayerControls(props) {
             </div>
             <div className={cx('playback')}>
                 <div className={cx("playback-position")}>{trackPlayingData ? '0:00' : '-:--'}</div>
-                <div className={cx("playback-progressbar")}>
-                    <div 
-                        className={cx("range-slider-background")}
-                        style={{ width: `${progress}%` }}
-                    ></div>
-                    <div 
-                        className={cx("range-slider-thumb")} 
-                        style={{ left: `${progress}%` }} 
-                    ></div>
-                    <label className={cx("hidden-visually")}> 
-                        Change progress 
-                        <input 
-                            className={cx('range-slider')}
-                            disabled="" 
-                            type="range" 
-                            min="0" 
-                            max="100" 
-                            step="1" 
-                            value={progress}
-                            onChange={handleInputChange}
-                        />
-                    </label>
-                </div>
+                <ProgressBar player={player} />
                 <div className={cx("playback-duration")}>{trackPlayingData ? formatMillisecondsToMinutes(trackPlayingData['duration_ms']) : '-:--'}</div>
             </div>
         </div>

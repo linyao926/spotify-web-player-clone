@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectTrackItemsData, fetchTrackItemsData } from '~/redux/slices/trackItemsDataSlice';
 import { 
     setQueueAndPlay, 
-    togglePlayPause, 
     playFromQueue, 
     playFromNextFrom, 
+    togglePlayPause,
 } from '~/redux/slices/queueSlice';
 
 export const useQueueHandler = (props) => {
@@ -23,6 +23,7 @@ export const useQueueHandler = (props) => {
     const { accessToken } = useSelector((state) => state.auth);
     const trackItems = useSelector(selectTrackItemsData);
     const queuePlaylist = useSelector((state) => state['queue'].queueData);
+    const { itemIsPlaying, currentTrack, error, loading } = useSelector((state) => state.player);
 
     const handlePlayClick = useCallback(
         async (event) => {

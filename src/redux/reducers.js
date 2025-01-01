@@ -1,5 +1,6 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import profileReducer from './slices/profileSlice';
+import playerReducer from './slices/playerSlice';
 import trackItemsDataReducer from './slices/trackItemsDataSlice';
 import authReducer from './slices/authSlice';
 import uiReducer from './slices/uiSlice';
@@ -12,6 +13,7 @@ import albumDataReducer from './slices/albumDataSlice';
 const rootReducer = combineReducers({
     profile: profileReducer,
     auth: authReducer,
+    player: playerReducer,
     ui: uiReducer,
     position: positionReducer,
     library: libraryReducer,

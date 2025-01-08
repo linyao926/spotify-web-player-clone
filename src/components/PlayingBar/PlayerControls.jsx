@@ -28,6 +28,7 @@ function PlayerControls(props) {
     const {
         trackPlayingData,
         player,
+        playbackState,
     } = props;
 
     const dispatch = useDispatch();
@@ -35,6 +36,8 @@ function PlayerControls(props) {
     const itemIsPlaying = useSelector((state) => state['queue'].itemIsPlaying);
     const isShuffle = useSelector((state) => state.queue.isShuffle);
     const repeatMode = useSelector((state) => state.queue.repeatMode);
+
+    const [progress, setProgress] = useState(playbackState['progress_ms'] || 0);
 
     const createIconButton = (icon, clickFunction) => { 
         return ( 
@@ -68,8 +71,11 @@ function PlayerControls(props) {
                 </div>
             </div>
             <div className={cx('playback')}>
-                <div className={cx("playback-position")}>{trackPlayingData ? '0:00' : '-:--'}</div>
-                <ProgressBar player={player} />
+                <div className={cx("playback-position")}>{trackPlayingData ? (playbackState ? formatMillisecondsToMinutes(playbackState['progress_ms']) : '0:00') : '-:--'}</div>
+                <ProgressBar playbackState={playbackState} 
+                    progress={progress}
+                    setProgress={setProgress}
+                />
                 <div className={cx("playback-duration")}>{trackPlayingData ? formatMillisecondsToMinutes(trackPlayingData['duration_ms']) : '-:--'}</div>
             </div>
         </div>

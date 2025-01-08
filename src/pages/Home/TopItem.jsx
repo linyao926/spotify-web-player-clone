@@ -19,7 +19,9 @@ function TopItem (props) {
       navigate,
     } = props;
 
-    const { handlePlayClick } = useQueueHandler({ type, id, title, coverUrl });
+    const playbackState = useSelector((state) => state.player.playbackState);
+
+    const { handlePlayClick } = useQueueHandler({ type, id, title, coverUrl, progress_ms: playbackState ? playbackState.progress_ms : 0 });
 
     const queuePlaylist = useSelector((state) => state['queue'].queueData);
     const itemIsPlaying = useSelector((state) => state['queue'].itemIsPlaying);

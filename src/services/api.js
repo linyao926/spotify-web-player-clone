@@ -22,8 +22,8 @@ export const fetchData = async (endpoint, accessToken, limit = 10) => {
     }
 };
 
-export const playTrack = async ({ token, uri, deviceId = '', positionMs }) => {
-  const response = await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
+export const playTrack = async ({ token, uri, positionMs }) => {
+  const response = await fetch(`https://api.spotify.com/v1/me/player/play`, {
     method: 'PUT',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -31,7 +31,7 @@ export const playTrack = async ({ token, uri, deviceId = '', positionMs }) => {
     },
     body: JSON.stringify({
       "uris": [uri],
-      "position_ms": 0
+      "position_ms": positionMs
     }),
   });
 
@@ -61,16 +61,17 @@ export const putRequest = async ({ token, endpoint, body = null }) => {
 };
 
 export const seekPlayback = async ({ token, positionMs }) => {
-  const url = `/me/player/seek?position_ms=${positionMs}`;
-  return await putRequest({ token, url });
+  const endpoint = `/me/player/seek?position_ms=${positionMs}`;
+  console.log(endpoint)
+  return await putRequest({ token, endpoint });
 };
 
 export const setRepeatMode = async ({ token, state }) => {
-  const url = `/me/player/repeat?state=${state}`;
-  return await putRequest({ token, url });
+  const endpoint = `/me/player/repeat?state=${state}`;
+  return await putRequest({ token, endpoint });
 };
 
 export const setVolume = async ({ token, volumePercent }) => {
-  const url = `/me/player/volume?volume_percent=${volumePercent}`;
-  return await putRequest({ token, url });
+  const endpoint = `/me/player/volume?volume_percent=${volumePercent}`;
+  return await putRequest({ token, endpoint });
 };

@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectTrackItemsData, fetchTrackItemsData } from '~/redux/slices/trackItemsDataSlice';
+import { pausePlaybackThunk, seekPlaybackThunk, fetchPlayer } from '~/redux/slices/playerSlice';
 import { 
     setQueueAndPlay, 
     playFromQueue, 
@@ -16,14 +17,35 @@ export const useQueueHandler = (props) => {
         coverUrl = '',
         trackId = '',
         data = [], 
-        inNext = {},
+        inNext = {
+            nextFrom: false,
+            nextQueue: false,
+        },
+        progress_ms,
     } = props;
 
     const dispatch = useDispatch();
     const { accessToken } = useSelector((state) => state.auth);
     const trackItems = useSelector(selectTrackItemsData);
     const queuePlaylist = useSelector((state) => state['queue'].queueData);
-    const { itemIsPlaying, currentTrack, error, loading } = useSelector((state) => state.player);
+    const itemIsPlaying = useSelector((state) => state['queue'].itemIsPlaying);
+    const nowPlaying = useSelector((state) => state['queue'].nowPlaying);
+
+    const playPausePlayback = () => {
+        if (itemIsPlaying) {
+            dispatch(pausePlaybackThunk({ token: accessToken }));
+        } else {
+            if (accessToken && nowPlaying) {
+                dispatch(fetchPlayer({
+                            accessToken,
+                            uri: nowPlaying.uri,
+                            positionMs: progress_ms,
+                        }));
+            }
+        }
+
+        dispatch(togglePlayPause());
+    }
 
     const handlePlayClick = useCallback(
         async (event) => {
@@ -75,7 +97,7 @@ export const useQueueHandler = (props) => {
                 dispatch(playFromNextFrom({ trackId: startTrackId }));
             } else if (queuePlaylist.id) {
                 if (queuePlaylist.id === id) {
-                    dispatch(togglePlayPause());
+                    playPausePlayback();
                 } else {
                     dispatch(setQueueAndPlay({ tracks, startTrackId, parentData }));
                 }
@@ -83,7 +105,7 @@ export const useQueueHandler = (props) => {
                 dispatch(setQueueAndPlay({ tracks, startTrackId, parentData }));
             }
         },
-        [accessToken, data, dispatch, id, queuePlaylist.id, title, type, coverUrl, trackId] 
+        [accessToken, data, dispatch, id, queuePlaylist.id, title, type, coverUrl, trackId, itemIsPlaying] 
     );
 
     return { handlePlayClick, trackItems };

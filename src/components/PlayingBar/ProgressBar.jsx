@@ -1,26 +1,45 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 // import { updateProgress } from '~/redux/slices/playerSlice';
-// import { seekToAPI } from '~/services/playerAPI';
+import { seekPlaybackThunk } from '~/redux/slices/playerSlice';
 import classNames from 'classnames/bind';
 import styles from '~/styles/components/PlayingBar.module.scss';
 
 const cx = classNames.bind(styles);
 
 const ProgressBar = (props) => {
-    const { player } = props;
-    // const progress = useSelector((state) => state.player.progress);
-    // const duration = useSelector((state) => state.player.duration);
-    const dispatch = useDispatch();
+    const { 
+        playbackState,
+    } = props;
 
-    const handleInputChange = (e) => {
-        const newProgress = e.target.value;
-        const positionMs = (newProgress / 100) * duration;
-        // dispatch(updateProgress(newProgress));
-        // seekToAPI(positionMs);
+    const dispatch = useDispatch();
+    const { accessToken } = useSelector((state) => state.auth);
+    const [progress, setProgress] = useState(playbackState['progress_ms'] || 0);
+
+    useEffect(() => {
+        if (
+          playbackState &&
+          playbackState.is_playing &&
+          playbackState.item &&
+          playbackState.item.duration_ms
+        ) {
+          const duration = playbackState.item.duration_ms;
+          const currentProgress = playbackState.progress_ms;
+          const percentage = (currentProgress / duration) * 100;
+          setProgress(percentage);
+        } else {
+          setProgress(0);
+        }
+    }, [playbackState]);
+
+    const handleSeek = (e) => {
+        const newProgressMs = parseInt(e.target.value, 10); 
+        dispatch(seekPlaybackThunk({token: accessToken, progressMs: newProgressMs})); 
     };
 
-    const progress = 0;
+    const duration = playbackState?.item?.duration_ms || 0;
+
+    // console.log(progress)
 
     return (
         <div className={cx("playback-progressbar")}>
@@ -38,10 +57,10 @@ const ProgressBar = (props) => {
                     className={cx('range-slider')}
                     type="range"
                     min="0"
-                    max="100"
+                    max="100%"
                     step="1"
                     value={progress}
-                    onChange={handleInputChange}
+                    onChange={handleSeek}
                 />
             </label>
         </div>

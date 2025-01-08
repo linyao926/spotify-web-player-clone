@@ -3,24 +3,28 @@ import { fetchData, playTrack, putRequest, seekPlayback, setRepeatMode, setVolum
 
 export const fetchPlayer = createAsyncThunk(
   'player/fetchPlayer',
-  async ({accessToken, uri = '', deviceId, positionMs = 0}, { rejectWithValue }) => {
+  async ({accessToken, uri = '', positionMs = 0}, { rejectWithValue }) => {
     try {
-      const devices = await fetchData('/me/player/devices', accessToken);
-
-      if (!devices || devices.length === 0) {
-        throw new Error('No devices found');
-      }
-
-      if (!deviceId) {
-        console.error('Device ID is not available');
-        return;
-      }
-
-      const player = await playTrack({ token: accessToken, uri, deviceId, positionMs });
+      const player = await playTrack({ token: accessToken, uri, positionMs });
 
       return {
-        device_id: devices[0].id,
         player,
+      };
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchPlaybackState = createAsyncThunk(
+  'player/fetchPlaybackState',
+  async ({accessToken}, { rejectWithValue }) => {
+    try {
+      const response = await fetchData('/me/player', accessToken);
+      const playbackState = response;
+
+      return {
+        playbackState,
       };
     } catch (error) {
       return rejectWithValue(error.message);
@@ -77,11 +81,12 @@ export const setVolumeThunk = createAsyncThunk(
 );
 
 const initialState = {
-    device_id: '',
+    playbackState: {},
     status: 'idle', 
     seeking: false,
     repeatState: 'off', 
     volume: 30, 
+    position_ms: 0, 
     pausePlayback: true,
     error: null,
 };
@@ -98,12 +103,25 @@ const playerSlice = createSlice({
         })
         .addCase(fetchPlayer.fulfilled, (state, action) => {
             state.status = 'succeeded';
-            state.device_id = action.payload.device_id;
+            state.playbackState = action.payload.playbackState;
             state.error = null;
         })
         .addCase(fetchPlayer.rejected, (state, action) => {
             state.status = 'failed';
             state.error = action.payload;
+        })
+        .addCase(fetchPlaybackState.pending, (state) => {
+          state.status = 'loading';
+          state.error = null;
+        })
+        .addCase(fetchPlaybackState.fulfilled, (state, action) => {
+          state.status = 'succeeded';
+          state.playbackState = action.payload.playbackState;
+          state.error = null;
+        })
+        .addCase(fetchPlaybackState.rejected, (state, action) => {
+          state.status = 'failed';
+          state.error = action.payload;
         })
         // Seek Playback
         .addCase(seekPlaybackThunk.pending, (state) => {

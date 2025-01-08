@@ -67,6 +67,7 @@ const queueSlice = createSlice({
         state.queueData = { tracks: [...tracks], ...parentData };
       }
 
+      state.itemIsPlaying = true;
       state.nextQueue = []; 
     },
     addToQueue(state, action) {
